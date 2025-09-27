@@ -13,17 +13,33 @@ class Ui_MainWindow(object):
         if getattr(sys, 'frozen', False):
             app_dir = os.path.join(os.getenv('APPDATA'), "CalenTrack")
             os.makedirs(app_dir, exist_ok=True)
-            self.path_to_db = os.path.join(app_dir, "app_db.db")            
-            if not os.path.exists(self.path_to_db):
-                try:
-                    src_db = os.path.join(sys._MEIPASS, "app_db.db")
+            self.path_to_db = os.path.join(app_dir, "app_db.db")
+            self.path_to_icon = os.path.join(app_dir, "icon.jpg")            
+            try:
+                src_db = os.path.join(sys._MEIPASS, "app_db.db")
+                src_icon = os.path.join(sys._MEIPASS, "icon.jpg")
+                if os.path.exists(src_db):
                     shutil.copyfile(src_db, self.path_to_db)
-                except Exception as e:
-                    print(f"Ошибка копирования БД: {e}")
+                else:
+                    print(f"Source database not found at {src_db}")
+                if os.path.exists(src_icon):
+                    shutil.copyfile(src_icon, self.path_to_icon)
+                else:
+                    print(f"Source icon not found at {src_icon}")
+            except Exception as e:
+                print(f"Error copying database: {e}")
+                if not os.path.exists(self.path_to_db):
+                    self.create_tables()
         else:
-            self.path_to_db = os.path.join(os.path.dirname(__file__), "app_db.db")        
+            self.path_to_db = os.path.join(os.path.dirname(__file__), "app_db.db")
+            self.path_to_icon = os.path.join(os.path.dirname(__file__), "icon.jpg")
+            if not os.path.exists(self.path_to_db):
+                self.create_tables()        
+        if not self.check_database_integrity():
+            self.create_tables()       
         self.create_tables()
         MainWindow.setObjectName("MainWindow")
+        MainWindow.setWindowIcon(QtGui.QIcon(self.path_to_icon))
         MainWindow.resize(640, 673)
         MainWindow.setMinimumSize(QtCore.QSize(640, 673))
         MainWindow.setMaximumSize(QtCore.QSize(640, 673))
@@ -81,7 +97,7 @@ class Ui_MainWindow(object):
         self.calendar_page.setObjectName("calendar_page")
         self.calendarWidget = QtWidgets.QCalendarWidget(parent=self.calendar_page)
         self.calendarWidget.setGeometry(QtCore.QRect(10, 6, 500, 300))
-        self.calendarWidget.setStyleSheet("background-color: rgb(255, 255, 255);")
+        self.calendarWidget.setStyleSheet("background-color: rgb(255, 255, 255); color: #000000;")
         self.calendarWidget.setObjectName("calendarWidget")
         self.stackedWidget.addWidget(self.calendar_page)
         self.calendar_listwidget = QtWidgets.QListWidget(parent=self.calendar_page)
@@ -586,7 +602,7 @@ class Ui_MainWindow(object):
         layout.addWidget(label)
         reduct_btn = QtWidgets.QPushButton("Просмотреть")
         reduct_btn.setStyleSheet("background-color: #A7FC00;")
-        reduct_btn.setFixedSize(90, 15)
+        reduct_btn.setFixedSize(83, 15)
         del_button = QtWidgets.QPushButton("Удалить")
         del_button.setStyleSheet("background-color: rgb(248,23,62);")
         del_button.setFixedSize(60, 15)
@@ -657,7 +673,7 @@ class Ui_MainWindow(object):
         note_title_label = QtWidgets.QLineEdit(note_title, parent=self.dialog_window_datas)
         note_title_label.setGeometry(QtCore.QRect(210, 6, 180, 25))
         note_title_label.setReadOnly(True)
-        note_label = QtWidgets.QLineEdit(note_text,  parent=self.dialog_window_datas)
+        note_label = QtWidgets.QTextEdit(note_text,  parent=self.dialog_window_datas)
         note_label.setGeometry(QtCore.QRect(10, 38, 380, 198))
         note_label.setReadOnly(True)
         btn_close = QtWidgets.QPushButton("Закрыть", parent=self.dialog_window_datas)
@@ -740,9 +756,9 @@ class Ui_MainWindow(object):
         file_path = QtWidgets.QFileDialog.getOpenFileName(self.settings_page, "Load file", "", "TXT files (*.txt)")[0]
         if file_path != "":
             self.del_all_data()
-            with open(file_path) as file:
+            with open(file_path, encoding="UTF-8") as file:
                 script = file.read()
-            with open(self.path_to_db, "w") as file:
+            with open(self.path_to_db, "w", encoding="UTF-8") as file:
                 file.write("")
             with sqlite3.connect(self.path_to_db) as conn:
                 cursor = conn.cursor()
@@ -758,24 +774,50 @@ class Ui_MainWindow(object):
         """Database Method"""
         with sqlite3.connect(self.path_to_db) as conn:
             cursor = conn.cursor()
-            cursor.executescript("""CREATE TABLE IF NOT EXISTS stopwatch_history (
+            cursor.executescript("""CREATE TABLE IF NOT EXISTS stopwatch_history
+                            (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             note TEXT NOT NULL,
-                            time_note TEXT NOT NULL);
-                            CREATE TABLE IF NOT EXISTS user_settings (
+                            time_note TEXT NOT NULL
+                            );
+                            CREATE TABLE IF NOT EXISTS user_settings
+                            (
                             objectName TEXT NOT NULL UNIQUE,
-                            objectValue BOOL NOT NULL);
-                            CREATE TABLE IF NOT EXISTS notes (
+                            objectValue BOOL NOT NULL
+                            );
+                            CREATE TABLE IF NOT EXISTS notes
+                            (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             title TEXT NOT NULL,
-                            text TEXT NOT NULL);
-                            CREATE TABLE IF NOT EXISTS calendar (
+                            text TEXT NOT NULL
+                            );
+                            CREATE TABLE IF NOT EXISTS calendar
+                            (
                             id INTEGER PRIMARY KEY AUTOINCREMENT,
                             date TEXT NOT NULL,
                             stopwatch_note TEXT,
                             note_title TEXT,
                             note_text TEXT,
-                            date_color TEXT);""")
+                            date_color TEXT
+                            );""")
+
+    def check_database_integrity(self):
+        """Database Method"""
+        if not os.path.exists(self.path_to_db):
+            return False
+        try:
+            with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+                tables = cursor.fetchall()
+                print(f"Database valid, tables found: {len(tables)}")
+                return True
+        except sqlite3.DatabaseError as e:
+            print(f"Database corrupted: {e}")
+            return False
+        except Exception as e:
+            print(f"Error checking database: {e}")
+            return False
 
     def del_all_data(self):
         """Settings Method"""
