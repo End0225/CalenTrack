@@ -14,32 +14,30 @@ class Ui_MainWindow(object):
             app_dir = os.path.join(os.getenv('APPDATA'), "CalenTrack")
             os.makedirs(app_dir, exist_ok=True)
             self.path_to_db = os.path.join(app_dir, "app_db.db")
-            self.path_to_icon = os.path.join(app_dir, "icon.jpg")            
+            self.path_to_icon = os.path.join(app_dir, "icon.jpg")
             try:
-                src_db = os.path.join(sys._MEIPASS, "app_db.db")
-                src_icon = os.path.join(sys._MEIPASS, "icon.jpg")
+                base_path = sys._MEIPASS
+            except Exception:
+                base_path = os.path.abspath(".")
+            if not os.path.exists(self.path_to_db):
+                src_db = os.path.join(base_path, "app_db.db")
                 if os.path.exists(src_db):
                     shutil.copyfile(src_db, self.path_to_db)
                 else:
-                    print(f"Source database not found at {src_db}")
+                    self.create_tables()
+            if not os.path.exists(self.path_to_icon):
+                src_icon = os.path.join(base_path, "icon.jpg")
                 if os.path.exists(src_icon):
                     shutil.copyfile(src_icon, self.path_to_icon)
-                else:
-                    print(f"Source icon not found at {src_icon}")
-            except Exception as e:
-                print(f"Error copying database: {e}")
-                if not os.path.exists(self.path_to_db):
-                    self.create_tables()
         else:
-            self.path_to_db = os.path.join(os.path.dirname(__file__), "app_db.db")
-            self.path_to_icon = os.path.join(os.path.dirname(__file__), "icon.jpg")
-            if not os.path.exists(self.path_to_db):
-                self.create_tables()        
-        if not self.check_database_integrity():
-            self.create_tables()       
-        self.create_tables()
+            app_dir = os.path.dirname(__file__)
+            self.path_to_db = os.path.join(app_dir, "app_db.db")
+            self.path_to_icon = os.path.join(app_dir, "icon.jpg")
+        if not os.path.exists(self.path_to_db) or not self.check_database_integrity():
+            self.create_tables()
         MainWindow.setObjectName("MainWindow")
-        MainWindow.setWindowIcon(QtGui.QIcon(self.path_to_icon))
+        if os.path.exists(self.path_to_icon):
+            MainWindow.setWindowIcon(QtGui.QIcon(self.path_to_icon))
         MainWindow.resize(640, 673)
         MainWindow.setMinimumSize(QtCore.QSize(640, 673))
         MainWindow.setMaximumSize(QtCore.QSize(640, 673))
