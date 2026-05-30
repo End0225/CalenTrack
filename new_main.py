@@ -26,9 +26,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.aside_frame.sizePolicy().hasHeightForWidth())
         self.aside_frame.setSizePolicy(sizePolicy)
         self.aside_frame.setMinimumSize(QtCore.QSize(100, 0))
-        self.aside_frame.setStyleSheet("background-color: #1a1817;\n"
-"border-right: 1px solid #3e3e42;\n"
-"padding: 1px;")
+        self.aside_frame.setStyleSheet("background-color: #1a1817;\nborder-right: 1px solid #3e3e42;\npadding: 1px;")
         self.aside_frame.setObjectName("aside_frame")
         self.aside = QtWidgets.QVBoxLayout(self.aside_frame)
         self.aside.setContentsMargins(0, 0, 0, 0)
@@ -40,11 +38,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.app_title_label.setFont(font)
-        self.app_title_label.setStyleSheet("color: #8B5CF6;\n"
-"border: none;\n"
-"font-size: 19px;\n"
-"font-weight: 600;\n"
-"border-bottom: 1px solid #3e3e42;")
+        self.app_title_label.setStyleSheet("color: #8B5CF6;\nborder: none;\nfont-size: 19px;\nfont-weight: 600;\nborder-bottom: 1px solid #3e3e42;")
         self.app_title_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.app_title_label.setObjectName("app_title_label")
         self.aside.addWidget(self.app_title_label)
@@ -55,15 +49,16 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.stopwatch_btn.sizePolicy().hasHeightForWidth())
         self.stopwatch_btn.setSizePolicy(sizePolicy)
         self.stopwatch_btn.setMinimumSize(QtCore.QSize(93, 14))
-        self.stopwatch_btn.setStyleSheet("QToolButton {\n"
-"    color: #9E9EA7;\n"
-"    border: none;\n"
-"    font-size: 12px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QToolButton:hover {\n"
-"    background-color: #252525;\n"
-"}")
+        style_aside_btn = """QToolButton {
+    color: #9E9EA7;
+    border: none;
+    font-size: 12px;
+    font-weight: 700;
+}
+QToolButton:hover {
+    background-color: #252525;
+}"""
+        self.stopwatch_btn.setStyleSheet(style_aside_btn)
         stopwatch_icon = QtGui.QIcon()
         stopwatch_icon.addPixmap(QtGui.QPixmap("resources/stopwatch-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.stopwatch_btn.setIcon(stopwatch_icon)
@@ -79,15 +74,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.history_btn.sizePolicy().hasHeightForWidth())
         self.history_btn.setSizePolicy(sizePolicy)
         self.history_btn.setMinimumSize(QtCore.QSize(93, 14))
-        self.history_btn.setStyleSheet("QToolButton {\n"
-"    color: #9E9EA7;\n"
-"    border: none;\n"
-"    font-size: 12px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QToolButton:hover {\n"
-"    background-color: #252525;\n"
-"}")
+        self.history_btn.setStyleSheet(style_aside_btn)
         history_icon = QtGui.QIcon()
         history_icon.addPixmap(QtGui.QPixmap("resources/history-icon.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.history_btn.setIcon(history_icon)
@@ -102,15 +89,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.notes_btn.sizePolicy().hasHeightForWidth())
         self.notes_btn.setSizePolicy(sizePolicy)
         self.notes_btn.setMinimumSize(QtCore.QSize(93, 14))
-        self.notes_btn.setStyleSheet("QToolButton {\n"
-"    color: #9E9EA7;\n"
-"    border: none;\n"
-"    font-size: 12px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QToolButton:hover {\n"
-"    background-color: #252525;\n"
-"}")
+        self.notes_btn.setStyleSheet(style_aside_btn)
         notes_icon = QtGui.QIcon()
         notes_icon.addPixmap(QtGui.QPixmap("resources/note-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.notes_btn.setIcon(notes_icon)
@@ -125,15 +104,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.calendar_btn.sizePolicy().hasHeightForWidth())
         self.calendar_btn.setSizePolicy(sizePolicy)
         self.calendar_btn.setMinimumSize(QtCore.QSize(93, 14))
-        self.calendar_btn.setStyleSheet("QToolButton {\n"
-"    color: #9E9EA7;\n"
-"    border: none;\n"
-"    font-size: 12px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QToolButton:hover {\n"
-"    background-color: #252525;\n"
-"}")
+        self.calendar_btn.setStyleSheet(style_aside_btn)
         calendar_icon = QtGui.QIcon()
         calendar_icon.addPixmap(QtGui.QPixmap("resources/calendar-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.calendar_btn.setIcon(calendar_icon)
@@ -150,15 +121,7 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.settings_btn.sizePolicy().hasHeightForWidth())
         self.settings_btn.setSizePolicy(sizePolicy)
         self.settings_btn.setMinimumSize(QtCore.QSize(93, 14))
-        self.settings_btn.setStyleSheet("QToolButton {\n"
-"    color: #9E9EA7;\n"
-"    border: none;\n"
-"    font-size: 12px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QToolButton:hover {\n"
-"    background-color: #252525;\n"
-"}")
+        self.settings_btn.setStyleSheet(style_aside_btn)
         settings_icon = QtGui.QIcon()
         settings_icon.addPixmap(QtGui.QPixmap("resources/settings-icons.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.settings_btn.setIcon(settings_icon)
@@ -173,8 +136,7 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.main_frame.sizePolicy().hasHeightForWidth())
         self.main_frame.setSizePolicy(sizePolicy)
-        self.main_frame.setStyleSheet("background-color: #1e1c1a;\n"
-"")
+        self.main_frame.setStyleSheet("background-color: #1e1c1a;")
         self.main_frame.setObjectName("main_frame")
         self.main = QtWidgets.QGridLayout(self.main_frame)
         self.main.setContentsMargins(0, 0, 0, 0)
@@ -205,11 +167,11 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.stopwatch_frame.sizePolicy().hasHeightForWidth())
         self.stopwatch_frame.setSizePolicy(sizePolicy)
         self.stopwatch_frame.setMaximumSize(QtCore.QSize(400, 380))
-        self.stopwatch_frame.setStyleSheet("QFrame {\n"
-"    background-color: #252525;\n"
-"    border: 1px solid #3e3e42;\n"
-"    border-radius: 15%;\n"
-"}")
+        self.stopwatch_frame.setStyleSheet("""QFrame {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    border-radius: 15%;
+}""")
         self.stopwatch_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.stopwatch_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.stopwatch_frame.setObjectName("stopwatch_frame")
@@ -228,10 +190,10 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         self.stopwatch_time_label.setFont(font)
         self.stopwatch_time_label.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
-        self.stopwatch_time_label.setStyleSheet("border: none;\n"
-"font-size: 32px;\n"
-"font-weight: 600;\n"
-"color: #D4D4D4;")
+        self.stopwatch_time_label.setStyleSheet("""border: none;
+font-size: 32px;
+font-weight: 600;
+color: #D4D4D4;""")
         self.stopwatch_time_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.stopwatch_time_label.setObjectName("stopwatch_time_label")
         self.gridLayout_2.addWidget(self.stopwatch_time_label, 0, 0, 1, 2)
@@ -247,19 +209,16 @@ class Ui_MainWindow(object):
         font.setWeight(87)
         self.stopwatch_stop_btn.setFont(font)
         self.stopwatch_stop_btn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
-        self.stopwatch_stop_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #8365ee;\n"
-"    border-radius: 6%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #7349e5;\n"
-"}\n"
-"\n"
-"")
+        self.stopwatch_stop_btn.setStyleSheet("""QPushButton {
+    background-color: #8365ee;
+    border-radius: 6%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #7349e5;
+}""")
         self.stopwatch_stop_btn.setText("Stop")
         pause_icon = QtGui.QIcon()
         pause_icon.addPixmap(QtGui.QPixmap("resources/pause-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
@@ -280,19 +239,16 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(87)
         self.stopwatch_reset_btn.setFont(font)
-        self.stopwatch_reset_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #52525a;\n"
-"    border-radius: 6%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #3e3e42;\n"
-"}\n"
-"\n"
-"")
+        self.stopwatch_reset_btn.setStyleSheet("""QPushButton {
+    background-color: #52525a;
+    border-radius: 6%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #3e3e42;
+}""")
         reset_icon = QtGui.QIcon()
         reset_icon.addPixmap(QtGui.QPixmap("resources/reset-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.stopwatch_reset_btn.setIcon(reset_icon)
@@ -311,19 +267,16 @@ class Ui_MainWindow(object):
         font.setWeight(87)
         self.stopwatch_save_btn.setFont(font)
         self.stopwatch_save_btn.setCursor(QtGui.QCursor(QtCore.Qt.CursorShape.ArrowCursor))
-        self.stopwatch_save_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #48b585;\n"
-"    border-radius: 6%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #38936c;\n"
-"}\n"
-"\n"
-"")
+        self.stopwatch_save_btn.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    border-radius: 6%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #38936c;
+}""")
         save_icon = QtGui.QIcon()
         save_icon.addPixmap(QtGui.QPixmap("resources/save-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.stopwatch_save_btn.setIcon(save_icon)
@@ -342,12 +295,12 @@ class Ui_MainWindow(object):
         self.calendar_grid.setVerticalSpacing(4)
         self.calendar_grid.setObjectName("calendar_grid")
         self.dates_frame = QtWidgets.QFrame(parent=self.calendar_page)
-        self.dates_frame.setStyleSheet("QFrame {\n"
-"    background-color: #252525;\n"
-"    border: 1px solid #3e3e42;\n"
-"    border-radius: 15%;\n"
-"    margin-top: 8px;\n"
-"}")
+        self.dates_frame.setStyleSheet("""QFrame {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    border-radius: 15%;
+    margin-top: 8px;
+}""")
         self.dates_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.dates_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.dates_frame.setObjectName("dates_frame")
@@ -362,10 +315,10 @@ class Ui_MainWindow(object):
         self.dates_title.setSizePolicy(sizePolicy)
         self.dates_title.setMinimumSize(QtCore.QSize(0, 0))
         self.dates_title.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.dates_title.setStyleSheet("color: white;\n"
-"font-size: 15px;\n"
-"font-weight: 700;\n"
-"border: none;")
+        self.dates_title.setStyleSheet("""color: white;
+font-size: 15px;
+font-weight: 700;
+border: none;""")
         self.dates_title.setObjectName("dates_title")
         self.gridLayout_8.addWidget(self.dates_title, 0, 0, 1, 1)
         self.dates_deleteall_btn = QtWidgets.QPushButton(parent=self.dates_frame)
@@ -375,19 +328,16 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.dates_deleteall_btn.sizePolicy().hasHeightForWidth())
         self.dates_deleteall_btn.setSizePolicy(sizePolicy)
         self.dates_deleteall_btn.setMinimumSize(QtCore.QSize(80, 20))
-        self.dates_deleteall_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #d13c30;\n"
-"    border-radius: 8%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 13px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #af3025;\n"
-"}\n"
-"\n"
-"")
+        self.dates_deleteall_btn.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    border-radius: 8%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+}
+QPushButton:hover {
+    background-color: #af3025;
+}""")
         self.dates_deleteall_btn.setObjectName("dates_deleteall_btn")
         self.gridLayout_8.addWidget(self.dates_deleteall_btn, 0, 1, 1, 1)
         self.dates_listwidget = QtWidgets.QListWidget(parent=self.dates_frame)
@@ -402,18 +352,18 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.calendar_title_label.sizePolicy().hasHeightForWidth())
         self.calendar_title_label.setSizePolicy(sizePolicy)
         self.calendar_title_label.setMinimumSize(QtCore.QSize(100, 20))
-        self.calendar_title_label.setStyleSheet("color: white;\n"
-"font-size: 18px;\n"
-"font-weight: 700;")
+        self.calendar_title_label.setStyleSheet("""color: white;
+font-size: 18px;
+font-weight: 700;""")
         self.calendar_title_label.setObjectName("calendar_title_label")
         self.calendar_grid.addWidget(self.calendar_title_label, 1, 1, 1, 1)
         self.calendar_frame = QtWidgets.QFrame(parent=self.calendar_page)
         self.calendar_frame.setMinimumSize(QtCore.QSize(0, 20))
-        self.calendar_frame.setStyleSheet("QFrame {\n"
-"    border-radius: 15%;\n"
-"    border: 1px solid #3e3e42;\n"
-"    background-color: #252525;\n"
-"}")
+        self.calendar_frame.setStyleSheet("""QFrame {
+    border-radius: 15%;
+    border: 1px solid #3e3e42;
+    background-color: #252525;
+}""")
         self.calendar_frame.setObjectName("calendar_frame")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.calendar_frame)
         self.verticalLayout_2.setContentsMargins(4, 4, 4, 4)
@@ -421,54 +371,54 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.calendarwidget = QtWidgets.QCalendarWidget(parent=self.calendar_frame)
         self.calendarwidget.setAccessibleName("")
-        self.calendarwidget.setStyleSheet("QCalendarWidget QToolButton {\n"
-"    color: #fff;\n"
-"    font-size: 15px;\n"
-"    font-weight: bold;\n"
-"    margin: 2px 5px 1px 5px;\n"
-"    background-color: transparent;\n"
-"}\n"
-"QCalendarWidget QToolButton#qt_calendar_prevmonth,\n"
-"QCalendarWidget QToolButton#qt_calendar_nextmonth {\n"
-"        background-color: transparent;\n"
-"        border-radius: 4px;\n"
-"}\n"
-"QCalendarWidget QToolButton#qt_calendar_prevmonth {\n"
-"    qproperty-icon: url(resources/left-arrow-icon.png);\n"
-"}\n"
-"QCalendarWidget QToolButton#qt_calendar_nextmonth {\n"
-"    qproperty-icon: url(resources/right-arrow-icon.png);\n"
-"}\n"
-"QCalendarWidget QAbstractItemView {\n"
-"    background-color: #252525;\n"
-"    selection-background-color: #1a1a1a;\n"
-"    outline: none;\n"
-"    font-size: 12px;\n"
-"    font-weight: 600;\n"
-"    color: #fff;\n"
-"    border: none;\n"
-"}\n"
-"QCalendarWidget QWidget#qt_calendar_navigationbar {\n"
-"    background-color: #252525;\n"
-"}\n"
-"QCalendarWidget QMenu {\n"
-"    background-color: #252525;\n"
-"    color: white;\n"
-"    border: 1px solid #3e3e42;\n"
-"}\n"
-"QCalendarWidget QMenu::item {\n"
-"    padding: 5px 20px;\n"
-"}\n"
-"QCalendarWidget QMenu::item:selected {\n"
-"    background-color: #52525a;\n"
-"    color: white;\n"
-"}\n"
-"QCalendarWidget QWidget {\n"
-"    alternate-background-color: #252525;\n"
-"}\n"
-"QCalendarWidget QAbstractItemView:disabled {\n"
-"    color: transparent;\n"
-"}")
+        self.calendarwidget.setStyleSheet("""QCalendarWidget QToolButton {
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    margin: 2px 5px 1px 5px;
+    background-color: transparent;
+}
+QCalendarWidget QToolButton#qt_calendar_prevmonth,
+QCalendarWidget QToolButton#qt_calendar_nextmonth {
+        background-color: transparent;
+        border-radius: 4px;
+}
+QCalendarWidget QToolButton#qt_calendar_prevmonth {
+    qproperty-icon: url("resources/left-arrow-icon.png");
+}
+QCalendarWidget QToolButton#qt_calendar_nextmonth {
+    qproperty-icon: url("resources/right-arrow-icon.png");
+}
+QCalendarWidget QAbstractItemView {
+    background-color: #252525;
+    selection-background-color: #1a1a1a;
+    outline: none;
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    border: none;
+}
+QCalendarWidget QWidget#qt_calendar_navigationbar {
+    background-color: #252525;
+}
+QCalendarWidget QMenu {
+    background-color: #252525;
+    color: white;
+    border: 1px solid #3e3e42;
+}
+QCalendarWidget QMenu::item {
+    padding: 5px 20px;
+}
+QCalendarWidget QMenu::item:selected {
+    background-color: #52525a;
+    color: white;
+}
+QCalendarWidget QWidget {
+    alternate-background-color: #252525;
+}
+QCalendarWidget QAbstractItemView:disabled {
+    color: transparent;
+}""")
         self.calendarwidget.setLocale(QtCore.QLocale(QtCore.QLocale.Language.English, QtCore.QLocale.Country.Germany))
         self.calendarwidget.setObjectName("calendarwidget")
         self.verticalLayout_2.addWidget(self.calendarwidget)
@@ -491,9 +441,9 @@ class Ui_MainWindow(object):
         self.settings_title_label.setSizePolicy(sizePolicy)
         self.settings_title_label.setMinimumSize(QtCore.QSize(0, 20))
         self.settings_title_label.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.settings_title_label.setStyleSheet("color: white;\n"
-"font-size: 18px;\n"
-"font-weight: 700;")
+        self.settings_title_label.setStyleSheet("""color: white;
+font-size: 18px;
+font-weight: 700;""")
         self.settings_title_label.setObjectName("settings_title_label")
         self.settings_grid.addWidget(self.settings_title_label, 0, 0, 1, 1)
         self.settings_frame = QtWidgets.QFrame(parent=self.settings_page)
@@ -502,11 +452,11 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.settings_frame.sizePolicy().hasHeightForWidth())
         self.settings_frame.setSizePolicy(sizePolicy)
-        self.settings_frame.setStyleSheet("QFrame {\n"
-"    background-color: #252525;\n"
-"    border: 1px solid #3e3e42;\n"
-"    border-radius: 15%;\n"
-"}")
+        self.settings_frame.setStyleSheet("""QFrame {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    border-radius: 15%;
+}""")
         self.settings_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.settings_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.settings_frame.setObjectName("settings_frame")
@@ -532,21 +482,19 @@ class Ui_MainWindow(object):
         self.loadbackup_btn = QtWidgets.QPushButton(parent=self.backup_frame)
         self.loadbackup_btn.setMinimumSize(QtCore.QSize(0, 20))
         self.loadbackup_btn.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.loadbackup_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #52525a;\n"
-"    border: 1px solid #3e3e42;\n"
-"    border-radius: 6%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #3e3e42;\n"
-"    border: 1px solid #52525a;\n"
-"}\n"
-"\n"
-"")
+        self.loadbackup_btn.setStyleSheet("""QPushButton {
+    background-color: #52525a;
+    border: 1px solid #3e3e42;
+    border-radius: 6%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #3e3e42;
+    border: 1px solid #52525a;
+}
+""")
         loadbackup_icon = QtGui.QIcon()
         loadbackup_icon.addPixmap(QtGui.QPixmap("resources/export-icons.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.loadbackup_btn.setIcon(loadbackup_icon)
@@ -556,19 +504,16 @@ class Ui_MainWindow(object):
         self.savebackup_btn = QtWidgets.QPushButton(parent=self.backup_frame)
         self.savebackup_btn.setMinimumSize(QtCore.QSize(0, 20))
         self.savebackup_btn.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.savebackup_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #48b585;\n"
-"    border-radius: 6%;\n"
-"    color: #fff;\n"
-"    font-size: 12px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #38936c;\n"
-"}\n"
-"\n"
-"")
+        self.savebackup_btn.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    border-radius: 6%;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+QPushButton:hover {
+    background-color: #38936c;
+}""")
         savebackup_icon = QtGui.QIcon()
         savebackup_icon.addPixmap(QtGui.QPixmap("resources/import-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.savebackup_btn.setIcon(savebackup_icon)
@@ -582,12 +527,12 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.backup_title_label.sizePolicy().hasHeightForWidth())
         self.backup_title_label.setSizePolicy(sizePolicy)
         self.backup_title_label.setMinimumSize(QtCore.QSize(0, 27))
-        self.backup_title_label.setStyleSheet("color: white;\n"
-"font-size: 15px;\n"
-"font-weight: 700;\n"
-"border: none;\n"
-"margin-bottom: 10%;\n"
-"")
+        self.backup_title_label.setStyleSheet("""color: white;
+font-size: 15px;
+font-weight: 700;
+border: none;
+margin-bottom: 10%;
+""")
         self.backup_title_label.setObjectName("backup_title_label")
         self.gridLayout_22.addWidget(self.backup_title_label, 1, 0, 1, 1)
         self.verticalLayout.addWidget(self.backup_frame)
@@ -598,10 +543,10 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.parameters_frame.sizePolicy().hasHeightForWidth())
         self.parameters_frame.setSizePolicy(sizePolicy)
         self.parameters_frame.setMinimumSize(QtCore.QSize(0, 120))
-        self.parameters_frame.setStyleSheet("border: none;\n"
-"border-radius: 0;\n"
-"border-top: 1px solid #3e3e42;\n"
-"")
+        self.parameters_frame.setStyleSheet("""border: none;
+border-radius: 0;
+border-top: 1px solid #3e3e42;
+""")
         self.parameters_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.parameters_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.parameters_frame.setObjectName("parameters_frame")
@@ -610,26 +555,26 @@ class Ui_MainWindow(object):
         self.gridLayout_23.setSpacing(0)
         self.gridLayout_23.setObjectName("gridLayout_23")
         self.parameter_1_chechbox = QtWidgets.QCheckBox(parent=self.parameters_frame)
-        self.parameter_1_chechbox.setStyleSheet("QCheckBox {\n"
-"    border: none;\n"
-"    background-color: none;\n"
-"    color: #fff;\n"
-"    font-size: 12px;\n"
-"    font-weight: 700;\n"
-"}\n"
-"QCheckBox::indicator {\n"
-"    width: 12px;\n"
-"    height: 12px;\n"
-"    border: 1px solid #858585;\n"
-"    border-radius: 4%;\n"
-"    background: #3b3b3b;\n"
-"}\n"
-"QCheckBox::indicator:checked {\n"
-"    background-color: #48b585;\n"
-"}\n"
-"QCheckBox::indicator:hover {\n"
-"    border-color: #acacac;\n"
-"}")
+        self.parameter_1_chechbox.setStyleSheet("""QCheckBox {
+    border: none;
+    background-color: none;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+QCheckBox::indicator {
+    width: 12px;
+    height: 12px;
+    border: 1px solid #858585;
+    border-radius: 4%;
+    background: #3b3b3b;
+}
+QCheckBox::indicator:checked {
+    background-color: #48b585;
+}
+QCheckBox::indicator:hover {
+    border-color: #acacac;
+}""")
         self.parameter_1_chechbox.setObjectName("parameter_1_chechbox")
         self.gridLayout_23.addWidget(self.parameter_1_chechbox, 2, 0, 1, 1)
         self.parameters_title_label = QtWidgets.QLabel(parent=self.parameters_frame)
@@ -639,10 +584,10 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.parameters_title_label.sizePolicy().hasHeightForWidth())
         self.parameters_title_label.setSizePolicy(sizePolicy)
         self.parameters_title_label.setMinimumSize(QtCore.QSize(0, 30))
-        self.parameters_title_label.setStyleSheet("border: none;\n"
-"color: white;\n"
-"font-size: 15px;\n"
-"font-weight: 700;")
+        self.parameters_title_label.setStyleSheet("""border: none;
+color: white;
+font-size: 15px;
+font-weight: 700;""")
         self.parameters_title_label.setObjectName("parameters_title_label")
         self.gridLayout_23.addWidget(self.parameters_title_label, 1, 0, 1, 1)
         self.verticalLayout.addWidget(self.parameters_frame)
@@ -652,9 +597,9 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.dangerzone_frame.sizePolicy().hasHeightForWidth())
         self.dangerzone_frame.setSizePolicy(sizePolicy)
-        self.dangerzone_frame.setStyleSheet("border: none;\n"
-"border-radius: 0;\n"
-"border-top: 1px solid #3e3e42;")
+        self.dangerzone_frame.setStyleSheet("""border: none;
+border-radius: 0;
+border-top: 1px solid #3e3e42;""")
         self.dangerzone_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.dangerzone_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.dangerzone_frame.setObjectName("dangerzone_frame")
@@ -669,10 +614,10 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.dangerzone_title_label.sizePolicy().hasHeightForWidth())
         self.dangerzone_title_label.setSizePolicy(sizePolicy)
         self.dangerzone_title_label.setMinimumSize(QtCore.QSize(0, 30))
-        self.dangerzone_title_label.setStyleSheet("border: none;\n"
-"font-size: 15px;\n"
-"font-weight: 700;\n"
-"color: #DC2626;")
+        self.dangerzone_title_label.setStyleSheet("""border: none;
+font-size: 15px;
+font-weight: 700;
+color: #DC2626;""")
         self.dangerzone_title_label.setObjectName("dangerzone_title_label")
         self.gridLayout_24.addWidget(self.dangerzone_title_label, 0, 0, 1, 1)
         self.dangerzone_deleteall_btn = QtWidgets.QPushButton(parent=self.dangerzone_frame)
@@ -683,20 +628,17 @@ class Ui_MainWindow(object):
         self.dangerzone_deleteall_btn.setSizePolicy(sizePolicy)
         self.dangerzone_deleteall_btn.setMinimumSize(QtCore.QSize(0, 20))
         self.dangerzone_deleteall_btn.setMaximumSize(QtCore.QSize(16777215, 20))
-        self.dangerzone_deleteall_btn.setStyleSheet("QPushButton {\n"
-"    border: none;\n"
-"    background-color: #d13c30;\n"
-"    border-radius: 6%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #af3025;\n"
-"}\n"
-"\n"
-"")
+        self.dangerzone_deleteall_btn.setStyleSheet("""QPushButton {
+    border: none;
+    background-color: #d13c30;
+    border-radius: 6%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #af3025;
+}""")
         deleteall_icon = QtGui.QIcon()
         deleteall_icon.addPixmap(QtGui.QPixmap("resources/delete-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
         self.dangerzone_deleteall_btn.setIcon(deleteall_icon)
@@ -721,9 +663,9 @@ class Ui_MainWindow(object):
         self.notes_grid.setContentsMargins(12, 10, 12, 14)
         self.notes_grid.setObjectName("notes_grid")
         self.notes_title_label = QtWidgets.QLabel(parent=self.notes_page)
-        self.notes_title_label.setStyleSheet("color: white;\n"
-"font-size: 15px;\n"
-"font-weight: 700;")
+        self.notes_title_label.setStyleSheet("""color: white;
+font-size: 15px;
+font-weight: 700;""")
         self.notes_title_label.setObjectName("notes_title_label")
         self.notes_grid.addWidget(self.notes_title_label, 2, 0, 1, 1)
         self.notes_deleteall_btn = QtWidgets.QPushButton(parent=self.notes_page)
@@ -733,27 +675,24 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(self.notes_deleteall_btn.sizePolicy().hasHeightForWidth())
         self.notes_deleteall_btn.setSizePolicy(sizePolicy)
         self.notes_deleteall_btn.setMinimumSize(QtCore.QSize(80, 20))
-        self.notes_deleteall_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #d13c30;\n"
-"    border-radius: 8%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #af3025;\n"
-"}\n"
-"\n"
-"")
+        self.notes_deleteall_btn.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    border-radius: 8%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #af3025;
+}""")
         self.notes_deleteall_btn.setObjectName("notes_deleteall_btn")
         self.notes_grid.addWidget(self.notes_deleteall_btn, 2, 1, 1, 1)
         self.editor_frame = QtWidgets.QFrame(parent=self.notes_page)
-        self.editor_frame.setStyleSheet("QFrame {\n"
-"    background-color: #252525;\n"
-"    border: 1px solid #3e3e42;\n"
-"    border-radius: 15%;\n"
-"}")
+        self.editor_frame.setStyleSheet("""QFrame {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    border-radius: 15%;
+}""")
         self.editor_frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self.editor_frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self.editor_frame.setObjectName("editor_frame")
@@ -762,67 +701,61 @@ class Ui_MainWindow(object):
         self.gridLayout_4.setObjectName("gridLayout_4")
         self.editor_save_btn = QtWidgets.QPushButton(parent=self.editor_frame)
         self.editor_save_btn.setMinimumSize(QtCore.QSize(0, 20))
-        self.editor_save_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #48b585;\n"
-"    border-radius: 6%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #38936c;\n"
-"}\n"
-"\n"
-"")
+        self.editor_save_btn.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    border-radius: 6%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #38936c;
+}""")
         self.editor_save_btn.setIcon(save_icon)
         self.editor_save_btn.setIconSize(QtCore.QSize(19, 19))
         self.editor_save_btn.setObjectName("editor_save_btn")
         self.gridLayout_4.addWidget(self.editor_save_btn, 2, 0, 1, 1)
         self.editor_lineedit = QtWidgets.QLineEdit(parent=self.editor_frame)
         self.editor_lineedit.setMinimumSize(QtCore.QSize(0, 24))
-        self.editor_lineedit.setStyleSheet("QLineEdit {\n"
-"    color: #fff;\n"
-"    border: 1px solid #52525a;\n"
-"    border-radius: 6%;\n"
-"    background-color: #3e3e42;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"QLineEdit:focus{\n"
-"    border: 1px solid #8b5cf6;\n"
-"}")
+        self.editor_lineedit.setStyleSheet("""QLineEdit {
+    color: #fff;
+    border: 1px solid #52525a;
+    border-radius: 6%;
+    background-color: #3e3e42;
+    font-weight: 700;
+    font-size: 12px;
+}
+QLineEdit:focus{
+    border: 1px solid #8b5cf6;
+}""")
         self.editor_lineedit.setObjectName("editor_lineedit")
         self.gridLayout_4.addWidget(self.editor_lineedit, 0, 0, 1, 2)
         self.editor_clear_btn = QtWidgets.QPushButton(parent=self.editor_frame)
         self.editor_clear_btn.setMinimumSize(QtCore.QSize(0, 20))
-        self.editor_clear_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #52525a;\n"
-"    border-radius: 6%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #3e3e42;\n"
-"}\n"
-"\n"
-"")
+        self.editor_clear_btn.setStyleSheet("""QPushButton {
+    background-color: #52525a;
+    border-radius: 6%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #3e3e42;
+}""")
         self.editor_clear_btn.setIcon(deleteall_icon)
         self.editor_clear_btn.setObjectName("editor_clear_btn")
         self.gridLayout_4.addWidget(self.editor_clear_btn, 2, 1, 1, 1)
         self.editor_plaintextedit = QtWidgets.QPlainTextEdit(parent=self.editor_frame)
-        self.editor_plaintextedit.setStyleSheet("QPlainTextEdit {\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"    border-radius: 8%;\n"
-"    margin-bottom: 6px;\n"
-"}\n"
-"QPlainTextEdit:focus{\n"
-"    border: 1px solid #8b5cf6;\n"
-"}")
+        self.editor_plaintextedit.setStyleSheet("""QPlainTextEdit {
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    border-radius: 8%;
+    margin-bottom: 6px;
+}
+QPlainTextEdit:focus{
+    border: 1px solid #8b5cf6;
+}""")
         self.editor_plaintextedit.setPlainText("")
         self.editor_plaintextedit.setBackgroundVisible(False)
         self.editor_plaintextedit.setCenterOnScroll(False)
@@ -830,16 +763,16 @@ class Ui_MainWindow(object):
         self.gridLayout_4.addWidget(self.editor_plaintextedit, 1, 0, 1, 2)
         self.notes_grid.addWidget(self.editor_frame, 1, 0, 1, 2)
         self.notes_listwidget = QtWidgets.QListWidget(parent=self.notes_page)
-        self.notes_listwidget.setStyleSheet("background-color: #252525;\n"
-"border: 1px solid #3e3e42;\n"
-"border-radius: 15%;")
+        self.notes_listwidget.setStyleSheet("""background-color: #252525;
+border: 1px solid #3e3e42;
+border-radius: 15%;""")
         self.notes_listwidget.setObjectName("notes_listwidget")
         self.notes_grid.addWidget(self.notes_listwidget, 3, 0, 1, 2)
         self.note_title_label = QtWidgets.QLabel(parent=self.notes_page)
         self.note_title_label.setMinimumSize(QtCore.QSize(0, 20))
-        self.note_title_label.setStyleSheet("color: white;\n"
-"font-size: 15px;\n"
-"font-weight: 700;")
+        self.note_title_label.setStyleSheet("""color: white;
+font-size: 15px;
+font-weight: 700;""")
         self.note_title_label.setObjectName("note_title_label")
         self.notes_grid.addWidget(self.note_title_label, 0, 0, 1, 2)
         self.gridLayout_20.addLayout(self.notes_grid, 0, 0, 1, 1)
@@ -858,35 +791,32 @@ class Ui_MainWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.history_title_label.sizePolicy().hasHeightForWidth())
         self.history_title_label.setSizePolicy(sizePolicy)
-        self.history_title_label.setStyleSheet("color: white;\n"
-"font-size: 18px;\n"
-"font-weight: 700;")
+        self.history_title_label.setStyleSheet("""color: white;
+font-size: 18px;
+font-weight: 700;""")
         self.history_title_label.setLineWidth(1)
         self.history_title_label.setObjectName("history_title_label")
         self.history_grid.addWidget(self.history_title_label, 0, 0, 1, 1)
         self.history_clear_btn = QtWidgets.QPushButton(parent=self.history_page)
         self.history_clear_btn.setMinimumSize(QtCore.QSize(90, 20))
-        self.history_clear_btn.setStyleSheet("QPushButton {\n"
-"    background-color: #d13c30;\n"
-"    border-radius: 8%;\n"
-"    color: #fff;\n"
-"    font-weight: 700;\n"
-"    font-size: 12px;\n"
-"}\n"
-"\n"
-"QPushButton:hover {\n"
-"    background-color: #af3025;\n"
-"}\n"
-"\n"
-"")
+        self.history_clear_btn.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    border-radius: 8%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #af3025;
+}""")
         self.history_clear_btn.setIcon(deleteall_icon)
         self.history_clear_btn.setObjectName("history_clear_btn")
         self.history_grid.addWidget(self.history_clear_btn, 0, 1, 1, 1)
         self.history_listwidget = QtWidgets.QListWidget(parent=self.history_page)
         self.history_listwidget.setMinimumSize(QtCore.QSize(0, 486))
-        self.history_listwidget.setStyleSheet("background-color: #252525;\n"
-"border: 1px solid #3e3e42;\n"
-"border-radius: 15%;")
+        self.history_listwidget.setStyleSheet("""background-color: #252525;
+border: 1px solid #3e3e42;
+border-radius: 15%;""")
         self.history_listwidget.setObjectName("history_listwidget")
         self.history_grid.addWidget(self.history_listwidget, 1, 0, 1, 2)
         self.gridLayout_19.addLayout(self.history_grid, 0, 0, 1, 1)
