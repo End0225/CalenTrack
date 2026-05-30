@@ -21,7 +21,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>app-logo.png</normaloff>app-logo.png</iconset>
+    <normaloff>resources/app-logo.png</normaloff>resources/app-logo.png</iconset>
   </property>
   <property name="toolButtonStyle">
    <enum>Qt::ToolButtonIconOnly</enum>
@@ -146,7 +146,7 @@ QToolButton:hover {
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>stopwatch-icon.png</normaloff>stopwatch-icon.png</iconset>
+             <normaloff>resources/stopwatch-icon.png</normaloff>resources/stopwatch-icon.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -192,7 +192,7 @@ QToolButton:hover {
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>history-icon.svg</normaloff>history-icon.svg</iconset>
+             <normaloff>resources/history-icon.svg</normaloff>resources/history-icon.svg</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -235,7 +235,7 @@ QToolButton:hover {
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>note-icon.png</normaloff>note-icon.png</iconset>
+             <normaloff>resources/note-icon.png</normaloff>resources/note-icon.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -278,7 +278,7 @@ QToolButton:hover {
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>calendar-icon.png</normaloff>calendar-icon.png</iconset>
+             <normaloff>resources/calendar-icon.png</normaloff>resources/calendar-icon.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -334,7 +334,7 @@ QToolButton:hover {
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>settings-icons.png</normaloff>settings-icons.png</iconset>
+             <normaloff>resources/settings-icons.png</normaloff>resources/settings-icons.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -530,7 +530,7 @@ QPushButton:hover {
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>start-icon.png</normaloff>start-icon.png</iconset>
+                      <normaloff>resources/start-icon.png</normaloff>resources/start-icon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -587,7 +587,7 @@ QPushButton:hover {
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>reset-icon.png</normaloff>reset-icon.png</iconset>
+                      <normaloff>resources/reset-icon.png</normaloff>resources/reset-icon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -641,7 +641,7 @@ QPushButton:hover {
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>save-icon.png</normaloff>save-icon.png</iconset>
+                      <normaloff>resources/save-icon.png</normaloff>resources/save-icon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>
@@ -856,10 +856,10 @@ QCalendarWidget QToolButton#qt_calendar_nextmonth {
     	border-radius: 4px;
 }
 QCalendarWidget QToolButton#qt_calendar_prevmonth {
-	qproperty-icon: url(left-arrow-icon.png);
+	qproperty-icon: url(resources/left-arrow-icon.png);
 }
 QCalendarWidget QToolButton#qt_calendar_nextmonth {
-	qproperty-icon: url(right-arrow-icon.png);
+	qproperty-icon: url(resources/right-arrow-icon.png);
 }
 QCalendarWidget QAbstractItemView {
 	background-color: #252525;
@@ -1071,7 +1071,7 @@ QPushButton:hover {
                          </property>
                          <property name="icon">
                           <iconset>
-                           <normaloff>export-icons.png</normaloff>export-icons.png</iconset>
+                           <normaloff>resources/export-icons.png</normaloff>resources/export-icons.png</iconset>
                          </property>
                          <property name="iconSize">
                           <size>
@@ -1115,7 +1115,7 @@ QPushButton:hover {
                          </property>
                          <property name="icon">
                           <iconset>
-                           <normaloff>import-icon.png</normaloff>import-icon.png</iconset>
+                           <normaloff>resources/import-icon.png</normaloff>resources/import-icon.png</iconset>
                          </property>
                          <property name="iconSize">
                           <size>
@@ -1349,7 +1349,7 @@ QPushButton:hover {
                          </property>
                          <property name="icon">
                           <iconset>
-                           <normaloff>delete-icon.png</normaloff>delete-icon.png</iconset>
+                           <normaloff>resources/delete-icon.png</normaloff>resources/delete-icon.png</iconset>
                          </property>
                          <property name="iconSize">
                           <size>
@@ -1512,7 +1512,7 @@ QPushButton:hover {
                       </property>
                       <property name="icon">
                        <iconset>
-                        <normaloff>save-icon.png</normaloff>save-icon.png</iconset>
+                        <normaloff>resources/save-icon.png</normaloff>resources/save-icon.png</iconset>
                       </property>
                       <property name="iconSize">
                        <size>
@@ -1576,7 +1576,7 @@ QPushButton:hover {
                       </property>
                       <property name="icon">
                        <iconset>
-                        <normaloff>delete-icon.png</normaloff>delete-icon.png</iconset>
+                        <normaloff>resources/delete-icon.png</normaloff>resources/delete-icon.png</iconset>
                       </property>
                      </widget>
                     </item>
@@ -1722,7 +1722,7 @@ QPushButton:hover {
                    </property>
                    <property name="icon">
                     <iconset>
-                     <normaloff>delete-icon.png</normaloff>delete-icon.png</iconset>
+                     <normaloff>resources/delete-icon.png</normaloff>resources/delete-icon.png</iconset>
                    </property>
                   </widget>
                  </item>
