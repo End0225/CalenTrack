@@ -905,6 +905,13 @@ border-radius: 15%;""")
                 file_path = os.path.join(dst_resources, file)
                 self.icon_path[file] = file_path
 
+    def get_icon(self, icon_name, mode=QtGui.QIcon.Mode.Normal, state=QtGui.QIcon.State.Off):
+        if hasattr(self, "icon_path"):
+            if icon_name in self.icon_path:
+                icon = QtGui.QIcon()
+                icon.addPixmap(QtGui.QPixmap(self.icon_path[icon_name]), mode, state)
+                return icon
+
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
