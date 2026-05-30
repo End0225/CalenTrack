@@ -17,8 +17,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(615, 670)
         MainWindow.setMinimumSize(QtCore.QSize(480, 580))
-        logo_icon = QtGui.QIcon()
-        logo_icon.addPixmap(QtGui.QPixmap("resources/app-logo.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        logo_icon = self.get_icon("app-logo.png")
         MainWindow.setWindowIcon(logo_icon)
         MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
@@ -70,8 +69,7 @@ QToolButton:hover {
     background-color: #252525;
 }"""
         self.stopwatch_btn.setStyleSheet(style_aside_btn)
-        stopwatch_icon = QtGui.QIcon()
-        stopwatch_icon.addPixmap(QtGui.QPixmap("resources/stopwatch-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        stopwatch_icon = self.get_icon("stopwatch-icon.png")
         self.stopwatch_btn.setIcon(stopwatch_icon)
         self.stopwatch_btn.setIconSize(QtCore.QSize(18, 18))
         self.stopwatch_btn.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
@@ -86,8 +84,7 @@ QToolButton:hover {
         self.history_btn.setSizePolicy(sizePolicy)
         self.history_btn.setMinimumSize(QtCore.QSize(93, 14))
         self.history_btn.setStyleSheet(style_aside_btn)
-        history_icon = QtGui.QIcon()
-        history_icon.addPixmap(QtGui.QPixmap("resources/history-icon.svg"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        history_icon = self.get_icon("history-icon.svg")
         self.history_btn.setIcon(history_icon)
         self.history_btn.setIconSize(QtCore.QSize(17, 17))
         self.history_btn.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
@@ -101,8 +98,7 @@ QToolButton:hover {
         self.notes_btn.setSizePolicy(sizePolicy)
         self.notes_btn.setMinimumSize(QtCore.QSize(93, 14))
         self.notes_btn.setStyleSheet(style_aside_btn)
-        notes_icon = QtGui.QIcon()
-        notes_icon.addPixmap(QtGui.QPixmap("resources/note-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        notes_icon = self.get_icon("note-icon.png")
         self.notes_btn.setIcon(notes_icon)
         self.notes_btn.setIconSize(QtCore.QSize(18, 18))
         self.notes_btn.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
@@ -116,8 +112,7 @@ QToolButton:hover {
         self.calendar_btn.setSizePolicy(sizePolicy)
         self.calendar_btn.setMinimumSize(QtCore.QSize(93, 14))
         self.calendar_btn.setStyleSheet(style_aside_btn)
-        calendar_icon = QtGui.QIcon()
-        calendar_icon.addPixmap(QtGui.QPixmap("resources/calendar-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        calendar_icon = self.get_icon("calendar-icon.png")
         self.calendar_btn.setIcon(calendar_icon)
         self.calendar_btn.setIconSize(QtCore.QSize(18, 18))
         self.calendar_btn.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
@@ -133,8 +128,7 @@ QToolButton:hover {
         self.settings_btn.setSizePolicy(sizePolicy)
         self.settings_btn.setMinimumSize(QtCore.QSize(93, 14))
         self.settings_btn.setStyleSheet(style_aside_btn)
-        settings_icon = QtGui.QIcon()
-        settings_icon.addPixmap(QtGui.QPixmap("resources/settings-icons.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        settings_icon = self.get_icon("settings-icons.png")
         self.settings_btn.setIcon(settings_icon)
         self.settings_btn.setIconSize(QtCore.QSize(20, 20))
         self.settings_btn.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonTextUnderIcon)
@@ -230,8 +224,7 @@ color: #D4D4D4;""")
 QPushButton:hover {
     background-color: #7349e5;
 }""")
-        start_icon = QtGui.QIcon()
-        start_icon.addPixmap(QtGui.QPixmap("resources/start-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        start_icon = self.get_icon("start-icon.png")
         self.stopwatch_start_stop_btn.setIcon(start_icon)
         self.stopwatch_start_stop_btn.setIconSize(QtCore.QSize(15, 15))
         self.stopwatch_start_stop_btn.setShortcut("")
@@ -259,8 +252,7 @@ QPushButton:hover {
 QPushButton:hover {
     background-color: #3e3e42;
 }""")
-        reset_icon = QtGui.QIcon()
-        reset_icon.addPixmap(QtGui.QPixmap("resources/reset-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        reset_icon = self.get_icon("reset-icon.png")
         self.stopwatch_reset_btn.setIcon(reset_icon)
         self.stopwatch_reset_btn.setIconSize(QtCore.QSize(12, 12))
         self.stopwatch_reset_btn.setObjectName("stopwatch_reset_btn")
@@ -287,8 +279,7 @@ QPushButton:hover {
 QPushButton:hover {
     background-color: #38936c;
 }""")
-        save_icon = QtGui.QIcon()
-        save_icon.addPixmap(QtGui.QPixmap("resources/save-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        save_icon = self.get_icon("save-icon.png")
         self.stopwatch_save_btn.setIcon(save_icon)
         self.stopwatch_save_btn.setIconSize(QtCore.QSize(19, 19))
         self.stopwatch_save_btn.setObjectName("stopwatch_save_btn")
@@ -393,12 +384,6 @@ QCalendarWidget QToolButton#qt_calendar_nextmonth {
         background-color: transparent;
         border-radius: 4px;
 }
-QCalendarWidget QToolButton#qt_calendar_prevmonth {
-    qproperty-icon: url("resources/left-arrow-icon.png");
-}
-QCalendarWidget QToolButton#qt_calendar_nextmonth {
-    qproperty-icon: url("resources/right-arrow-icon.png");
-}
 QCalendarWidget QAbstractItemView {
     background-color: #252525;
     selection-background-color: #1a1a1a;
@@ -428,7 +413,13 @@ QCalendarWidget QWidget {
 }
 QCalendarWidget QAbstractItemView:disabled {
     color: transparent;
-}""")
+}
+QCalendarWidget QToolButton#qt_calendar_prevmonth {""" +
+f"    qproperty-icon: url('{self.icon_path["left-arrow-icon.png"].replace('\\', '/')}');" +
+"""}
+QCalendarWidget QToolButton#qt_calendar_nextmonth {""" +
+f"    qproperty-icon: url('{self.icon_path["right-arrow-icon.png"].replace('\\', '/')}');" +
+"}")
         self.calendarwidget.setLocale(QtCore.QLocale(QtCore.QLocale.Language.English, QtCore.QLocale.Country.Germany))
         self.calendarwidget.setObjectName("calendarwidget")
         self.verticalLayout_2.addWidget(self.calendarwidget)
@@ -505,8 +496,7 @@ QPushButton:hover {
     border: 1px solid #52525a;
 }
 """)
-        loadbackup_icon = QtGui.QIcon()
-        loadbackup_icon.addPixmap(QtGui.QPixmap("resources/export-icons.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        loadbackup_icon = self.get_icon("export-icons.png")
         self.loadbackup_btn.setIcon(loadbackup_icon)
         self.loadbackup_btn.setIconSize(QtCore.QSize(14, 14))
         self.loadbackup_btn.setObjectName("loadbackup_btn")
@@ -524,8 +514,7 @@ QPushButton:hover {
 QPushButton:hover {
     background-color: #38936c;
 }""")
-        savebackup_icon = QtGui.QIcon()
-        savebackup_icon.addPixmap(QtGui.QPixmap("resources/import-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        savebackup_icon = self.get_icon("import-icon.png")
         self.savebackup_btn.setIcon(savebackup_icon)
         self.savebackup_btn.setIconSize(QtCore.QSize(15, 15))
         self.savebackup_btn.setObjectName("savebackup_btn")
@@ -649,8 +638,7 @@ color: #DC2626;""")
 QPushButton:hover {
     background-color: #af3025;
 }""")
-        deleteall_icon = QtGui.QIcon()
-        deleteall_icon.addPixmap(QtGui.QPixmap("resources/delete-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        deleteall_icon = self.get_icon("delete-icon.png")
         self.dangerzone_deleteall_btn.setIcon(deleteall_icon)
         self.dangerzone_deleteall_btn.setIconSize(QtCore.QSize(14, 14))
         self.dangerzone_deleteall_btn.setObjectName("dangerzone_deleteall_btn")
