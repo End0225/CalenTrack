@@ -1,8 +1,19 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 import sys
+import os
+import shutil
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
+        if getattr(sys, "frozen", False):
+            app_dir = os.path.join(os.getenv("APPDATA"), "CalenTrack")
+            base_path = sys._MEIPASS
+        else:
+            app_dir = os.path.dirname(__file__)
+            base_path = app_dir
+        self.copy_all_resources(base_path, app_dir)
+
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(615, 670)
         MainWindow.setMinimumSize(QtCore.QSize(480, 580))
@@ -881,6 +892,18 @@ border-radius: 15%;""")
 
     def show_page(self, page):
         self.main_stackedwidget.setCurrentWidget(page)
+
+    def copy_all_resources(self, src_dir, dst_dir):
+        resources_dir = os.path.join(src_dir, "resources/icons")
+        if os.path.exists(resources_dir):
+            dst_resources = os.path.join(dst_dir, "resources/icons")
+            os.makedirs(os.path.dirname(dst_resources), exist_ok=True)
+            if not os.path.exists(dst_resources):
+                shutil.copytree(resources_dir, dst_resources)
+            self.icon_path = {}
+            for file in os.listdir(dst_resources):
+                file_path = os.path.join(dst_resources, file)
+                self.icon_path[file] = file_path
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
