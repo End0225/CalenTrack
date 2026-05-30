@@ -530,7 +530,7 @@ QPushButton:hover {
                     </property>
                     <property name="icon">
                      <iconset>
-                      <normaloff>pause-icon.png</normaloff>pause-icon.png</iconset>
+                      <normaloff>start-icon.png</normaloff>start-icon.png</iconset>
                     </property>
                     <property name="iconSize">
                      <size>

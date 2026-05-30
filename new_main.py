@@ -219,9 +219,9 @@ color: #D4D4D4;""")
 QPushButton:hover {
     background-color: #7349e5;
 }""")
-        pause_icon = QtGui.QIcon()
-        pause_icon.addPixmap(QtGui.QPixmap("resources/pause-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
-        self.stopwatch_start_stop_btn.setIcon(pause_icon)
+        start_icon = QtGui.QIcon()
+        start_icon.addPixmap(QtGui.QPixmap("resources/start-icon.png"), QtGui.QIcon.Mode.Normal, QtGui.QIcon.State.Off)
+        self.stopwatch_start_stop_btn.setIcon(start_icon)
         self.stopwatch_start_stop_btn.setIconSize(QtCore.QSize(15, 15))
         self.stopwatch_start_stop_btn.setShortcut("")
         self.stopwatch_start_stop_btn.setCheckable(False)
