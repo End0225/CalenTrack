@@ -868,26 +868,18 @@ border-radius: 15%;""")
         self.history_clear_btn.setText(_translate("MainWindow", "Clear"))
 
     def add_functions(self):
-        self.stopwatch_btn.clicked.connect(self.show_stopwatch_page)
-        self.history_btn.clicked.connect(self.show_history_page)
-        self.notes_btn.clicked.connect(self.show_notes_page)
-        self.calendar_btn.clicked.connect(self.show_calendar_page)
-        self.settings_btn.clicked.connect(self.show_settings_page)
+        self.page_mapping = {
+            self.stopwatch_btn: self.stopwatch_page,
+            self.history_btn: self.history_page,
+            self.notes_btn: self.notes_page,
+            self.calendar_btn: self.calendar_page,
+            self.settings_btn: self.settings_page
+        }
+        for btn, page in self.page_mapping.items():
+            btn.clicked.connect(lambda checked, p=page: self.show_page(p))
 
-    def show_stopwatch_page(self):
-        self.main_stackedwidget.setCurrentWidget(self.stopwatch_page)
-
-    def show_history_page(self):
-        self.main_stackedwidget.setCurrentWidget(self.history_page)
-
-    def show_notes_page(self):
-        self.main_stackedwidget.setCurrentWidget(self.notes_page)
-
-    def show_calendar_page(self):
-        self.main_stackedwidget.setCurrentWidget(self.calendar_page)
-
-    def show_settings_page(self):
-        self.main_stackedwidget.setCurrentWidget(self.settings_page)
+    def show_page(self, page):
+        self.main_stackedwidget.setCurrentWidget(page)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
