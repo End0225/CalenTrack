@@ -832,6 +832,7 @@ border-radius: 15%;""")
         self.retranslateUi(MainWindow)
         self.main_stackedwidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.main_stackedwidget.setCurrentWidget(self.stopwatch_page)
         self.add_functions()
 
     def retranslateUi(self, MainWindow):
