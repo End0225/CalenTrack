@@ -526,7 +526,7 @@ QPushButton:hover {
 </string>
                     </property>
                     <property name="text">
-                     <string notr="true">Stop</string>
+                     <string notr="true">Start</string>
                     </property>
                     <property name="icon">
                      <iconset>
