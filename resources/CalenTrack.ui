@@ -487,7 +487,7 @@ color: #D4D4D4;</string>
                    </widget>
                   </item>
                   <item row="1" column="0">
-                   <widget class="QPushButton" name="stopwatch_stop_btn">
+                   <widget class="QPushButton" name="stopwatch_start_stop_btn">
                     <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                       <horstretch>0</horstretch>
