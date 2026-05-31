@@ -7,12 +7,10 @@ import shutil
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if getattr(sys, "frozen", False):
-            app_dir = os.path.join(os.getenv("APPDATA"), "CalenTrack")
-            base_path = sys._MEIPASS
+            base_path = os.path.join(sys._MEIPASS, "resources", "icons")
         else:
-            app_dir = os.path.dirname(__file__)
-            base_path = app_dir
-        self.copy_all_resources(base_path, app_dir)
+            base_path = os.path.join(os.path.dirname(__file__), "resources", "icons")
+        self.copy_all_resources(base_path)
 
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(615, 670)
@@ -881,17 +879,11 @@ border-radius: 15%;""")
     def show_page(self, page):
         self.main_stackedwidget.setCurrentWidget(page)
 
-    def copy_all_resources(self, src_dir, dst_dir):
-        resources_dir = os.path.join(src_dir, "resources/icons")
-        if os.path.exists(resources_dir):
-            dst_resources = os.path.join(dst_dir, "resources/icons")
-            os.makedirs(os.path.dirname(dst_resources), exist_ok=True)
-            if not os.path.exists(dst_resources):
-                shutil.copytree(resources_dir, dst_resources)
-            self.icon_path = {}
-            for file in os.listdir(dst_resources):
-                file_path = os.path.join(dst_resources, file)
-                self.icon_path[file] = file_path
+    def copy_all_resources(self, base_path):
+        self.icon_path = {}
+        if os.path.exists(base_path):
+            for file in os.listdir(base_path):
+                self.icon_path[file] = os.path.join(base_path, file)
 
     def get_icon(self, icon_name, mode=QtGui.QIcon.Mode.Normal, state=QtGui.QIcon.State.Off):
         if hasattr(self, "icon_path"):
