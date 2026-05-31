@@ -17,7 +17,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(615, 670)
         MainWindow.setMinimumSize(QtCore.QSize(480, 580))
-        logo_icon = self.get_icon("app-logo.png")
+        logo_icon = self.get_icon("app-logo.ico")
         MainWindow.setWindowIcon(logo_icon)
         MainWindow.setToolButtonStyle(QtCore.Qt.ToolButtonStyle.ToolButtonIconOnly)
         self.centralwidget = QtWidgets.QWidget(parent=MainWindow)
