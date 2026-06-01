@@ -212,6 +212,7 @@ QToolButton:hover {
         self.stopwatch_time_label.setFont(font)
         self.stopwatch_time_label.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
         self.stopwatch_time_label.setStyleSheet("""border: none;
+font-family: 'Consolas', 'Courier New', monospace;
 font-size: 32px;
 font-weight: 600;
 color: #D4D4D4;""")
