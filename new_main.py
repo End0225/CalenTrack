@@ -845,6 +845,11 @@ border-radius: 15%;""")
 
         self.retranslateUi(MainWindow)
         self.main_stackedwidget.setCurrentWidget(self.stopwatch_page)
+        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.time = QTime(0, 0, 0, 0)
+        self.timer = QTimer()
+        self.date_edit = QDateEdit()
+        self.load_stopwatch_notes()
         self.add_functions()
 
     def retranslateUi(self, MainWindow):
@@ -891,6 +896,137 @@ border-radius: 15%;""")
         }
         for btn, page in self.page_mapping.items():
             btn.clicked.connect(lambda checked, p=page: self.show_page(p))
+        self.stopwatch_start_stop_btn.clicked.connect(self.start_stop_stopwatch)
+        self.stopwatch_reset_btn.clicked.connect(self.reset_stopwatch)
+        self.stopwatch_save_btn.clicked.connect(self.add_to_history_stopwatch)
+        self.timer.timeout.connect(self.update_time)
+
+    def load_stopwatch_notes(self):
+        """Stopwatch method"""
+        self.history_listwidget.clear()
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, note FROM stopwatch_history ORDER BY id")
+            rows = cursor.fetchall()
+            for row_id, note_text in rows:
+                item = QListWidgetItem()
+                item.setData(QtCore.Qt.ItemDataRole.UserRole, row_id)
+                self.history_listwidget.addItem(item)
+                widget = QtWidgets.QWidget()
+                layout = QtWidgets.QHBoxLayout()
+                layout.setContentsMargins(2, 1, 8, 1)
+                label = QtWidgets.QLabel(note_text)
+                layout.addWidget(label)
+                set_new_stopwatch_btn = QtWidgets.QPushButton("Establish")
+                set_new_stopwatch_btn.setStyleSheet("background-color: #A7FC00;")
+                set_new_stopwatch_btn.setFixedSize(70, 15)
+                del_button = QtWidgets.QPushButton("Delete")
+                del_button.setStyleSheet("background-color: rgb(248,23,62);")
+                del_button.setFixedSize(70, 15)
+                layout.addWidget(set_new_stopwatch_btn)
+                layout.addWidget(del_button)
+                widget.setLayout(layout)
+                self.history_listwidget.setItemWidget(item, widget)
+                del_button.clicked.connect(lambda _, it=item: self.del_history(it))
+                with sqlite3.connect(self.path_to_db) as conn:
+                    cursor = conn.cursor()
+                    cursor.execute("SELECT time_note FROM stopwatch_history WHERE id = ?", (row_id,))
+                    note_time = cursor.fetchone()
+                set_new_stopwatch_btn.clicked.connect(lambda _, nt=note_time[0]: self.set_new_time_stopwatch(nt))
+
+    def del_history(self, item):
+        """Stopwatch method"""
+        if item is not None:
+            note_id = item.data(QtCore.Qt.ItemDataRole.UserRole)
+            row = self.dates_listwidget.row(item)
+            self.dates_listwidget.takeItem(row)
+            with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM stopwatch_history WHERE id = ?", (note_id,))
+                conn.commit()
+
+    def set_new_time_stopwatch(self, stopwatch_text: str):
+        """Stopwatch method"""
+        hh, mm, ss, = stopwatch_text.split(":")
+        ss, ms = ss.split(", ")
+        self.stopwatch_start_stop_btn.setText("Start")
+        self.timer.stop()
+        self.time = QTime(int(hh), int(mm), int(ss), int(ms) * 10)
+        self.stopwatch_time_label.setText(stopwatch_text)
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT objectValue FROM user_settings WHERE objectName = 'parameter_1_chechbox'")
+            row = cursor.fetchall()
+        if row[0][0] == 1:
+            self.main_stackedwidget.setCurrentWidget(self.stopwatch_page)
+
+    def start_stop_stopwatch(self):
+        """Stopwatch method"""
+        if self.stopwatch_start_stop_btn.text() == "Start":
+            self.timer.start(10)
+            self.stopwatch_start_stop_btn.setText("Stop")
+        else:
+            self.timer.stop()
+            self.stopwatch_start_stop_btn.setText("Start")
+
+    def reset_stopwatch(self):
+        """Stopwatch method"""
+        self.stopwatch_start_stop_btn.setText("Start")
+        self.timer.stop()
+        self.time = QTime(0, 0, 0, 0)
+        self.stopwatch_time_label.setText(self.format_time(self.time))
+
+    def add_to_history_stopwatch(self):
+        """Stopwatch method"""
+        item = QListWidgetItem()
+        self.history_listwidget.addItem(item)
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QHBoxLayout()
+        layout.setContentsMargins(2, 1, 8, 1)
+        data = self.date_edit.date().currentDate().toString("dd-MM-yyyy")
+        note_time = self.stopwatch_time_label.text()
+        note_text = f"{data}  {QTime.currentTime().toString('hh:mm')} | {note_time}"
+        label = QtWidgets.QLabel(note_text)
+        layout.addWidget(label)
+        set_new_stopwatch_btn = QtWidgets.QPushButton("Establish")
+        set_new_stopwatch_btn.setStyleSheet("background-color: #A7FC00;")
+        set_new_stopwatch_btn.setFixedSize(70, 15)
+        del_button = QtWidgets.QPushButton("Delete")
+        del_button.setStyleSheet("background-color: rgb(248,23,62);")
+        del_button.setFixedSize(70, 15)
+        layout.addWidget(set_new_stopwatch_btn)
+        layout.addWidget(del_button)
+        widget.setLayout(layout)
+        self.history_listwidget.setItemWidget(item, widget)
+        note_id = self.add_stopwatch_note_to_db(note_text, note_time)
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
+        del_button.clicked.connect(lambda: self.del_history(item))
+        set_new_stopwatch_btn.clicked.connect(lambda: self.set_new_time_stopwatch(note_time))
+
+    def add_stopwatch_note_to_db(self, note, time_note):
+        """Stopwatch method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO stopwatch_history (note, time_note) VALUES (?, ?)", (note, time_note))
+            conn.commit()
+            return cursor.lastrowid
+
+    def del_all_stopwatch_history(self):
+        """Stopwatch method"""
+        self.history_listwidget.clear()
+        with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM stopwatch_history")
+                conn.commit()
+
+    def update_time(self):
+        """Stopwatch method"""
+        self.time = self.time.addMSecs(10)
+        self.stopwatch_time_label.setText(self.format_time(self.time))
+
+    def format_time(self, time):
+        """Stopwatch method"""        
+        return f"{time.hour():02}:{time.minute():02}:{time.second():02}, {(time.msec() // 10):02d}"
 
     def show_page(self, page):
         self.main_stackedwidget.setCurrentWidget(page)
