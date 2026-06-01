@@ -1,15 +1,33 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtCore import QTime, QTimer, QDate
+from PyQt6.QtWidgets import QDateEdit, QListWidgetItem
+from PyQt6.QtWidgets import QMessageBox
+import sqlite3
+import shutil
 import sys
 import os
-import shutil
 
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if getattr(sys, "frozen", False):
             base_path = os.path.join(sys._MEIPASS, "resources", "icons")
+            self.path_to_db = os.path.join(sys._MEIPASS, "app_db.db")
+            try:
+                path_for_db = sys._MEIPASS
+            except Exception:
+                path_for_db = os.path.abspath(".")
+            if not os.path.exists(self.path_to_db):
+                src_db = os.path.join(path_for_db, "app_db.db")
+                if os.path.exists(src_db):
+                    shutil.copyfile(src_db, self.path_to_db)
+                else:
+                    self.create_tables()
         else:
             base_path = os.path.join(os.path.dirname(__file__), "resources", "icons")
+            self.path_to_db = os.path.join(os.path.dirname(__file__), "app_db.db")
+        if not os.path.exists(self.path_to_db) or not self.check_database_integrity():
+            self.create_tables()
         self.copy_all_resources(base_path)
 
         MainWindow.setObjectName("MainWindow")
@@ -826,8 +844,6 @@ border-radius: 15%;""")
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.main_stackedwidget.setCurrentIndex(1)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
         self.main_stackedwidget.setCurrentWidget(self.stopwatch_page)
         self.add_functions()
 
@@ -891,6 +907,55 @@ border-radius: 15%;""")
                 icon = QtGui.QIcon()
                 icon.addPixmap(QtGui.QPixmap(self.icon_path[icon_name]), mode, state)
                 return icon
+
+    def create_tables(self):
+        """Database Method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.executescript("""CREATE TABLE IF NOT EXISTS stopwatch_history
+                            (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            note TEXT NOT NULL,
+                            time_note TEXT NOT NULL
+                            );
+                            CREATE TABLE IF NOT EXISTS notes
+                            (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            title TEXT NOT NULL,
+                            text TEXT NOT NULL
+                            );
+                            CREATE TABLE IF NOT EXISTS calendar
+                            (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            date TEXT NOT NULL,
+                            stopwatch_note TEXT,
+                            note_title TEXT,
+                            note_text TEXT,
+                            date_color TEXT
+                            );
+                            CREATE TABLE IF NOT EXISTS user_settings
+                            (
+                            objectName TEXT NOT NULL UNIQUE,
+                            objectValue BOOL NOT NULL
+                            );""")
+
+    def check_database_integrity(self):
+        """Database Method"""
+        if not os.path.exists(self.path_to_db):
+            return False
+        try:
+            with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+                tables = cursor.fetchall()
+                print(f"Database valid, tables found: {len(tables)}")
+                return True
+        except sqlite3.DatabaseError as e:
+            print(f"Database corrupted: {e}")
+            return False
+        except Exception as e:
+            print(f"Error checking database: {e}")
+            return False
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
