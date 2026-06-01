@@ -939,8 +939,8 @@ border-radius: 15%;""")
         """Stopwatch method"""
         if item is not None:
             note_id = item.data(QtCore.Qt.ItemDataRole.UserRole)
-            row = self.dates_listwidget.row(item)
-            self.dates_listwidget.takeItem(row)
+            row = self.history_listwidget.row(item)
+            self.history_listwidget.takeItem(row)
             with sqlite3.connect(self.path_to_db) as conn:
                 cursor = conn.cursor()
                 cursor.execute("DELETE FROM stopwatch_history WHERE id = ?", (note_id,))
