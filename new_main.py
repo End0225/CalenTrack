@@ -901,6 +901,7 @@ border-radius: 15%;""")
         self.stopwatch_reset_btn.clicked.connect(self.reset_stopwatch)
         self.stopwatch_save_btn.clicked.connect(self.add_to_history_stopwatch)
         self.timer.timeout.connect(self.update_time)
+        self.history_clear_btn.clicked.connect(self.del_all_stopwatch_history)
 
     def load_stopwatch_notes(self):
         """Stopwatch method"""
