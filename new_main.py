@@ -11,25 +11,30 @@ import os
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if getattr(sys, "frozen", False):
-            base_path = os.path.join(sys._MEIPASS, "resources", "icons")
-            self.path_to_db = os.path.join(sys._MEIPASS, "app_db.db")
-            try:
-                path_for_db = sys._MEIPASS
-            except Exception:
-                path_for_db = os.path.abspath(".")
+            app_dir = os.path.join(os.getenv("APPDATA"), "CalenTrack")
+            os.makedirs(app_dir, exist_ok=True)
+            self.path_to_db = os.path.join(app_dir, "app_db.db")
+            self.path_to_icons = os.path.join(app_dir, "resources", "icons")
+            os.makedirs(self.path_to_icons, exist_ok=True)
+            src_icons_dir = os.path.join(sys._MEIPASS, "resources", "icons")
+            if os.path.exists(src_icons_dir):
+                for file in os.listdir(src_icons_dir):
+                    src = os.path.join(src_icons_dir, file)
+                    dst = os.path.join(self.path_to_icons, file)
+                    if not os.path.exists(dst):
+                        shutil.copyfile(src, dst)
+            src_db = os.path.join(sys._MEIPASS, "app_db.db")
             if not os.path.exists(self.path_to_db):
-                src_db = os.path.join(path_for_db, "app_db.db")
                 if os.path.exists(src_db):
                     shutil.copyfile(src_db, self.path_to_db)
                 else:
                     self.create_tables()
         else:
-            base_path = os.path.join(os.path.dirname(__file__), "resources", "icons")
             self.path_to_db = os.path.join(os.path.dirname(__file__), "app_db.db")
+            self.path_to_icons = os.path.join(os.path.dirname(__file__), "resources", "icons")
         if not os.path.exists(self.path_to_db) or not self.check_database_integrity():
             self.create_tables()
-        self.copy_all_resources(base_path)
-
+        self.copy_all_resources(self.path_to_icons)
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(615, 670)
         MainWindow.setMinimumSize(QtCore.QSize(480, 580))
