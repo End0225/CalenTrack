@@ -851,6 +851,7 @@ border-radius: 15%;""")
         self.timer = QTimer()
         self.date_edit = QDateEdit()
         self.load_stopwatch_notes()
+        self.load_notes_history()
         self.add_functions()
 
     def retranslateUi(self, MainWindow):
@@ -902,6 +903,9 @@ border-radius: 15%;""")
         self.stopwatch_save_btn.clicked.connect(self.add_to_history_stopwatch)
         self.timer.timeout.connect(self.update_time)
         self.history_clear_btn.clicked.connect(self.del_all_stopwatch_history)
+        self.notes_deleteall_btn.clicked.connect(self.del_all_notes_history)
+        self.editor_save_btn.clicked.connect(self.save_note)
+        self.editor_clear_btn.clicked.connect(self.del_note)
 
     def load_stopwatch_notes(self):
         """Stopwatch method"""
@@ -1029,6 +1033,143 @@ border-radius: 15%;""")
     def format_time(self, time):
         """Stopwatch method"""        
         return f"{time.hour():02}:{time.minute():02}:{time.second():02}, {(time.msec() // 10):02d}"
+
+    def load_notes_history(self):
+        """Notes method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, title FROM notes ORDER BY id")
+            rows = cursor.fetchall()
+            for id, note_title in rows:
+                item = QListWidgetItem()
+                item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
+                self.notes_listwidget.addItem(item)
+                widget = QtWidgets.QWidget()
+                layout = QtWidgets.QHBoxLayout()
+                layout.setContentsMargins(2, 1, 2, 1)
+                label = QtWidgets.QLabel(note_title)
+                layout.addWidget(label)
+                reduct_btn = QtWidgets.QPushButton("Edit")
+                reduct_btn.setStyleSheet("background-color: #FF7F50;")
+                reduct_btn.setFixedSize(83, 15)
+                del_button = QtWidgets.QPushButton("Delete")
+                del_button.setStyleSheet("background-color: rgb(248,23,62);")
+                del_button.setFixedSize(60, 15)
+                layout.addWidget(reduct_btn)
+                layout.addWidget(del_button)
+                widget.setLayout(layout)
+                self.notes_listwidget.setItemWidget(item, widget)                
+                del_button.clicked.connect(lambda _, it=item: self.del_note_history(it))
+                reduct_btn.clicked.connect(lambda _, it=item: self.reduct_note(it.data(QtCore.Qt.ItemDataRole.UserRole)))
+
+    def del_note_history(self, item):
+        """Notes method"""
+        if item is not None:
+            note_id = item.data(QtCore.Qt.ItemDataRole.UserRole)
+            row = self.notes_listwidget.row(item)
+            self.notes_listwidget.takeItem(row)
+            with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM notes WHERE id = ?", (note_id,))
+                conn.commit()
+
+    def reduct_note(self, item):
+        """Notes method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT title, text FROM notes WHERE id = ?", (item,))
+            rows = cursor.fetchall()
+        self.editor_lineedit.setText(rows[0][0])
+        self.editor_plaintextedit.setPlainText(rows[0][1])
+
+    def del_all_notes_history(self):
+        """Notes method"""
+        self.notes_listwidget.clear()
+        with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM notes")
+                conn.commit()
+
+    def save_note(self):
+        """Notes method"""
+        if self.editor_lineedit.text() == "":
+            self.message_error_none_title()
+        else:
+            self.add_to_history_notes(title=self.editor_lineedit.text())
+
+    def message_error_none_title(self):
+        """Notes method"""
+        new_window = QMessageBox()
+        new_window.setGeometry(950, 650, 400, 290)
+        new_window.setWindowTitle("Ошибка")
+        new_window.setText("Ошибка!\nПустой заголовок")
+        new_window.setIcon(QMessageBox.Icon.Warning)
+        new_window.setStandardButtons(QMessageBox.StandardButton.Ok)
+        new_window.exec()
+
+    def add_to_history_notes(self, title):
+        """Notes method"""
+        if len(title) >= 10:
+            self.message_error_len_title()
+            return None
+        item = QListWidgetItem()
+        self.notes_listwidget.addItem(item)
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QHBoxLayout()
+        layout.setContentsMargins(2, 1, 2, 1)
+        label = QtWidgets.QLabel(title)
+        layout.addWidget(label)
+        reduct_btn = QtWidgets.QPushButton("Edit")
+        reduct_btn.setStyleSheet("background-color: #FF7F50;")
+        reduct_btn.setFixedSize(83, 15)
+        del_button = QtWidgets.QPushButton("Delete")
+        del_button.setStyleSheet("background-color: rgb(248,23,62);")
+        del_button.setFixedSize(60, 15)
+        layout.addWidget(reduct_btn)
+        layout.addWidget(del_button)
+        widget.setLayout(layout)
+        self.notes_listwidget.setItemWidget(item, widget)
+        row = self.notes_listwidget.row(item)
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT title FROM notes WHERE title = ?", (title,))
+            rows = cursor.fetchall()
+        if rows and rows[0][0] == title:
+            self.notes_listwidget.takeItem(row)
+        note_id = self.add_notes_note_to_db(self.editor_plaintextedit.toPlainText(), self.editor_lineedit.text())
+        self.editor_lineedit.clear()
+        self.editor_plaintextedit.clear()
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
+        reduct_btn.clicked.connect(lambda: self.reduct_note(item.data(QtCore.Qt.ItemDataRole.UserRole)))
+        del_button.clicked.connect(lambda: self.del_note_history(item))
+
+    def add_notes_note_to_db(self, text, title):
+        """Notes method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT title FROM notes WHERE title = ?", (title,)) 
+            try:
+                if cursor.fetchall()[0][0] == title:
+                    cursor.execute("UPDATE notes SET text = ? WHERE title = ?", (text, title))
+            except:
+                cursor.execute("INSERT INTO notes (title, text) VALUES (?, ?)", (title, text))
+            conn.commit()
+            return cursor.lastrowid
+
+    def del_note(self):
+        """Notes method"""
+        self.editor_lineedit.clear()
+        self.editor_plaintextedit.clear()
+
+    def message_error_len_title(self):
+        """Notes method"""
+        new_window = QMessageBox()
+        new_window.setGeometry(950, 650, 400, 290)
+        new_window.setWindowTitle("Ошибка")
+        new_window.setText("Ошибка!\nМаксимальная длина заголовка\n10 символов")
+        new_window.setIcon(QMessageBox.Icon.Warning)
+        new_window.setStandardButtons(QMessageBox.StandardButton.Ok)
+        new_window.exec()
 
     def show_page(self, page):
         self.main_stackedwidget.setCurrentWidget(page)
