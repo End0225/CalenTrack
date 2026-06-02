@@ -852,6 +852,7 @@ border-radius: 15%;""")
         self.date_edit = QDateEdit()
         self.load_stopwatch_notes()
         self.load_notes_history()
+        self.load_calendar_history()
         self.add_functions()
 
     def retranslateUi(self, MainWindow):
@@ -906,6 +907,8 @@ border-radius: 15%;""")
         self.notes_deleteall_btn.clicked.connect(self.del_all_notes_history)
         self.editor_save_btn.clicked.connect(self.save_note)
         self.editor_clear_btn.clicked.connect(self.del_note)
+        self.calendarwidget.clicked.connect(self.calendar_dialog)
+        self.dates_deleteall_btn.clicked.connect(self.del_all_calendar_history)
 
     def load_stopwatch_notes(self):
         """Stopwatch method"""
@@ -1170,6 +1173,198 @@ border-radius: 15%;""")
         new_window.setIcon(QMessageBox.Icon.Warning)
         new_window.setStandardButtons(QMessageBox.StandardButton.Ok)
         new_window.exec()
+
+    def load_calendar_history(self):
+        """Calendar Method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, date, date_color FROM calendar ORDER BY id")
+            rows = cursor.fetchall()
+            for id, date, date_color in rows:
+                format = QtGui.QTextCharFormat()
+                format.setBackground(QtGui.QColor(date_color))
+                self.calendarwidget.setDateTextFormat(QDate.fromString(date, "dd-MM-yyyy"), format)
+                item = QListWidgetItem()
+                self.dates_listwidget.addItem(item)
+                widget = QtWidgets.QWidget()
+                layout = QtWidgets.QHBoxLayout()
+                layout.setContentsMargins(2, 1, 2, 1)
+                label = QtWidgets.QLabel(date)
+                layout.addWidget(label)
+                reduct_btn = QtWidgets.QPushButton("View")
+                reduct_btn.setStyleSheet("background-color: #A7FC00;")
+                reduct_btn.setFixedSize(83, 15)
+                del_button = QtWidgets.QPushButton("Delete")
+                del_button.setStyleSheet("background-color: rgb(248,23,62);")
+                del_button.setFixedSize(60, 15)
+                layout.addWidget(reduct_btn)
+                layout.addWidget(del_button)
+                widget.setLayout(layout)
+                item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
+                self.dates_listwidget.setItemWidget(item, widget)                
+                reduct_btn.clicked.connect(lambda _, it=item:  self.view_calendar_data_date(it.data(QtCore.Qt.ItemDataRole.UserRole)))
+                del_button.clicked.connect(lambda _, it=item:  self.del_calendar_history(it))
+
+    def view_calendar_data_date(self, id):
+        """Calendar Method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT date, stopwatch_note, note_title, note_text FROM calendar WHERE id = ?", (id,))
+            rows = cursor.fetchall()
+        date, stopwatch_note, note_title, note_text = rows[0]
+        self.dialog_window_datas = QtWidgets.QDialog()
+        self.dialog_window_datas.setWindowTitle(date)
+        self.dialog_window_datas.setFixedSize(400, 300)
+        time_label = QtWidgets.QLineEdit(stopwatch_note, parent=self.dialog_window_datas)
+        time_label.setGeometry(QtCore.QRect(10, 6, 190, 25))
+        time_label.setReadOnly(True)
+        note_title_label = QtWidgets.QLineEdit(note_title, parent=self.dialog_window_datas)
+        note_title_label.setGeometry(QtCore.QRect(210, 6, 180, 25))
+        note_title_label.setReadOnly(True)
+        note_label = QtWidgets.QTextEdit(note_text,  parent=self.dialog_window_datas)
+        note_label.setGeometry(QtCore.QRect(10, 38, 380, 198))
+        note_label.setReadOnly(True)
+        btn_close = QtWidgets.QPushButton("Закрыть", parent=self.dialog_window_datas)
+        btn_close.setGeometry(QtCore.QRect(10, 245, 80, 45))
+        btn_close.clicked.connect(lambda _: self.dialog_window_datas.close())
+        self.dialog_window_datas.show()
+
+    def del_calendar_history(self, item):
+        """Calendar Method"""
+        if item is not None:
+            note_id = item.data(QtCore.Qt.ItemDataRole.UserRole)
+            row = self.dates_listwidget.row(item)
+            self.dates_listwidget.takeItem(row)
+            with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("SELECT date FROM calendar WHERE id = ?", (note_id,))
+                row = cursor.fetchone()[0]
+                text_format = QtGui.QTextCharFormat()
+                text_format.setBackground(QtGui.QColor("#252525"))
+                date = QDate.fromString(row, "dd-MM-yyyy")
+                self.calendarwidget.setDateTextFormat(date, text_format)
+                cursor.execute("DELETE FROM calendar WHERE id = ?", (note_id,))
+                conn.commit()
+
+    def calendar_dialog(self):
+        """Calendar Method"""
+        self.dialog_window_choose_datas = QtWidgets.QDialog()
+        self.dialog_window_choose_datas.setWindowTitle("Select data")
+        self.dialog_window_choose_datas.setFixedSize(400, 300)
+        time_label = QtWidgets.QLabel("Select time:", parent=self.dialog_window_choose_datas)
+        time_label.setGeometry(QtCore.QRect(10, 6, 280, 40))
+        self.time_combo = QtWidgets.QComboBox(parent=self.dialog_window_choose_datas)
+        self.time_combo.setGeometry(QtCore.QRect(110, 13, 280, 30))
+        note_label = QtWidgets.QLabel("Select note:", parent=self.dialog_window_choose_datas)
+        note_label.setGeometry(QtCore.QRect(10, 56, 280, 40))
+        self.note_combo = QtWidgets.QComboBox(parent=self.dialog_window_choose_datas)
+        self.note_combo.setGeometry(QtCore.QRect(120, 63, 270, 30))
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT note FROM stopwatch_history")
+            stopwatch_times = cursor.fetchall()
+            cursor.execute("SELECT title FROM notes")
+            notes_title = cursor.fetchall()
+        self.time_combo.addItems(["None"])
+        self.note_combo.addItems(["None"])
+        try:
+            for i in stopwatch_times:
+                self.time_combo.addItems([i[0]])
+            for i in notes_title:
+                self.note_combo.addItems([i][0])
+        except:  pass
+        note_label = QtWidgets.QPushButton("Select date color:", parent=self.dialog_window_choose_datas)
+        note_label.setGeometry(QtCore.QRect(10, 106, 220, 40))
+        note_label.clicked.connect(self.color_dialog)
+        my_color_info = QtWidgets.QLabel("Date color:", parent=self.dialog_window_choose_datas)
+        my_color_info.setGeometry(QtCore.QRect(240, 109, 60, 30))
+        self.my_color = QtWidgets.QLabel(f"#ffffff", parent=self.dialog_window_choose_datas)
+        self.my_color.setGeometry(QtCore.QRect(305, 109, 60, 30))
+        self.btn_apply = QtWidgets.QPushButton("Accept",parent=self.dialog_window_choose_datas)
+        self.btn_apply.setGeometry(QtCore.QRect(10, 180, 130, 80))
+        self.btn_apply.clicked.connect(self.set_date)
+        self.dialog_window_choose_datas.show()
+
+    def color_dialog(self):
+        """Calendar Method"""
+        color = QtWidgets.QColorDialog.getColor()
+        self.my_color.setText(color.name())
+
+    def set_date(self):
+        """Calendar Method"""
+        selected_date = self.calendarwidget.selectedDate()
+        date_str = selected_date.toString("dd-MM-yyyy")
+        current_formats = self.calendarwidget.dateTextFormat()
+        color = QtGui.QColor(self.my_color.text())
+        text_format = QtGui.QTextCharFormat()
+        text_format.setBackground(color)
+        current_formats[selected_date] = text_format
+        self.calendarwidget.setDateTextFormat(selected_date, text_format)
+        self.add_date_to_calendar_history(date=date_str)
+        self.dialog_window_choose_datas.close()
+
+    def add_date_to_calendar_history(self, date):
+        """Calendar Method"""
+        item = QListWidgetItem()
+        self.dates_listwidget.addItem(item)
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QHBoxLayout()
+        layout.setContentsMargins(2, 1, 2, 1)
+        label = QtWidgets.QLabel(date)
+        layout.addWidget(label)
+        reduct_btn = QtWidgets.QPushButton("View")
+        reduct_btn.setStyleSheet("background-color: #A7FC00;")
+        reduct_btn.setFixedSize(83, 15)
+        del_button = QtWidgets.QPushButton("Delete")
+        del_button.setStyleSheet("background-color: rgb(248,23,62);")
+        del_button.setFixedSize(60, 15)
+        layout.addWidget(reduct_btn)
+        layout.addWidget(del_button)
+        widget.setLayout(layout)
+        self.dates_listwidget.setItemWidget(item, widget)
+        row = self.dates_listwidget.row(item)
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT date FROM calendar WHERE date = ?", (date,))
+            rows = cursor.fetchall()
+        if rows and rows[0][0] == date:
+            self.dates_listwidget.takeItem(row)
+        note_id = self.add_date_note_to_db(label.text())
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
+        reduct_btn.clicked.connect(lambda _, id=note_id: self.view_calendar_data_date(id))
+        del_button.clicked.connect(lambda: self.del_calendar_history(item))
+
+    def add_date_note_to_db(self, date):
+        """Calendar Method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            if self.note_combo.currentText() != "None":
+                cursor.execute("SELECT text FROM notes WHERE title = ?", (self.note_combo.currentText(),))
+                text = cursor.fetchone()[0]
+            else: text = "None"    
+            cursor.execute("SELECT date FROM calendar WHERE date = ?", (date,))
+            rows = cursor.fetchall()
+            if rows and rows[0][0] == date:
+                cursor.execute("UPDATE calendar SET stopwatch_note = ?, note_title = ?, note_text = ?, date_color = ? WHERE date = ?", (self.time_combo.currentText(), self.note_combo.currentText(), text, self.my_color.text(), date))
+            else:
+                cursor.execute("INSERT INTO calendar (date, stopwatch_note, note_title, note_text, date_color) VALUES (?, ?, ?, ?, ?)", (date, self.time_combo.currentText(), self.note_combo.currentText(), text, self.my_color.text()))
+            conn.commit()
+            return cursor.lastrowid
+
+    def del_all_calendar_history(self):
+        """Calendar Method"""
+        self.dates_listwidget.clear()
+        with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                text_format = QtGui.QTextCharFormat()
+                text_format.setBackground(QtGui.QColor("#252525"))
+                cursor.execute("SELECT date FROM calendar")
+                rows = cursor.fetchall()
+                for row in rows:
+                    date = QDate.fromString(*row, "dd-MM-yyyy")
+                    self.calendarwidget.setDateTextFormat(date, text_format)
+                cursor.execute("DELETE FROM calendar")
+                conn.commit()
 
     def show_page(self, page):
         self.main_stackedwidget.setCurrentWidget(page)
