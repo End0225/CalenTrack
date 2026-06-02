@@ -853,6 +853,15 @@ border-radius: 15%;""")
         self.load_stopwatch_notes()
         self.load_notes_history()
         self.load_calendar_history()
+        self.user_setting = {self.parameter_1_chechbox.objectName(): self.parameter_1_chechbox.isChecked()}
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM user_settings")
+            rows = cursor.fetchall()
+        if rows == []:
+            for k, v in self.user_setting.items():
+                self.load_setting_to_db(k, v)
+        self.load_user_settings()
         self.add_functions()
 
     def retranslateUi(self, MainWindow):
@@ -909,6 +918,10 @@ border-radius: 15%;""")
         self.editor_clear_btn.clicked.connect(self.del_note)
         self.calendarwidget.clicked.connect(self.calendar_dialog)
         self.dates_deleteall_btn.clicked.connect(self.del_all_calendar_history)
+        self.savebackup_btn.clicked.connect(self.save_backup)
+        self.loadbackup_btn.clicked.connect(self.load_backup)
+        self.parameter_1_chechbox.clicked.connect(self.read_user_setting_value)
+        self.dangerzone_deleteall_btn.clicked.connect(self.del_all_data)
 
     def load_stopwatch_notes(self):
         """Stopwatch method"""
@@ -1365,6 +1378,69 @@ border-radius: 15%;""")
                     self.calendarwidget.setDateTextFormat(date, text_format)
                 cursor.execute("DELETE FROM calendar")
                 conn.commit()
+
+    def load_setting_to_db(self, k = None, v = None):
+        """Settings method"""
+        if k is not None and v is not None:
+            with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                cursor.execute("INSERT OR REPLACE INTO user_settings (objectName, objectValue) VALUES (?, ?)", (k, v))
+                conn.commit()
+
+    def load_user_settings(self):
+        """Settings method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT objectName, objectValue FROM user_settings")
+            rows = cursor.fetchall()
+        for row in rows:
+            eval(f"self.{row[0]}.setChecked(False if row[1] == 0 else True)")
+
+    def read_user_setting_value(self):
+        """Settings method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT objectName FROM user_settings")
+            rows = cursor.fetchall()
+        for row in rows:
+            eval(f"self.load_setting_to_db(self.{row[0]}.objectName(), self.{row[0]}.isChecked())")
+
+    def save_backup(self):
+        """Settings Method"""
+        with sqlite3.connect(self.path_to_db) as conn:
+            backup = ""
+            for sql in conn.iterdump():
+                backup += sql
+        try:
+            file_path = QtWidgets.QFileDialog.getSaveFileName(self.settings_page, "Save file", "", "TXT files (*.txt)")[0]
+            with open(file_path, "w", encoding="UTF-8") as file:
+                file.write(backup)
+        except: pass
+
+    def load_backup(self):
+        """Settings Method"""
+        file_path = QtWidgets.QFileDialog.getOpenFileName(self.settings_page, "Load file", "", "TXT files (*.txt)")[0]
+        if file_path != "":
+            self.del_all_data()
+            with open(file_path, encoding="UTF-8") as file:
+                script = file.read()
+            with open(self.path_to_db, "w", encoding="UTF-8") as file:
+                file.write("")
+            with sqlite3.connect(self.path_to_db) as conn:
+                cursor = conn.cursor()
+                cursor.executescript(script)
+                conn.commit()
+            self.load_user_settings()
+            self.load_stopwatch_notes()
+            self.load_notes_history()
+            self.load_calendar_history()            
+        else: return
+
+    def del_all_data(self):
+        """Settings Method"""
+        self.del_all_calendar_history()
+        self.del_all_stopwatch_history()
+        self.del_all_notes_history()
 
     def show_page(self, page):
         self.main_stackedwidget.setCurrentWidget(page)
