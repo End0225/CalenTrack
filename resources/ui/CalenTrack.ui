@@ -474,6 +474,7 @@ QToolButton:hover {
                     </property>
                     <property name="styleSheet">
                      <string notr="true">border: none;
+font-family: 'Consolas', 'Courier New', monospace;
 font-size: 32px;
 font-weight: 600;
 color: #D4D4D4;</string>
