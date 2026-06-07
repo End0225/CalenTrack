@@ -783,9 +783,12 @@ QPlainTextEdit:focus{
         self.gridLayout_4.addWidget(self.editor_plaintextedit, 1, 0, 1, 2)
         self.notes_grid.addWidget(self.editor_frame, 1, 0, 1, 2)
         self.notes_listwidget = QtWidgets.QListWidget(parent=self.notes_page)
-        self.notes_listwidget.setStyleSheet("""background-color: #252525;
-border: 1px solid #3e3e42;
-border-radius: 15%;""")
+        self.notes_listwidget.setStyleSheet("""QListWidget {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    padding: 4px 8px;
+    border-radius: 15%;
+}""")
         self.notes_listwidget.setObjectName("notes_listwidget")
         self.notes_grid.addWidget(self.notes_listwidget, 3, 0, 1, 2)
         self.note_title_label = QtWidgets.QLabel(parent=self.notes_page)
@@ -1149,27 +1152,70 @@ QPushButton:hover {
             cursor = conn.cursor()
             cursor.execute("SELECT id, title FROM notes ORDER BY id")
             rows = cursor.fetchall()
-            for id, note_title in rows:
+            for index, (id, note_title) in enumerate(rows):
                 item = QListWidgetItem()
+                item.setSizeHint(QtCore.QSize(0, 28))
                 item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
                 self.notes_listwidget.addItem(item)
                 widget = QtWidgets.QWidget()
+                if index == 0:
+                    widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
+                else:
+                    widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    border-top: 1px solid #3e3e42;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
                 layout = QtWidgets.QHBoxLayout()
-                layout.setContentsMargins(2, 1, 2, 1)
+                layout.setContentsMargins(2, 1, 1, 1)
                 label = QtWidgets.QLabel(note_title)
                 layout.addWidget(label)
-                reduct_btn = QtWidgets.QPushButton("Edit")
-                reduct_btn.setStyleSheet("background-color: #FF7F50;")
-                reduct_btn.setFixedSize(83, 15)
+                label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+                edit_btn = QtWidgets.QPushButton("Edit")
+                edit_btn.setStyleSheet("""QPushButton {
+    background-color: #eea138;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: #fff; 
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #d17b2b !important;
+}""")
+                edit_btn.setFixedSize(60, 18)
                 del_button = QtWidgets.QPushButton("Delete")
-                del_button.setStyleSheet("background-color: rgb(248,23,62);")
-                del_button.setFixedSize(60, 15)
-                layout.addWidget(reduct_btn)
+                del_button.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #af3025 !important;
+}""")
+                del_button.setFixedSize(55, 18)
+                layout.addWidget(edit_btn)
                 layout.addWidget(del_button)
                 widget.setLayout(layout)
                 self.notes_listwidget.setItemWidget(item, widget)                
                 del_button.clicked.connect(lambda _, it=item: self.del_note_history(it))
-                reduct_btn.clicked.connect(lambda _, it=item: self.reduct_note(it.data(QtCore.Qt.ItemDataRole.UserRole)))
+                edit_btn.clicked.connect(lambda _, it=item: self.reduct_note(it.data(QtCore.Qt.ItemDataRole.UserRole)))
 
     def del_note_history(self, item):
         """Notes method"""
@@ -1222,19 +1268,62 @@ QPushButton:hover {
             self.message_error_len_title()
             return None
         item = QListWidgetItem()
+        item.setSizeHint(QtCore.QSize(0, 28))
         self.notes_listwidget.addItem(item)
         widget = QtWidgets.QWidget()
+        if self.notes_listwidget.count() == 1:
+                    widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
+        else:
+            widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    border-top: 1px solid #3e3e42;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
         layout = QtWidgets.QHBoxLayout()
-        layout.setContentsMargins(2, 1, 2, 1)
+        layout.setContentsMargins(2, 1, 1, 1)
         label = QtWidgets.QLabel(title)
-        layout.addWidget(label)
-        reduct_btn = QtWidgets.QPushButton("Edit")
-        reduct_btn.setStyleSheet("background-color: #FF7F50;")
-        reduct_btn.setFixedSize(83, 15)
+        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+        edit_btn = QtWidgets.QPushButton("Edit")
+        edit_btn.setFixedSize(60, 18)
+        edit_btn.setStyleSheet("""QPushButton {
+    background-color: #eea138;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: #fff; 
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #d17b2b !important;
+}""")
         del_button = QtWidgets.QPushButton("Delete")
-        del_button.setStyleSheet("background-color: rgb(248,23,62);")
-        del_button.setFixedSize(60, 15)
-        layout.addWidget(reduct_btn)
+        del_button.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #af3025 !important;
+}""")
+        del_button.setFixedSize(55, 18)
+        layout.addWidget(label)
+        layout.addWidget(edit_btn)
         layout.addWidget(del_button)
         widget.setLayout(layout)
         self.notes_listwidget.setItemWidget(item, widget)
@@ -1249,7 +1338,7 @@ QPushButton:hover {
         self.editor_lineedit.clear()
         self.editor_plaintextedit.clear()
         item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
-        reduct_btn.clicked.connect(lambda: self.reduct_note(item.data(QtCore.Qt.ItemDataRole.UserRole)))
+        edit_btn.clicked.connect(lambda: self.reduct_note(item.data(QtCore.Qt.ItemDataRole.UserRole)))
         del_button.clicked.connect(lambda: self.del_note_history(item))
 
     def add_notes_note_to_db(self, text, title):
