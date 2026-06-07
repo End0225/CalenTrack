@@ -522,9 +522,7 @@ color: #D4D4D4;</string>
 
 QPushButton:hover {
 	background-color: #7349e5;
-}
-
-</string>
+}</string>
                     </property>
                     <property name="text">
                      <string notr="true">Start</string>
@@ -579,9 +577,7 @@ QPushButton:hover {
 
 QPushButton:hover {
 	background-color: #3e3e42;
-}
-
-</string>
+}</string>
                     </property>
                     <property name="text">
                      <string>Reset</string>
@@ -633,9 +629,7 @@ QPushButton:hover {
 
 QPushButton:hover {
 	background-color: #38936c;
-}
-
-</string>
+}</string>
                     </property>
                     <property name="text">
                      <string>Save</string>
@@ -764,9 +758,7 @@ border: none;</string>
 
 QPushButton:hover {
 	background-color: #af3025;
-}
-
-</string>
+}</string>
                       </property>
                       <property name="text">
                        <string>Delete all</string>
@@ -776,7 +768,10 @@ QPushButton:hover {
                     <item row="1" column="0" colspan="2">
                      <widget class="QListWidget" name="dates_listwidget">
                       <property name="styleSheet">
-                       <string notr="true">border: none;</string>
+                       <string notr="true">QListWidget {
+    background-color: #252525;
+    border: 1px solid #252525;
+}</string>
                       </property>
                      </widget>
                     </item>
@@ -1063,9 +1058,7 @@ font-weight: 700;</string>
 QPushButton:hover {
 	background-color: #3e3e42;
 	border: 1px solid #52525a;
-}
-
-</string>
+}</string>
                          </property>
                          <property name="text">
                           <string>Load backup</string>
@@ -1107,9 +1100,7 @@ QPushButton:hover {
 
 QPushButton:hover {
 	background-color: #38936c;
-}
-
-</string>
+}</string>
                          </property>
                          <property name="text">
                           <string>Save backup</string>
@@ -1341,9 +1332,7 @@ color: #DC2626;</string>
 
 QPushButton:hover {
 	background-color: #af3025;
-}
-
-</string>
+}</string>
                          </property>
                          <property name="text">
                           <string>Delete all data</string>
@@ -1448,9 +1437,7 @@ font-weight: 700;</string>
 
 QPushButton:hover {
 	background-color: #af3025;
-}
-
-</string>
+}</string>
                    </property>
                    <property name="text">
                     <string>Delete all</string>
@@ -1504,9 +1491,7 @@ QPushButton:hover {
 
 QPushButton:hover {
 	background-color: #38936c;
-}
-
-</string>
+}</string>
                       </property>
                       <property name="text">
                        <string>Save</string>
@@ -1568,9 +1553,7 @@ QLineEdit:focus{
 
 QPushButton:hover {
 	background-color: #3e3e42;
-}
-
-</string>
+}</string>
                       </property>
                       <property name="text">
                        <string>Clear</string>
@@ -1717,9 +1700,7 @@ font-weight: 700;</string>
 
 QPushButton:hover {
 	background-color: #af3025;
-}
-
-</string>
+}</string>
                    </property>
                    <property name="text">
                     <string>Clear</string>

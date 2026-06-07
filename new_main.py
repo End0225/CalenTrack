@@ -364,7 +364,10 @@ QPushButton:hover {
         self.dates_deleteall_btn.setObjectName("dates_deleteall_btn")
         self.gridLayout_8.addWidget(self.dates_deleteall_btn, 0, 1, 1, 1)
         self.dates_listwidget = QtWidgets.QListWidget(parent=self.dates_frame)
-        self.dates_listwidget.setStyleSheet("border: none;")
+        self.dates_listwidget.setStyleSheet("""QListWidget {
+    background-color: #252525;
+    border: 1px solid #252525;
+}""")
         self.dates_listwidget.setObjectName("dates_listwidget")
         self.gridLayout_8.addWidget(self.dates_listwidget, 1, 0, 1, 2)
         self.calendar_grid.addWidget(self.dates_frame, 5, 1, 1, 1)
@@ -1375,29 +1378,73 @@ QPushButton:hover {
             cursor = conn.cursor()
             cursor.execute("SELECT id, date, date_color FROM calendar ORDER BY id")
             rows = cursor.fetchall()
-            for id, date, date_color in rows:
+            for index, (id, date, date_color) in enumerate(rows):
                 format = QtGui.QTextCharFormat()
                 format.setBackground(QtGui.QColor(date_color))
                 self.calendarwidget.setDateTextFormat(QDate.fromString(date, "dd-MM-yyyy"), format)
                 item = QListWidgetItem()
+                item.setSizeHint(QtCore.QSize(0, 28))
+                item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
                 self.dates_listwidget.addItem(item)
                 widget = QtWidgets.QWidget()
+                if index == 0:
+                    widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
+                else:
+                    widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    border-top: 1px solid #3e3e42;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
                 layout = QtWidgets.QHBoxLayout()
-                layout.setContentsMargins(2, 1, 2, 1)
+                layout.setContentsMargins(2, 1, 1, 1)
                 label = QtWidgets.QLabel(date)
-                layout.addWidget(label)
-                reduct_btn = QtWidgets.QPushButton("View")
-                reduct_btn.setStyleSheet("background-color: #A7FC00;")
-                reduct_btn.setFixedSize(83, 15)
+                label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+                open_btn = QtWidgets.QPushButton("View")
+                open_btn.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: #fff; 
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #38936c !important;
+}""")
+                open_btn.setFixedSize(60, 18)
                 del_button = QtWidgets.QPushButton("Delete")
-                del_button.setStyleSheet("background-color: rgb(248,23,62);")
-                del_button.setFixedSize(60, 15)
-                layout.addWidget(reduct_btn)
+                del_button.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #af3025 !important;
+}""")
+                del_button.setFixedSize(55, 18)
+                layout.addWidget(label)
+                layout.addWidget(open_btn)
                 layout.addWidget(del_button)
                 widget.setLayout(layout)
                 item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
                 self.dates_listwidget.setItemWidget(item, widget)                
-                reduct_btn.clicked.connect(lambda _, it=item:  self.view_calendar_data_date(it.data(QtCore.Qt.ItemDataRole.UserRole)))
+                open_btn.clicked.connect(lambda _, it=item:  self.view_calendar_data_date(it.data(QtCore.Qt.ItemDataRole.UserRole)))
                 del_button.clicked.connect(lambda _, it=item:  self.del_calendar_history(it))
 
     def view_calendar_data_date(self, id):
@@ -1501,19 +1548,62 @@ QPushButton:hover {
     def add_date_to_calendar_history(self, date):
         """Calendar Method"""
         item = QListWidgetItem()
+        item.setSizeHint(QtCore.QSize(0, 28))
         self.dates_listwidget.addItem(item)
         widget = QtWidgets.QWidget()
+        if self.dates_listwidget.count() == 1:
+            widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
+        else:
+            widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    border-top: 1px solid #3e3e42;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
         layout = QtWidgets.QHBoxLayout()
-        layout.setContentsMargins(2, 1, 2, 1)
+        layout.setContentsMargins(2, 1, 1, 1)
         label = QtWidgets.QLabel(date)
-        layout.addWidget(label)
-        reduct_btn = QtWidgets.QPushButton("View")
-        reduct_btn.setStyleSheet("background-color: #A7FC00;")
-        reduct_btn.setFixedSize(83, 15)
+        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+        open_btn = QtWidgets.QPushButton("View")
+        open_btn.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: #fff; 
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #38936c !important;
+}""")
+        open_btn.setFixedSize(60, 18)
         del_button = QtWidgets.QPushButton("Delete")
-        del_button.setStyleSheet("background-color: rgb(248,23,62);")
-        del_button.setFixedSize(60, 15)
-        layout.addWidget(reduct_btn)
+        del_button.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #af3025 !important;
+}""")
+        layout.addWidget(label)
+        del_button.setFixedSize(55, 18)
+        layout.addWidget(open_btn)
         layout.addWidget(del_button)
         widget.setLayout(layout)
         self.dates_listwidget.setItemWidget(item, widget)
@@ -1526,7 +1616,7 @@ QPushButton:hover {
             self.dates_listwidget.takeItem(row)
         note_id = self.add_date_note_to_db(label.text())
         item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
-        reduct_btn.clicked.connect(lambda _, id=note_id: self.view_calendar_data_date(id))
+        open_btn.clicked.connect(lambda _, id=note_id: self.view_calendar_data_date(id))
         del_button.clicked.connect(lambda: self.del_calendar_history(item))
 
     def add_date_note_to_db(self, date):
