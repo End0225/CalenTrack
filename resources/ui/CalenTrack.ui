@@ -1736,9 +1736,12 @@ QPushButton:hover {
                     </size>
                    </property>
                    <property name="styleSheet">
-                    <string notr="true">background-color: #252525;
-border: 1px solid #3e3e42;
-border-radius: 15%;</string>
+                    <string notr="true">QListWidget {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    padding: 4px 8px;
+    border-radius: 15%;
+}</string>
                    </property>
                   </widget>
                  </item>

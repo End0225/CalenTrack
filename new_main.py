@@ -834,9 +834,12 @@ QPushButton:hover {
         self.history_grid.addWidget(self.history_clear_btn, 0, 1, 1, 1)
         self.history_listwidget = QtWidgets.QListWidget(parent=self.history_page)
         self.history_listwidget.setMinimumSize(QtCore.QSize(0, 486))
-        self.history_listwidget.setStyleSheet("""background-color: #252525;
-border: 1px solid #3e3e42;
-border-radius: 15%;""")
+        self.history_listwidget.setStyleSheet("""QListWidget {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    padding: 4px 8px;
+    border-radius: 15%;
+}""")
         self.history_listwidget.setObjectName("history_listwidget")
         self.history_grid.addWidget(self.history_listwidget, 1, 0, 1, 2)
         self.gridLayout_19.addLayout(self.history_grid, 0, 0, 1, 1)
@@ -935,21 +938,63 @@ border-radius: 15%;""")
             cursor = conn.cursor()
             cursor.execute("SELECT id, note FROM stopwatch_history ORDER BY id")
             rows = cursor.fetchall()
-            for row_id, note_text in rows:
-                item = QListWidgetItem()
+            for index, (row_id, note_text) in enumerate(rows):
+                item = QListWidgetItem()    
                 item.setData(QtCore.Qt.ItemDataRole.UserRole, row_id)
                 self.history_listwidget.addItem(item)
                 widget = QtWidgets.QWidget()
+                item.setSizeHint(QtCore.QSize(0, 28)) 
+                if index == 0:
+                    widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
+                else:
+                    widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color: #252525;
+    border-top: 1px solid #3e3e42;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
                 layout = QtWidgets.QHBoxLayout()
-                layout.setContentsMargins(2, 1, 8, 1)
+                layout.setContentsMargins(2, 1, 1, 1)
                 label = QtWidgets.QLabel(note_text)
+                label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
                 layout.addWidget(label)
                 set_new_stopwatch_btn = QtWidgets.QPushButton("Establish")
-                set_new_stopwatch_btn.setStyleSheet("background-color: #A7FC00;")
-                set_new_stopwatch_btn.setFixedSize(70, 15)
+                set_new_stopwatch_btn.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: #fff; 
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #38936c !important;
+}""")
+                set_new_stopwatch_btn.setFixedSize(60, 18)
                 del_button = QtWidgets.QPushButton("Delete")
-                del_button.setStyleSheet("background-color: rgb(248,23,62);")
-                del_button.setFixedSize(70, 15)
+                del_button.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #af3025 !important;
+}""")
+                del_button.setFixedSize(55, 18)
                 layout.addWidget(set_new_stopwatch_btn)
                 layout.addWidget(del_button)
                 widget.setLayout(layout)
@@ -1006,21 +1051,64 @@ border-radius: 15%;""")
     def add_to_history_stopwatch(self):
         """Stopwatch method"""
         item = QListWidgetItem()
+        item.setSizeHint(QtCore.QSize(0, 28)) 
         self.history_listwidget.addItem(item)
         widget = QtWidgets.QWidget()
         layout = QtWidgets.QHBoxLayout()
-        layout.setContentsMargins(2, 1, 8, 1)
+        layout.setContentsMargins(2, 1, 1, 1)
+        if self.history_listwidget.count() == 1:
+            widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
+        else:
+            widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    border-top: 1px solid #3e3e42;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
         data = self.date_edit.date().currentDate().toString("dd-MM-yyyy")
         note_time = self.stopwatch_time_label.text()
         note_text = f"{data}  {QTime.currentTime().toString('hh:mm')} | {note_time}"
         label = QtWidgets.QLabel(note_text)
+        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
         layout.addWidget(label)
         set_new_stopwatch_btn = QtWidgets.QPushButton("Establish")
-        set_new_stopwatch_btn.setStyleSheet("background-color: #A7FC00;")
-        set_new_stopwatch_btn.setFixedSize(70, 15)
+        set_new_stopwatch_btn.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: #fff; 
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #38936c !important;
+}""")
+        set_new_stopwatch_btn.setFixedSize(60, 18)
         del_button = QtWidgets.QPushButton("Delete")
-        del_button.setStyleSheet("background-color: rgb(248,23,62);")
-        del_button.setFixedSize(70, 15)
+        del_button.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: white;
+    font-weight: 600;
+    font-size: 12px;
+}
+QPushButton:hover {
+    background-color: #af3025 !important;
+}""")
+        del_button.setFixedSize(55, 18)
         layout.addWidget(set_new_stopwatch_btn)
         layout.addWidget(del_button)
         widget.setLayout(layout)
