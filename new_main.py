@@ -1566,53 +1566,202 @@ QPushButton:hover {
     def calendar_dialog(self):
         """Calendar Method"""
         self.dialog_window_choose_datas = QtWidgets.QDialog()
-        self.dialog_window_choose_datas.setWindowTitle("Select data")
-        self.dialog_window_choose_datas.setFixedSize(400, 300)
-        time_label = QtWidgets.QLabel("Select time:", parent=self.dialog_window_choose_datas)
-        time_label.setGeometry(QtCore.QRect(10, 6, 280, 40))
-        self.time_combo = QtWidgets.QComboBox(parent=self.dialog_window_choose_datas)
-        self.time_combo.setGeometry(QtCore.QRect(110, 13, 280, 30))
-        note_label = QtWidgets.QLabel("Select note:", parent=self.dialog_window_choose_datas)
-        note_label.setGeometry(QtCore.QRect(10, 56, 280, 40))
-        self.note_combo = QtWidgets.QComboBox(parent=self.dialog_window_choose_datas)
-        self.note_combo.setGeometry(QtCore.QRect(120, 63, 270, 30))
+        self.dialog_window_choose_datas.setWindowIcon(self.get_icon("app-logo.ico"))
+        self.dialog_window_choose_datas.setObjectName("Dialog")
+        self.dialog_window_choose_datas.setWindowTitle("CalenTrack | Choose data")
+        self.dialog_window_choose_datas.resize(400, 300)
+        self.dialog_window_choose_datas.setStyleSheet("""QDialog {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+}""")
+        self.dialog_gridlayout = QtWidgets.QGridLayout(self.dialog_window_choose_datas)
+        self.dialog_gridlayout.setContentsMargins(0, 0, 0, 0)
+        self.dialog_gridlayout.setSpacing(0)
+        self.dialog_gridlayout.setObjectName("dialog_gridlayout")
+        self.dialog_main_gridlayout = QtWidgets.QGridLayout()
+        self.dialog_main_gridlayout.setContentsMargins(10, 12, 10, 8)
+        self.dialog_main_gridlayout.setSpacing(0)
+        self.dialog_main_gridlayout.setObjectName("dialog_main_gridlayout")
+        spacerItem = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
+        self.dialog_main_gridlayout.addItem(spacerItem, 3, 0, 1, 1)
+        spacerItem1 = QtWidgets.QSpacerItem(20, 10, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
+        self.dialog_main_gridlayout.addItem(spacerItem1, 7, 0, 1, 1)
+        spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.dialog_main_gridlayout.addItem(spacerItem2, 11, 0, 1, 1)
+        self.dialog_time_label = QtWidgets.QLabel("Select time:", parent=self.dialog_window_choose_datas)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.dialog_time_label.sizePolicy().hasHeightForWidth())
+        self.dialog_time_label.setSizePolicy(sizePolicy)
+        self.dialog_time_label.setStyleSheet("""QLabel {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+}""")
+        self.dialog_time_label.setObjectName("dialog_time_label")
+        self.dialog_main_gridlayout.addWidget(self.dialog_time_label, 0, 0, 1, 1)
+        self.dialog_color_pushbutton = QtWidgets.QPushButton(parent=self.dialog_window_choose_datas)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.dialog_color_pushbutton.sizePolicy().hasHeightForWidth())
+        self.dialog_color_pushbutton.setSizePolicy(sizePolicy)
+        self.dialog_color_pushbutton.setMinimumSize(QtCore.QSize(0, 20))
+        self.dialog_color_pushbutton.setStyleSheet("""QPushButton {
+    background-color: #252525;
+    border: 1px solid #777777;
+}""")
+        self.dialog_color_pushbutton.setText("")
+        self.dialog_color_pushbutton.setObjectName("dialog_color_pushbutton")
+        self.dialog_main_gridlayout.addWidget(self.dialog_color_pushbutton, 10, 0, 1, 1)
+        self.dialog_note_label = QtWidgets.QLabel("Select note:", parent=self.dialog_window_choose_datas)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.dialog_note_label.sizePolicy().hasHeightForWidth())
+        self.dialog_note_label.setSizePolicy(sizePolicy)
+        self.dialog_note_label.setStyleSheet("""QLabel {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+}""")
+        self.dialog_note_label.setObjectName("dialog_note_label")
+        self.dialog_main_gridlayout.addWidget(self.dialog_note_label, 4, 0, 1, 1)
+        self.dialog_color_label = QtWidgets.QLabel("Color date:", parent=self.dialog_window_choose_datas)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.dialog_color_label.sizePolicy().hasHeightForWidth())
+        self.dialog_color_label.setSizePolicy(sizePolicy)
+        self.dialog_color_label.setStyleSheet("""QLabel {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+}""")
+        self.dialog_color_label.setObjectName("dialog_color_label")
+        self.dialog_main_gridlayout.addWidget(self.dialog_color_label, 8, 0, 1, 1)
+        self.dialog_buttonbox = QtWidgets.QDialogButtonBox(parent=self.dialog_window_choose_datas)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.dialog_buttonbox.sizePolicy().hasHeightForWidth())
+        self.dialog_buttonbox.setSizePolicy(sizePolicy)
+        self.dialog_buttonbox.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
+        self.dialog_buttonbox.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    border-radius: 4%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    height: 20px;
+    width: 80px;
+}
+QPushButton[text=\"Apply\"] {
+        background-color: #48b585;
+}
+QPushButton[text=\"Discard\"] {
+    background-color: #d13c30;
+}
+QPushButton[text=\"Apply\"]:hover {
+    background-color: #38936c;
+}
+QPushButton[text=\"Discard\"]:hover {
+    background-color: #af3025;
+}""")
+        self.dialog_buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        self.dialog_buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Discard)
+        self.dialog_buttonbox.setCenterButtons(False)
+        self.dialog_buttonbox.setObjectName("dialog_buttonbox")
+        self.dialog_main_gridlayout.addWidget(self.dialog_buttonbox, 12, 0, 1, 1)
+        self.dialog_note_combobox = QtWidgets.QComboBox(parent=self.dialog_window_choose_datas)
+        self.dialog_note_combobox.setMinimumSize(QtCore.QSize(0, 20))
+        self.dialog_note_combobox.setStyleSheet("""QComboBox {
+    color: #fff;
+    font-weight: 700;
+    background-color: #3e3e42;
+    font-size: 12px;
+    border-radius: 4%;
+}
+QComboBox QAbstractItemView {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    border-radius: 4px;
+    outline: none;
+    color: #fff;    
+}""")
+        self.dialog_note_combobox.setObjectName("dialog_note_combobox")
+        self.dialog_main_gridlayout.addWidget(self.dialog_note_combobox, 6, 0, 1, 1)
+        self.dialog_time_combobox = QtWidgets.QComboBox(parent=self.dialog_window_choose_datas)
+        self.dialog_time_combobox.setMinimumSize(QtCore.QSize(0, 20))
+        self.dialog_time_combobox.setStyleSheet("""QComboBox {
+    color: #fff;
+    font-weight: 700;
+    background-color: #3e3e42;
+    font-size: 12px;
+    border-radius: 4%;
+}
+QComboBox QAbstractItemView {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    border-radius: 4px;
+    outline: none;
+    color: #fff;    
+}""")
+        self.dialog_time_combobox.setObjectName("dialog_time_combobox")
+        self.dialog_main_gridlayout.addWidget(self.dialog_time_combobox, 2, 0, 1, 1)
+        spacerItem3 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
+        self.dialog_main_gridlayout.addItem(spacerItem3, 1, 0, 1, 1)
+        spacerItem4 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
+        self.dialog_main_gridlayout.addItem(spacerItem4, 5, 0, 1, 1)
+        spacerItem5 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
+        self.dialog_main_gridlayout.addItem(spacerItem5, 9, 0, 1, 1)
+        self.dialog_gridlayout.addLayout(self.dialog_main_gridlayout, 0, 0, 1, 1)
+
+        self.dialog_buttonbox.accepted.connect(self.dialog_window_choose_datas.accept)
+        self.dialog_buttonbox.rejected.connect(self.dialog_window_choose_datas.reject)
+        QtCore.QMetaObject.connectSlotsByName(self.dialog_window_choose_datas)
         with sqlite3.connect(self.path_to_db) as conn:
             cursor = conn.cursor()
             cursor.execute("SELECT note FROM stopwatch_history")
             stopwatch_times = cursor.fetchall()
             cursor.execute("SELECT title FROM notes")
             notes_title = cursor.fetchall()
-        self.time_combo.addItems(["None"])
-        self.note_combo.addItems(["None"])
+        self.dialog_time_combobox.addItems(["None"])
+        self.dialog_note_combobox.addItems(["None"])
         try:
             for i in stopwatch_times:
-                self.time_combo.addItems([i[0]])
+                self.dialog_time_combobox.addItems([i[0]])
             for i in notes_title:
-                self.note_combo.addItems([i][0])
+                self.dialog_note_combobox.addItems([i][0])
         except:  pass
-        note_label = QtWidgets.QPushButton("Select date color:", parent=self.dialog_window_choose_datas)
-        note_label.setGeometry(QtCore.QRect(10, 106, 220, 40))
-        note_label.clicked.connect(self.color_dialog)
-        my_color_info = QtWidgets.QLabel("Date color:", parent=self.dialog_window_choose_datas)
-        my_color_info.setGeometry(QtCore.QRect(240, 109, 60, 30))
-        self.my_color = QtWidgets.QLabel(f"#252525", parent=self.dialog_window_choose_datas)
-        self.my_color.setGeometry(QtCore.QRect(305, 109, 60, 30))
-        self.btn_apply = QtWidgets.QPushButton("Accept",parent=self.dialog_window_choose_datas)
-        self.btn_apply.setGeometry(QtCore.QRect(10, 180, 130, 80))
-        self.btn_apply.clicked.connect(self.set_date)
+        self.my_color = "#252525"
+        self.dialog_color_pushbutton.clicked.connect(self.color_dialog)
+        self.dialog_apply_button = self.dialog_buttonbox.button(QtWidgets.QDialogButtonBox.StandardButton.Apply)
+        self.dialog_discard_button = self.dialog_buttonbox.button(QtWidgets.QDialogButtonBox.StandardButton.Discard)
+        self.dialog_apply_button.clicked.connect(self.set_date)
+        self.dialog_discard_button.clicked.connect(lambda close: self.dialog_window_choose_datas.close())
         self.dialog_window_choose_datas.show()
 
     def color_dialog(self):
         """Calendar Method"""
         color = QtWidgets.QColorDialog.getColor()
-        self.my_color.setText(color.name())
+        if not color.isValid():
+            self.my_color = "#252525"
+        else:
+            self.my_color = color.name()
+        self.dialog_color_pushbutton.setStyleSheet("""QPushButton {
+    font-weight: 700;""" +
+f"    background-color: {self.my_color};" +
+"""    border: 1px solid #777777;
+}""")
 
     def set_date(self):
         """Calendar Method"""
         selected_date = self.calendarwidget.selectedDate()
         date_str = selected_date.toString("dd-MM-yyyy")
         current_formats = self.calendarwidget.dateTextFormat()
-        color = QtGui.QColor(self.my_color.text())
+        color = QtGui.QColor(self.my_color)
         text_format = QtGui.QTextCharFormat()
         text_format.setBackground(color)
         current_formats[selected_date] = text_format
@@ -1698,16 +1847,16 @@ QPushButton:hover {
         """Calendar Method"""
         with sqlite3.connect(self.path_to_db) as conn:
             cursor = conn.cursor()
-            if self.note_combo.currentText() != "None":
-                cursor.execute("SELECT text FROM notes WHERE title = ?", (self.note_combo.currentText(),))
+            if self.dialog_note_combobox.currentText() != "None":
+                cursor.execute("SELECT text FROM notes WHERE title = ?", (self.dialog_note_combobox.currentText(),))
                 text = cursor.fetchone()[0]
             else: text = "None"    
             cursor.execute("SELECT date FROM calendar WHERE date = ?", (date,))
             rows = cursor.fetchall()
             if rows and rows[0][0] == date:
-                cursor.execute("UPDATE calendar SET stopwatch_note = ?, note_title = ?, note_text = ?, date_color = ? WHERE date = ?", (self.time_combo.currentText(), self.note_combo.currentText(), text, self.my_color.text(), date))
+                cursor.execute("UPDATE calendar SET stopwatch_note = ?, note_title = ?, note_text = ?, date_color = ? WHERE date = ?", (self.dialog_time_combobox.currentText(), self.dialog_note_combobox.currentText(), text, self.my_color, date))
             else:
-                cursor.execute("INSERT INTO calendar (date, stopwatch_note, note_title, note_text, date_color) VALUES (?, ?, ?, ?, ?)", (date, self.time_combo.currentText(), self.note_combo.currentText(), text, self.my_color.text()))
+                cursor.execute("INSERT INTO calendar (date, stopwatch_note, note_title, note_text, date_color) VALUES (?, ?, ?, ?, ?)", (date, self.dialog_time_combobox.currentText(), self.dialog_note_combobox.currentText(), text, self.my_color))
             conn.commit()
             return cursor.lastrowid
 
