@@ -69,7 +69,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.app_title_label.setFont(font)
-        self.app_title_label.setStyleSheet("color: #8B5CF6;\nborder: none;\nfont-size: 19px;\nfont-weight: 600;\nborder-bottom: 1px solid #3e3e42;")
+        self.app_title_label.setStyleSheet("color: #8B5CF6;\nborder: none;\nfont-size: 19px;\nfont-weight: 700;\nborder-bottom: 1px solid #3e3e42;")
         self.app_title_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.app_title_label.setObjectName("app_title_label")
         self.aside.addWidget(self.app_title_label)
@@ -219,7 +219,7 @@ QToolButton:hover {
         self.stopwatch_time_label.setStyleSheet("""border: none;
 font-family: 'Consolas', 'Courier New', monospace;
 font-size: 32px;
-font-weight: 600;
+font-weight: 700;
 color: #D4D4D4;""")
         self.stopwatch_time_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.stopwatch_time_label.setObjectName("stopwatch_time_label")
@@ -414,7 +414,7 @@ QCalendarWidget QAbstractItemView {
     selection-background-color: #1a1a1a;
     outline: none;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
     color: #fff;
     border: none;
 }
@@ -971,7 +971,7 @@ QWidget:hover {
                 layout = QtWidgets.QHBoxLayout()
                 layout.setContentsMargins(2, 1, 1, 1)
                 label = QtWidgets.QLabel(note_text)
-                label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+                label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
                 layout.addWidget(label)
                 set_new_stopwatch_btn = QtWidgets.QPushButton("Establish")
                 set_new_stopwatch_btn.setStyleSheet("""QPushButton {
@@ -980,7 +980,7 @@ QWidget:hover {
     border-top: none;
     border-radius: 4%;
     color: #fff; 
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -994,7 +994,7 @@ QPushButton:hover {
     border-top: none;
     border-radius: 4%;
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1085,7 +1085,7 @@ QWidget:hover {
         note_time = self.stopwatch_time_label.text()
         note_text = f"{data}  {QTime.currentTime().toString('hh:mm')} | {note_time}"
         label = QtWidgets.QLabel(note_text)
-        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
         layout.addWidget(label)
         set_new_stopwatch_btn = QtWidgets.QPushButton("Establish")
         set_new_stopwatch_btn.setStyleSheet("""QPushButton {
@@ -1094,7 +1094,7 @@ QWidget:hover {
     border-top: none;
     border-radius: 4%;
     color: #fff; 
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1108,7 +1108,7 @@ QPushButton:hover {
     border-top: none;
     border-radius: 4%;
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1184,7 +1184,7 @@ QWidget:hover {
                 layout.setContentsMargins(2, 1, 1, 1)
                 label = QtWidgets.QLabel(note_title)
                 layout.addWidget(label)
-                label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+                label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
                 edit_btn = QtWidgets.QPushButton("Edit")
                 edit_btn.setStyleSheet("""QPushButton {
     background-color: #eea138;
@@ -1192,7 +1192,7 @@ QWidget:hover {
     border-top: none;
     border-radius: 4%;
     color: #fff; 
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1206,7 +1206,7 @@ QPushButton:hover {
     border-top: none;
     border-radius: 4%;
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1296,7 +1296,7 @@ QWidget:hover {
         layout = QtWidgets.QHBoxLayout()
         layout.setContentsMargins(2, 1, 1, 1)
         label = QtWidgets.QLabel(title)
-        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
         edit_btn = QtWidgets.QPushButton("Edit")
         edit_btn.setFixedSize(60, 18)
         edit_btn.setStyleSheet("""QPushButton {
@@ -1305,7 +1305,7 @@ QWidget:hover {
     border-top: none;
     border-radius: 4%;
     color: #fff; 
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1318,7 +1318,7 @@ QPushButton:hover {
     border-top: none;
     border-radius: 4%;
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1409,7 +1409,7 @@ QWidget:hover {
                 layout = QtWidgets.QHBoxLayout()
                 layout.setContentsMargins(2, 1, 1, 1)
                 label = QtWidgets.QLabel(date)
-                label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+                label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
                 open_btn = QtWidgets.QPushButton("View")
                 open_btn.setStyleSheet("""QPushButton {
     background-color: #48b585;
@@ -1417,7 +1417,7 @@ QWidget:hover {
     border-top: none;
     border-radius: 4%;
     color: #fff; 
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1431,7 +1431,7 @@ QPushButton:hover {
     border-top: none;
     border-radius: 4%;
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1597,7 +1597,7 @@ QPushButton:hover {
         self.dialog_time_label.setStyleSheet("""QLabel {
     color: #fff;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
 }""")
         self.dialog_time_label.setObjectName("dialog_time_label")
         self.dialog_main_gridlayout.addWidget(self.dialog_time_label, 0, 0, 1, 1)
@@ -1624,7 +1624,7 @@ QPushButton:hover {
         self.dialog_note_label.setStyleSheet("""QLabel {
     color: #fff;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
 }""")
         self.dialog_note_label.setObjectName("dialog_note_label")
         self.dialog_main_gridlayout.addWidget(self.dialog_note_label, 4, 0, 1, 1)
@@ -1637,7 +1637,7 @@ QPushButton:hover {
         self.dialog_color_label.setStyleSheet("""QLabel {
     color: #fff;
     font-size: 12px;
-    font-weight: 600;
+    font-weight: 700;
 }""")
         self.dialog_color_label.setObjectName("dialog_color_label")
         self.dialog_main_gridlayout.addWidget(self.dialog_color_label, 8, 0, 1, 1)
@@ -1797,7 +1797,7 @@ QWidget:hover {
         layout = QtWidgets.QHBoxLayout()
         layout.setContentsMargins(2, 1, 1, 1)
         label = QtWidgets.QLabel(date)
-        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 600; font-size: 12px; border-top: none; background-color: none;")
+        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
         open_btn = QtWidgets.QPushButton("View")
         open_btn.setStyleSheet("""QPushButton {
     background-color: #48b585;
@@ -1805,7 +1805,7 @@ QWidget:hover {
     border-top: none;
     border-radius: 4%;
     color: #fff; 
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {
@@ -1819,7 +1819,7 @@ QPushButton:hover {
     border-top: none;
     border-radius: 4%;
     color: white;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 12px;
 }
 QPushButton:hover {

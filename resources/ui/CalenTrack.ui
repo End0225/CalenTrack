@@ -102,7 +102,7 @@ padding: 1px;</string>
             <string notr="true">color: #8B5CF6;
 border: none;
 font-size: 19px;
-font-weight: 600;
+font-weight:700;
 border-bottom: 1px solid #3e3e42;</string>
            </property>
            <property name="text">
@@ -476,7 +476,7 @@ QToolButton:hover {
                      <string notr="true">border: none;
 font-family: 'Consolas', 'Courier New', monospace;
 font-size: 32px;
-font-weight: 600;
+font-weight: 700;
 color: #D4D4D4;</string>
                     </property>
                     <property name="text">
@@ -862,7 +862,7 @@ QCalendarWidget QAbstractItemView {
 	selection-background-color: #1a1a1a;
 	outline: none;
 	font-size: 12px;
-	font-weight: 600;
+	font-weight: 700;
 	color: #fff;
 	border: none;
 }
