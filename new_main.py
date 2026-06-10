@@ -1456,7 +1456,7 @@ QPushButton:hover {
         date, stopwatch_note, note_title, note_text = rows[0]
         self.dialog_window_datas = QtWidgets.QDialog()
         self.dialog_window_datas.setWindowIcon(self.get_icon("app-logo.ico"))
-        self.dialog_window_datas.setWindowTitle(date)
+        self.dialog_window_datas.setWindowTitle(f"CalenTrack | {date}")
         self.dialog_window_datas.setObjectName("dialog")
         self.dialog_window_datas.resize(400, 300)
         self.dialog_window_datas.setMinimumSize(QtCore.QSize(280, 250))
