@@ -1,7 +1,7 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtCore import QTime, QTimer, QDate
-from PyQt6.QtWidgets import QDateEdit, QListWidgetItem
-from PyQt6.QtWidgets import QMessageBox
+from PyQt6.QtGui import QPalette, QColor
+from PyQt6.QtWidgets import QDateEdit, QListWidgetItem, QMessageBox
 import sqlite3
 import shutil
 import sys
@@ -1455,20 +1455,95 @@ QPushButton:hover {
             rows = cursor.fetchall()
         date, stopwatch_note, note_title, note_text = rows[0]
         self.dialog_window_datas = QtWidgets.QDialog()
+        self.dialog_window_datas.setWindowIcon(self.get_icon("app-logo.ico"))
         self.dialog_window_datas.setWindowTitle(date)
-        self.dialog_window_datas.setFixedSize(400, 300)
-        time_label = QtWidgets.QLineEdit(stopwatch_note, parent=self.dialog_window_datas)
-        time_label.setGeometry(QtCore.QRect(10, 6, 190, 25))
-        time_label.setReadOnly(True)
-        note_title_label = QtWidgets.QLineEdit(note_title, parent=self.dialog_window_datas)
-        note_title_label.setGeometry(QtCore.QRect(210, 6, 180, 25))
-        note_title_label.setReadOnly(True)
-        note_label = QtWidgets.QTextEdit(note_text,  parent=self.dialog_window_datas)
-        note_label.setGeometry(QtCore.QRect(10, 38, 380, 198))
-        note_label.setReadOnly(True)
-        btn_close = QtWidgets.QPushButton("Закрыть", parent=self.dialog_window_datas)
-        btn_close.setGeometry(QtCore.QRect(10, 245, 80, 45))
-        btn_close.clicked.connect(lambda _: self.dialog_window_datas.close())
+        self.dialog_window_datas.setObjectName("dialog")
+        self.dialog_window_datas.resize(400, 300)
+        self.dialog_window_datas.setMinimumSize(QtCore.QSize(280, 250))
+        self.dialog_window_datas.setStyleSheet("""QDialog {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+}""")
+        self.dialog_gridlayout = QtWidgets.QGridLayout(self.dialog_window_datas)
+        self.dialog_gridlayout.setContentsMargins(0, 0, 0, 0)
+        self.dialog_gridlayout.setSpacing(0)
+        self.dialog_gridlayout.setObjectName("dialog_gridlayout")
+        self.dialog_main_gridlayout = QtWidgets.QGridLayout()
+        self.dialog_main_gridlayout.setContentsMargins(10, 12, 10, 8)
+        self.dialog_main_gridlayout.setObjectName("dialog_main_gridlayout")
+        self.dialog_title_lineedit = QtWidgets.QLineEdit(parent=self.dialog_window_datas)
+        self.dialog_title_lineedit.setPlaceholderText("Not selected")
+        if note_title != "None":
+            self.dialog_title_lineedit.setText(note_title)
+        self.dialog_title_lineedit.setStyleSheet("""QLineEdit {
+    color: #fff;
+    font-weight: 700;
+    background-color: #3e3e42;
+    font-size: 12px;
+    border-radius: 4%;
+    margin-left: 4px;
+}""")
+        self.dialog_title_lineedit.setObjectName("dialog_title_lineedit")
+        self.dialog_title_lineedit.setReadOnly(True)
+        self.dialog_main_gridlayout.addWidget(self.dialog_title_lineedit, 0, 1, 1, 1)
+        self.dialog_time_lineedit = QtWidgets.QLineEdit(parent=self.dialog_window_datas)
+        self.dialog_time_lineedit.setPlaceholderText("Not selected")
+        if stopwatch_note != "None":
+            self.dialog_time_lineedit.setText(stopwatch_note)
+        self.dialog_time_lineedit.setStyleSheet("""QLineEdit {
+    color: #fff;
+    font-weight: 700;
+    background-color: #3e3e42;
+    font-size: 12px;
+    border-radius: 4%;
+    margin-right: 4px;
+}""")
+        self.dialog_time_lineedit.setObjectName("dialog_time_lineedit")
+        self.dialog_time_lineedit.setReadOnly(True)
+        self.dialog_main_gridlayout.addWidget(self.dialog_time_lineedit, 0, 0, 1, 1)
+        self.dialog_plaintextedit = QtWidgets.QPlainTextEdit(parent=self.dialog_window_datas)
+        self.dialog_plaintextedit.setPlaceholderText("Not selected")
+        if note_text != "None":
+                self.dialog_plaintextedit.setPlainText(note_text)
+        self.dialog_plaintextedit.setStyleSheet("""QPlainTextEdit {
+    color: #fff;
+    font-weight: 700;
+    background-color: #3e3e42;
+    font-size: 12px;
+    border-radius: 6%;
+    margin: 8px 0px 8px 0px;
+}""")
+        self.dialog_plaintextedit.setObjectName("dialog_plaintextedit")
+        self.dialog_plaintextedit.setReadOnly(True)
+        self.dialog_main_gridlayout.addWidget(self.dialog_plaintextedit, 1, 0, 1, 2)
+        self.dialog_buttonBox = QtWidgets.QDialogButtonBox(parent=self.dialog_window_datas)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.dialog_buttonBox.sizePolicy().hasHeightForWidth())
+        self.dialog_buttonBox.setSizePolicy(sizePolicy)
+        self.dialog_buttonBox.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
+        self.dialog_buttonBox.setStyleSheet("""QPushButton {
+    background-color: #3e3e42;
+    border-radius: 4%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    height: 20px;
+    width: 80px;
+    }
+QPushButton:hover {
+    background-color: #52525a;
+}""")
+        self.dialog_buttonBox.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        self.dialog_buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Close)
+        self.dialog_buttonBox.setCenterButtons(False)
+        self.dialog_buttonBox.setObjectName("dialog_buttonBox")
+        self.dialog_main_gridlayout.addWidget(self.dialog_buttonBox, 2, 0, 1, 2)
+        self.dialog_gridlayout.addLayout(self.dialog_main_gridlayout, 0, 0, 1, 1)
+        self.dialog_buttonBox.rejected.connect(self.dialog_window_datas.reject)
+        self.dialog_buttonBox.accepted.connect(self.dialog_window_datas.accept)
+        QtCore.QMetaObject.connectSlotsByName(self.dialog_window_datas)
         self.dialog_window_datas.show()
 
     def del_calendar_history(self, item):
