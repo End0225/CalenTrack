@@ -1924,7 +1924,12 @@ QPushButton:hover {
                 file.write("")
             with sqlite3.connect(self.path_to_db) as conn:
                 cursor = conn.cursor()
-                cursor.executescript(script)
+                try:
+                    cursor.executescript(script)
+                except:
+                    with open(self.path_to_db, "w", encoding="UTF-8") as file:
+                        file.write("")
+                    self.create_tables()
                 conn.commit()
             self.load_user_settings()
             self.load_stopwatch_notes()
