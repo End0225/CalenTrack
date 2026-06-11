@@ -1329,11 +1329,34 @@ QPushButton:hover {
     def message_error_none_title(self):
         """Notes method"""
         new_window = QMessageBox()
-        new_window.setGeometry(950, 650, 400, 290)
-        new_window.setWindowTitle("Ошибка")
-        new_window.setText("Ошибка!\nПустой заголовок")
+        new_window.setWindowTitle("CalenTrack | Error")
+        new_window.setWindowIcon(self.get_icon("app-logo.ico"))
+        new_window.setText("Error!\nTitle don't have any name")
         new_window.setIcon(QMessageBox.Icon.Warning)
         new_window.setStandardButtons(QMessageBox.StandardButton.Ok)
+        new_window.setStyleSheet("""QMessageBox {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+}
+QMessageBox QLabel {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+QPushButton {
+    background-color: #48b585;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 5px 10px;
+    min-width: 50px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #38936c;
+}
+""")
         new_window.exec()
 
     def add_to_history_notes(self, title):
@@ -1445,10 +1468,34 @@ QPushButton:hover {
         """Notes method"""
         new_window = QMessageBox()
         new_window.setGeometry(950, 650, 400, 290)
-        new_window.setWindowTitle("Ошибка")
-        new_window.setText("Ошибка!\nМаксимальная длина заголовка\n10 символов")
+        new_window.setWindowTitle("CalenTrack | Error")
+        new_window.setWindowIcon(self.get_icon("app-logo.ico"))
+        new_window.setText("Error!\nMaximal header length\nis 10 symbols")
         new_window.setIcon(QMessageBox.Icon.Warning)
         new_window.setStandardButtons(QMessageBox.StandardButton.Ok)
+        new_window.setStyleSheet("""QMessageBox {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+}
+QMessageBox QLabel {
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+}
+QPushButton {
+    background-color: #48b585;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 5px 10px;
+    min-width: 50px;
+    border: none;
+}
+QPushButton:hover {
+    background-color: #38936c;
+}
+""")
         new_window.exec()
 
     def load_calendar_history(self):
