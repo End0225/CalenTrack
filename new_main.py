@@ -926,16 +926,16 @@ QPushButton:hover {
         self.stopwatch_reset_btn.clicked.connect(self.reset_stopwatch)
         self.stopwatch_save_btn.clicked.connect(self.add_to_history_stopwatch)
         self.timer.timeout.connect(self.update_time)
-        self.history_clear_btn.clicked.connect(self.del_all_stopwatch_history)
-        self.notes_deleteall_btn.clicked.connect(self.del_all_notes_history)
+        self.history_clear_btn.clicked.connect(lambda: self.del_all_stopwatch_history() if self.check_user_permission_delete() == True else None)
+        self.notes_deleteall_btn.clicked.connect(lambda: self.del_all_notes_history() if self.check_user_permission_delete() == True else None)
         self.editor_save_btn.clicked.connect(self.save_note)
         self.editor_clear_btn.clicked.connect(self.del_note)
         self.calendarwidget.clicked.connect(self.calendar_dialog)
-        self.dates_deleteall_btn.clicked.connect(self.del_all_calendar_history)
+        self.dates_deleteall_btn.clicked.connect(lambda: self.del_all_calendar_history() if self.check_user_permission_delete() == True else None)
         self.savebackup_btn.clicked.connect(self.save_backup)
         self.loadbackup_btn.clicked.connect(self.load_backup)
         self.parameter_1_chechbox.clicked.connect(self.read_user_setting_value)
-        self.dangerzone_deleteall_btn.clicked.connect(self.del_all_data)
+        self.dangerzone_deleteall_btn.clicked.connect(lambda: self.del_all_data() if self.check_user_permission_delete() == True else None)
 
     def load_stopwatch_notes(self):
         """Stopwatch method"""
@@ -1005,7 +1005,7 @@ QPushButton:hover {
                 layout.addWidget(del_button)
                 widget.setLayout(layout)
                 self.history_listwidget.setItemWidget(item, widget)
-                del_button.clicked.connect(lambda _, it=item: self.del_history(it))
+                del_button.clicked.connect(lambda _, it=item: self.del_history(it) if self.check_user_permission_delete() == True else None)
                 with sqlite3.connect(self.path_to_db) as conn:
                     cursor = conn.cursor()
                     cursor.execute("SELECT time_note FROM stopwatch_history WHERE id = ?", (row_id,))
@@ -1121,7 +1121,7 @@ QPushButton:hover {
         self.history_listwidget.setItemWidget(item, widget)
         note_id = self.add_stopwatch_note_to_db(note_text, note_time)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
-        del_button.clicked.connect(lambda: self.del_history(item))
+        del_button.clicked.connect(lambda: self.del_history(item) if self.check_user_permission_delete() == True else None)
         set_new_stopwatch_btn.clicked.connect(lambda: self.set_new_time_stopwatch(note_time))
 
     def add_stopwatch_note_to_db(self, note, time_note):
@@ -1217,7 +1217,7 @@ QPushButton:hover {
                 layout.addWidget(del_button)
                 widget.setLayout(layout)
                 self.notes_listwidget.setItemWidget(item, widget)                
-                del_button.clicked.connect(lambda _, it=item: self.del_note_history(it))
+                del_button.clicked.connect(lambda _, it=item: self.del_note_history(it) if self.check_user_permission_delete() == True else None)
                 edit_btn.clicked.connect(lambda _, it=item: self.reduct_note(it.data(QtCore.Qt.ItemDataRole.UserRole)))
 
     def del_note_history(self, item):
@@ -1342,7 +1342,7 @@ QPushButton:hover {
         self.editor_plaintextedit.clear()
         item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
         edit_btn.clicked.connect(lambda: self.reduct_note(item.data(QtCore.Qt.ItemDataRole.UserRole)))
-        del_button.clicked.connect(lambda: self.del_note_history(item))
+        del_button.clicked.connect(lambda: self.del_note_history(item) if self.check_user_permission_delete() == True else None)
 
     def add_notes_note_to_db(self, text, title):
         """Notes method"""
@@ -1445,7 +1445,7 @@ QPushButton:hover {
                 item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
                 self.dates_listwidget.setItemWidget(item, widget)                
                 open_btn.clicked.connect(lambda _, it=item:  self.view_calendar_data_date(it.data(QtCore.Qt.ItemDataRole.UserRole)))
-                del_button.clicked.connect(lambda _, it=item:  self.del_calendar_history(it))
+                del_button.clicked.connect(lambda _, it=item: self.del_calendar_history(it) if self.check_user_permission_delete() == True else None)
 
     def view_calendar_data_date(self, id):
         """Calendar Method"""
@@ -1841,7 +1841,7 @@ QPushButton:hover {
         note_id = self.add_date_note_to_db(label.text())
         item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
         open_btn.clicked.connect(lambda _, id=note_id: self.view_calendar_data_date(id))
-        del_button.clicked.connect(lambda: self.del_calendar_history(item))
+        del_button.clicked.connect(lambda _, it=item: self.del_calendar_history(it) if self.check_user_permission_delete() == True else None)
 
     def add_date_note_to_db(self, date):
         """Calendar Method"""
@@ -2007,6 +2007,80 @@ QPushButton:hover {
         except Exception as e:
             print(f"Error checking database: {e}")
             return False
+
+    def check_user_permission_delete(self):
+        self.delete_dialog = QtWidgets.QDialog()
+        self.delete_dialog.setWindowTitle("CalenTrack | Delete data")
+        self.delete_dialog.setWindowIcon(self.get_icon("app-logo.ico"))
+        self.delete_dialog.setObjectName("delete_dialog")
+        self.delete_dialog.resize(412, 300)
+        self.delete_dialog.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
+        self.delete_dialog.setStyleSheet("""QDialog {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+}""")
+        self.delete_dialog_gridlayout = QtWidgets.QGridLayout(self.delete_dialog)
+        self.delete_dialog_gridlayout.setContentsMargins(0, 0, 0, 0)
+        self.delete_dialog_gridlayout.setSpacing(0)
+        self.delete_dialog_gridlayout.setObjectName("delete_dialog_gridlayout")
+        self.delete_dialog_main_gridlayout = QtWidgets.QGridLayout()
+        self.delete_dialog_main_gridlayout.setContentsMargins(-1, 4, -1, 4)
+        self.delete_dialog_main_gridlayout.setObjectName("delete_dialog_main_gridlayout")
+        self.delete_dialog_buttonbox = QtWidgets.QDialogButtonBox(parent=self.delete_dialog)
+        self.delete_dialog_buttonbox.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
+        self.delete_dialog_buttonbox.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    border-radius: 4%;
+    color: #fff;
+    font-weight: 700;
+    font-size: 12px;
+    height: 20px;
+    width: 80px;
+}
+QPushButton[text=\"&Yes\"] {
+    background-color: #48b585;
+}
+QPushButton[text=\"&No\"] {
+        background-color: #d13c30;
+}
+QPushButton[text=\"&Yes\"]:hover {
+        background-color: #38936c;
+}
+QPushButton[text=\"&No\"]:hover {
+        background-color: #af3025;
+}""")
+        self.delete_dialog_buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
+        self.delete_dialog_buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.No|QtWidgets.QDialogButtonBox.StandardButton.Yes)
+        self.delete_dialog_buttonbox.setCenterButtons(True)
+        self.delete_dialog_buttonbox.setObjectName("delete_dialog_buttonbox")
+        self.delete_dialog_main_gridlayout.addWidget(self.delete_dialog_buttonbox, 3, 0, 1, 1)
+        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
+        self.delete_dialog_main_gridlayout.addItem(spacerItem, 2, 0, 1, 1)
+        self.delete_dialog_pushbutton = QtWidgets.QPushButton(parent=self.delete_dialog)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.delete_dialog_pushbutton.sizePolicy().hasHeightForWidth())
+        self.delete_dialog_pushbutton.setSizePolicy(sizePolicy)
+        self.delete_dialog_pushbutton.setText("")
+        self.delete_dialog_pushbutton.setIcon(self.get_icon("are_you_sure.webp"))
+        self.delete_dialog_pushbutton.setIconSize(QtCore.QSize(400, 225))
+        self.delete_dialog_pushbutton.setShortcut("")
+        self.delete_dialog_pushbutton.setAutoDefault(True)
+        self.delete_dialog_pushbutton.setDefault(False)
+        self.delete_dialog_pushbutton.setFlat(True)
+        self.delete_dialog_pushbutton.setObjectName("delete_dialog_pushbutton")
+        self.delete_dialog_main_gridlayout.addWidget(self.delete_dialog_pushbutton, 1, 0, 1, 1)
+        self.delete_dialog_gridlayout.addLayout(self.delete_dialog_main_gridlayout, 0, 0, 1, 1)
+        QtCore.QMetaObject.connectSlotsByName(self.delete_dialog)
+        self.status_delete = False
+        self.delete_dialog_buttonbox.accepted.connect(lambda: self.set_status_delete(True) or self.delete_dialog.close())
+        self.delete_dialog_buttonbox.rejected.connect(lambda: self.set_status_delete(False) or self.delete_dialog.close())
+        self.delete_dialog.exec()
+        return self.status_delete
+
+    def set_status_delete(self, status_bool: bool):
+        self.status_delete = status_bool
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
