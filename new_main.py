@@ -1945,6 +1945,8 @@ QPushButton:hover {
         self.del_all_calendar_history()
         self.del_all_stopwatch_history()
         self.del_all_notes_history()
+        self.reset_stopwatch()
+        self.del_note()
 
     def show_page(self, page):
         self.main_stackedwidget.setCurrentWidget(page)
