@@ -243,6 +243,10 @@ color: #D4D4D4;""")
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #7349e5;
 }""")
@@ -271,6 +275,10 @@ QPushButton:hover {
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #3e3e42;
 }""")
@@ -297,6 +305,10 @@ QPushButton:hover {
     color: #fff;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #38936c;
@@ -357,6 +369,10 @@ border: none;""")
     color: #fff;
     font-weight: 700;
     font-size: 13px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #af3025;
@@ -516,6 +532,10 @@ font-weight: 700;""")
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #3e3e42;
     border: 1px solid #52525a;
@@ -535,6 +555,10 @@ QPushButton:hover {
     color: #fff;
     font-size: 12px;
     font-weight: 700;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #38936c;
@@ -660,6 +684,10 @@ color: #DC2626;""")
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #af3025;
 }""")
@@ -705,6 +733,10 @@ font-weight: 700;""")
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #af3025;
 }""")
@@ -730,6 +762,10 @@ QPushButton:hover {
     color: #fff;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #38936c;
@@ -761,6 +797,10 @@ QLineEdit:focus{
     color: #fff;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #3e3e42;
@@ -831,6 +871,10 @@ font-weight: 700;""")
     color: #fff;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #af3025;
@@ -983,6 +1027,10 @@ QWidget:hover {
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #38936c !important;
 }""")
@@ -996,6 +1044,10 @@ QPushButton:hover {
     color: white;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #af3025 !important;
@@ -1100,6 +1152,10 @@ QWidget:hover {
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #38936c !important;
 }""")
@@ -1113,6 +1169,10 @@ QPushButton:hover {
     color: white;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #af3025 !important;
@@ -1198,6 +1258,10 @@ QWidget:hover {
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #d17b2b !important;
 }""")
@@ -1211,6 +1275,10 @@ QPushButton:hover {
     color: white;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #af3025 !important;
@@ -1311,6 +1379,10 @@ QWidget:hover {
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #d17b2b !important;
 }""")
@@ -1323,6 +1395,10 @@ QPushButton:hover {
     color: white;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #af3025 !important;
@@ -1423,6 +1499,10 @@ QWidget:hover {
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #38936c !important;
 }""")
@@ -1436,6 +1516,10 @@ QPushButton:hover {
     color: white;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #af3025 !important;
@@ -1534,7 +1618,11 @@ QPushButton:hover {
     font-size: 12px;
     height: 20px;
     width: 80px;
-    }
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #52525a;
 }""")
@@ -1614,6 +1702,10 @@ QPushButton:hover {
         self.dialog_color_pushbutton.setStyleSheet("""QPushButton {
     background-color: #252525;
     border: 1px solid #777777;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }""")
         self.dialog_color_pushbutton.setText("")
         self.dialog_color_pushbutton.setObjectName("dialog_color_pushbutton")
@@ -1659,6 +1751,10 @@ QPushButton:hover {
     font-size: 12px;
     height: 20px;
     width: 80px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton[text=\"Apply\"] {
         background-color: #48b585;
@@ -1757,6 +1853,10 @@ QComboBox QAbstractItemView {
     font-weight: 700;""" +
 f"    background-color: {self.my_color};" +
 """    border: 1px solid #777777;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }""")
 
     def set_date(self):
@@ -1811,6 +1911,10 @@ QWidget:hover {
     font-weight: 700;
     font-size: 12px;
 }
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
     background-color: #38936c !important;
 }""")
@@ -1824,6 +1928,10 @@ QPushButton:hover {
     color: white;
     font-weight: 700;
     font-size: 12px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton:hover {
     background-color: #af3025 !important;
@@ -2041,6 +2149,10 @@ QPushButton:hover {
     font-size: 12px;
     height: 20px;
     width: 80px;
+}
+QPushButton:focus {
+    border: none;
+    outline: none;
 }
 QPushButton[text=\"&Yes\"] {
     background-color: #48b585;
