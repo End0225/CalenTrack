@@ -1043,13 +1043,16 @@ QPushButton:hover {
         if self.stopwatch_start_stop_btn.text() == "Start":
             self.timer.start(10)
             self.stopwatch_start_stop_btn.setText("Stop")
+            self.stopwatch_start_stop_btn.setIcon(self.get_icon("stop-icon.png"))
         else:
             self.timer.stop()
             self.stopwatch_start_stop_btn.setText("Start")
+            self.stopwatch_start_stop_btn.setIcon(self.get_icon("start-icon.png"))
 
     def reset_stopwatch(self):
         """Stopwatch method"""
         self.stopwatch_start_stop_btn.setText("Start")
+        self.stopwatch_start_stop_btn.setIcon(self.get_icon("start-icon.png"))
         self.timer.stop()
         self.time = QTime(0, 0, 0, 0)
         self.stopwatch_time_label.setText(self.format_time(self.time))
