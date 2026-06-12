@@ -1361,9 +1361,6 @@ QPushButton:hover {
 
     def add_to_history_notes(self, title):
         """Notes method"""
-        if len(title) >= 10:
-            self.message_error_len_title()
-            return None
         item = QListWidgetItem()
         item.setSizeHint(QtCore.QSize(0, 28))
         self.notes_listwidget.addItem(item)
@@ -1463,40 +1460,6 @@ QPushButton:hover {
         """Notes method"""
         self.editor_lineedit.clear()
         self.editor_plaintextedit.clear()
-
-    def message_error_len_title(self):
-        """Notes method"""
-        new_window = QMessageBox()
-        new_window.setGeometry(950, 650, 400, 290)
-        new_window.setWindowTitle("CalenTrack | Error")
-        new_window.setWindowIcon(self.get_icon("app-logo.ico"))
-        new_window.setText("Error!\nMaximal header length\nis 10 symbols")
-        new_window.setIcon(QMessageBox.Icon.Warning)
-        new_window.setStandardButtons(QMessageBox.StandardButton.Ok)
-        new_window.setStyleSheet("""QMessageBox {
-    background-color: #252525;
-    border: 1px solid #3e3e42;
-}
-QMessageBox QLabel {
-    color: #fff;
-    font-size: 12px;
-    font-weight: 700;
-}
-QPushButton {
-    background-color: #48b585;
-    border-radius: 4px;
-    color: #fff;
-    font-weight: 700;
-    font-size: 12px;
-    padding: 5px 10px;
-    min-width: 50px;
-    border: none;
-}
-QPushButton:hover {
-    background-color: #38936c;
-}
-""")
-        new_window.exec()
 
     def load_calendar_history(self):
         """Calendar Method"""
