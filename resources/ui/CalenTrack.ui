@@ -519,7 +519,10 @@ color: #D4D4D4;</string>
 	font-weight: 700;
 	font-size: 12px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #7349e5;
 }</string>
@@ -574,7 +577,10 @@ QPushButton:hover {
 	font-weight: 700;
 	font-size: 12px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #3e3e42;
 }</string>
@@ -626,7 +632,10 @@ QPushButton:hover {
 	font-weight: 700;
 	font-size: 12px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #38936c;
 }</string>
@@ -755,7 +764,10 @@ border: none;</string>
 	font-weight: 700;
 	font-size: 13px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #af3025;
 }</string>
@@ -1054,7 +1066,10 @@ font-weight: 700;</string>
 	font-weight: 700;
 	font-size: 12px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #3e3e42;
 	border: 1px solid #52525a;
@@ -1097,7 +1112,10 @@ QPushButton:hover {
 	font-size: 12px;
 	font-weight: 700;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #38936c;
 }</string>
@@ -1329,7 +1347,10 @@ color: #DC2626;</string>
 	font-weight: 700;
 	font-size: 12px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #af3025;
 }</string>
@@ -1434,7 +1455,10 @@ font-weight: 700;</string>
 	font-weight: 700;
 	font-size: 12px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #af3025;
 }</string>
@@ -1488,7 +1512,10 @@ QPushButton:hover {
 	font-weight: 700;
 	font-size: 12px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #38936c;
 }</string>
@@ -1550,7 +1577,10 @@ QLineEdit:focus{
 	font-weight: 700;
 	font-size: 12px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #3e3e42;
 }</string>
@@ -1697,7 +1727,10 @@ font-weight: 700;</string>
 	font-weight: 700;
 	font-size: 12px;
 }
-
+QPushButton:focus {
+    border: none;
+    outline: none;
+}
 QPushButton:hover {
 	background-color: #af3025;
 }</string>
