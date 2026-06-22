@@ -926,7 +926,7 @@ QPushButton:hover {
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "CalenTrack"))
         self.app_title_label.setText(_translate("MainWindow", "CalenTrack"))
-        self.stopwatch_btn.setText(_translate("MainWindow", "Timer"))
+        self.stopwatch_btn.setText(_translate("MainWindow", "Stopwatch"))
         self.history_btn.setText(_translate("MainWindow", "History"))
         self.notes_btn.setText(_translate("MainWindow", "Notes"))
         self.calendar_btn.setText(_translate("MainWindow", "Calendar"))
