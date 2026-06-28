@@ -73,3 +73,6 @@ color: #D4D4D4;""")
 
     def set_start_btn_text(self, text: str):
         self._start_btn.setText(text)
+
+    def change_start_btn_icon(self, icon_name: str):
+        self._start_btn.setIcon(self.icon_manager.get_icon(icon_name))
