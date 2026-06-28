@@ -9,6 +9,7 @@ class HistoryPresenter:
         self.model = model
         self.view.del_item_clicked.connect(self._on_del_item)
         self.view.establish_item_clicked.connect(self._on_establish_item)
+        self.view.clear_all_clicked.connect(self._on_del_all_items)
 
     def _on_del_item(self, item: QtWidgets.QListWidgetItem):
         note_id: int = item.data(QtCore.Qt.ItemDataRole.UserRole)
@@ -18,3 +19,7 @@ class HistoryPresenter:
 
     def _on_establish_item(self, time: str):
         self.stopwatch_presenter.set_time(time)
+
+    def _on_del_all_items(self) -> None:
+        self.model.clear_stopwatch_history()
+        self.view.clear_all()

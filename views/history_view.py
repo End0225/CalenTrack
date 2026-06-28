@@ -5,6 +5,7 @@ from utils.button_factory import ButtonFactory
 class HistoryView(QtWidgets.QWidget):
     del_item_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
     establish_item_clicked = QtCore.pyqtSignal(str)
+    clear_all_clicked = QtCore.pyqtSignal()
 
     def __init__(self, icon_manager):
         super().__init__()
@@ -34,6 +35,7 @@ font-weight: 700;""")
         self.history_title_label.setObjectName("history_title_label")
         self.history_grid.addWidget(self.history_title_label, 0, 0, 1, 1)
         self.history_clear_btn = self.factory.get_btn(self, "red", "Clear", [90, 20], None, None, "delete-icon.png", None)
+        self.history_clear_btn.clicked.connect(self.clear_all_clicked.emit)
         self.history_grid.addWidget(self.history_clear_btn, 0, 1, 1, 1)
         self.history_listwidget = QtWidgets.QListWidget(parent=self)
         self.history_listwidget.setMinimumSize(QtCore.QSize(0, 486))
@@ -125,3 +127,6 @@ QWidget:hover {
 
     def listwidget_takeitem(self, row: int) -> None:
         self.history_listwidget.takeItem(row)
+
+    def clear_all(self) -> None:
+        self.history_listwidget.clear()

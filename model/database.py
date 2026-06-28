@@ -68,6 +68,12 @@ CREATE TABLE IF NOT EXISTS user_settings
             cursor.execute("DELETE FROM stopwatch_history WHERE id = ?", (note_id,))
             conn.commit()
 
+    def clear_stopwatch_history(self) -> None:
+        with sqlite3.connect(self.path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM stopwatch_history")
+            conn.commit()
+
     # ==== Notes =====
     # ==== Calendar =====
     # ==== Settings =====
