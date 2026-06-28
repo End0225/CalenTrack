@@ -66,7 +66,7 @@ color: #D4D4D4;""")
         self.gridLayout_17.addWidget(self._frame, 1, 0, 1, 1)
         self._start_btn.clicked.connect(self.start_clicked.emit)
         self._reset_btn.clicked.connect(self.reset_clicked.emit)
-        self._save_btn.clicked.connect(self.reset_clicked.emit)
+        self._save_btn.clicked.connect(self.save_clicked.emit)
 
     def update_time(self, text: str):
         self._time_label.setText(text)
@@ -76,3 +76,6 @@ color: #D4D4D4;""")
 
     def change_start_btn_icon(self, icon_name: str):
         self._start_btn.setIcon(self.icon_manager.get_icon(icon_name))
+
+    def get_time(self) -> str:
+        return self._time_label.text()

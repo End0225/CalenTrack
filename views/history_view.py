@@ -3,6 +3,9 @@ from utils.button_factory import ButtonFactory
 
 
 class HistoryView(QtWidgets.QWidget):
+    del_item_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
+    establish_item_clicked = QtCore.pyqtSignal(str)
+
     def __init__(self, icon_manager):
         super().__init__()
         self.icon_manager = icon_manager
@@ -43,3 +46,82 @@ font-weight: 700;""")
         self.history_listwidget.setObjectName("history_listwidget")
         self.history_grid.addWidget(self.history_listwidget, 1, 0, 1, 2)
         self.gridLayout_19.addLayout(self.history_grid, 0, 0, 1, 1)
+
+    def add_item(self, note_text: str, note_time: str, note_id: int) -> None:
+        item = QtWidgets.QListWidgetItem()
+        item.setSizeHint(QtCore.QSize(0, 28)) 
+        self.history_listwidget.addItem(item)
+        widget = QtWidgets.QWidget()
+        layout = QtWidgets.QHBoxLayout()
+        layout.setContentsMargins(2, 1, 1, 1)
+        if self.history_listwidget.count() == 1:
+            widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
+        else:
+            widget.setStyleSheet("""QWidget {
+    border: none;
+    background-color:#252525;
+    border-top: 1px solid #3e3e42;
+    padding: 0;
+}
+QWidget:hover {
+    background-color: #2d2d2d;
+}""")
+        label = QtWidgets.QLabel(note_text)
+        label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
+        layout.addWidget(label)
+        establish_btn = QtWidgets.QPushButton("Establish")
+        establish_btn.setStyleSheet("""QPushButton {
+    background-color: #48b585;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: #fff; 
+    font-weight: 700;
+    font-size: 12px;
+    }
+    QPushButton:focus {
+    border: none;
+    outline: none;
+    }
+    QPushButton:hover {
+    background-color: #38936c !important;
+    }""")
+        establish_btn.setFixedSize(60, 18)
+        del_button = QtWidgets.QPushButton("Delete")
+        del_button.setStyleSheet("""QPushButton {
+    background-color: #d13c30;
+    padding: 0;
+    border-top: none;
+    border-radius: 4%;
+    color: white;
+    font-weight: 700;
+    font-size: 12px;
+    }
+    QPushButton:focus {
+    border: none;
+    outline: none;
+    }
+    QPushButton:hover {
+    background-color: #af3025 !important;
+    }""")
+        del_button.setFixedSize(55, 18)
+        layout.addWidget(establish_btn)
+        layout.addWidget(del_button)
+        widget.setLayout(layout)
+        self.history_listwidget.setItemWidget(item, widget)
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
+        del_button.clicked.connect(lambda: self.del_item_clicked.emit(item))
+        establish_btn.clicked.connect(lambda: self.establish_item_clicked.emit(note_time))
+
+    def get_listwidget_row(self, item: QtWidgets.QListWidgetItem) -> int:
+        return self.history_listwidget.row(item)
+
+    def listwidget_takeitem(self, row: int) -> None:
+        self.history_listwidget.takeItem(row)

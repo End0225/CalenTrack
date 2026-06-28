@@ -10,6 +10,7 @@ from views.notes_view import NotesView
 from views.calendar_view import CalendarView
 from views.settings_view import SettingsView
 from presenters.stopwatch_presenter import StopwatchPresenter
+from presenters.history_presenter import HistoryPresenter
 from utils.icon_manager import IconManager
 
 
@@ -56,7 +57,8 @@ def main():
     for name, widget in view_widgets.items():
         view.add_page(name, widget)
 
-    stopwatch_presenter = StopwatchPresenter(view_widgets["stopwatch_view"], view, model)
+    stopwatch_presenter = StopwatchPresenter(view_widgets["stopwatch_view"], view_widgets["history_view"], view, model)
+    history_presenter = HistoryPresenter(view_widgets["history_view"], stopwatch_presenter, view, model)
 
     view.show_page(view_widgets["stopwatch_view"], view.buttons["stopwatch_view"])
     view.show()

@@ -54,7 +54,20 @@ CREATE TABLE IF NOT EXISTS user_settings
             return False
 
     # ==== Stopwatch =====
+    def add_stopwatch_note(self, note_text: str, note_time: str) -> int | None:
+        with sqlite3.connect(self.path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO stopwatch_history (note, time_note) VALUES (?, ?)", (note_text, note_time))
+            conn.commit()
+            return cursor.lastrowid
+
     # ==== History =====
+    def delete_stopwatch_record(self, note_id: int) -> None:
+        with sqlite3.connect(self.path) as conn:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM stopwatch_history WHERE id = ?", (note_id,))
+            conn.commit()
+
     # ==== Notes =====
     # ==== Calendar =====
     # ==== Settings =====
