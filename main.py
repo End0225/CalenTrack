@@ -5,6 +5,7 @@ import shutil
 from model.database import DatabaseModel
 from views.main_window import MainWindowView
 from views.stopwatch_view import StopwatchView
+from views.history_view import HistoryView
 from utils.icon_manager import IconManager
 
 
@@ -42,7 +43,8 @@ def main():
 
     view = MainWindowView(icon_manager)
     view_widgets = {
-        "stopwatch_view": StopwatchView(icon_manager)
+        "stopwatch_view": StopwatchView(icon_manager),
+        "history_view": HistoryView(icon_manager)
     }
     for name, widget in view_widgets.items():
         view.add_page(name, widget)
