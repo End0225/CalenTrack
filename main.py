@@ -7,6 +7,7 @@ from views.main_window import MainWindowView
 from views.stopwatch_view import StopwatchView
 from views.history_view import HistoryView
 from views.notes_view import NotesView
+from views.calendar_view import CalendarView
 from utils.icon_manager import IconManager
 
 
@@ -46,7 +47,8 @@ def main():
     view_widgets = {
         "stopwatch_view": StopwatchView(icon_manager),
         "history_view": HistoryView(icon_manager),
-        "notes_view": NotesView(icon_manager)
+        "notes_view": NotesView(icon_manager),
+        "calendar_view": CalendarView(icon_manager)
     }
     for name, widget in view_widgets.items():
         view.add_page(name, widget)
