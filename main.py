@@ -4,6 +4,7 @@ import os
 import shutil
 from model.database import DatabaseModel
 from views.main_window import MainWindowView
+from views.stopwatch_view import StopwatchView
 from utils.icon_manager import IconManager
 
 
@@ -40,7 +41,13 @@ def main():
     icon_manager.copy_all_resources()
 
     view = MainWindowView(icon_manager)
+    view_widgets = {
+        "stopwatch_view": StopwatchView(icon_manager)
+    }
+    for name, widget in view_widgets.items():
+        view.add_page(name, widget)
 
+    view.show_page(view_widgets["stopwatch_view"], view.buttons["stopwatch_view"])
     view.show()
     sys.exit(app.exec())
 
