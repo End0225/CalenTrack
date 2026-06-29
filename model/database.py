@@ -3,12 +3,12 @@ import os
 
 
 class DatabaseModel:
-    def __init__(self, path):
-        self.path = path
+    def __init__(self, path: str):
+        self.path: str = path
 
     def create_tables(self) -> None:
         with sqlite3.connect(self.path) as conn:
-            cursor = conn.cursor()
+            cursor: sqlite3.Cursor = conn.cursor()
             cursor.executescript("""CREATE TABLE IF NOT EXISTS stopwatch_history
 (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS user_settings
             return False
         try:
             with sqlite3.connect(self.path) as conn:
-                cursor = conn.cursor()
+                cursor: sqlite3.Cursor = conn.cursor()
                 cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
                 tables = cursor.fetchall()
                 print(f"Database valid, tables found: {len(tables)}")
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS user_settings
     # ==== Stopwatch =====
     def add_stopwatch_note(self, note_text: str, note_time: str) -> int | None:
         with sqlite3.connect(self.path) as conn:
-            cursor = conn.cursor()
+            cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("INSERT INTO stopwatch_history (note, time_note) VALUES (?, ?)", (note_text, note_time))
             conn.commit()
             return cursor.lastrowid
@@ -64,19 +64,19 @@ CREATE TABLE IF NOT EXISTS user_settings
     # ==== History =====
     def delete_stopwatch_record(self, note_id: int) -> None:
         with sqlite3.connect(self.path) as conn:
-            cursor = conn.cursor()
+            cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("DELETE FROM stopwatch_history WHERE id = ?", (note_id,))
             conn.commit()
 
     def clear_stopwatch_history(self) -> None:
         with sqlite3.connect(self.path) as conn:
-            cursor = conn.cursor()
+            cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("DELETE FROM stopwatch_history")
             conn.commit()
 
     def get_history(self) -> list[int, str, str]:
         with sqlite3.connect(self.path) as conn:
-            cursor = conn.cursor()
+            cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("SELECT id, note, time_note FROM stopwatch_history ORDER BY id")
             return cursor.fetchall()
 

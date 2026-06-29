@@ -6,10 +6,10 @@ class CalendarView(QtWidgets.QWidget):
     def __init__(self, icon_manager):
         super().__init__()
         self.icon_manager = icon_manager
-        self.factory = ButtonFactory(self.icon_manager)
+        self.factory: ButtonFactory = ButtonFactory(self.icon_manager)
         self.setup_ui()
 
-    def setup_ui(self):
+    def setup_ui(self) -> None:
         self.setObjectName("calendar_page")
         self.gridLayout_15 = QtWidgets.QGridLayout(self)
         self.gridLayout_15.setContentsMargins(0, 0, 0, 0)

@@ -10,10 +10,10 @@ class HistoryView(QtWidgets.QWidget):
     def __init__(self, icon_manager):
         super().__init__()
         self.icon_manager = icon_manager
-        self.factory = ButtonFactory(self.icon_manager)
+        self.factory: ButtonFactory = ButtonFactory(self.icon_manager)
         self.setup_ui()
         
-    def setup_ui(self):
+    def setup_ui(self) -> None:
         self.setObjectName("history_page")
         self.gridLayout_19 = QtWidgets.QGridLayout(self)
         self.gridLayout_19.setContentsMargins(0, 0, 0, 0)
@@ -50,7 +50,7 @@ font-weight: 700;""")
         self.gridLayout_19.addLayout(self.history_grid, 0, 0, 1, 1)
 
     def add_item(self, note_text: str, note_time: str, note_id: int) -> None:
-        item = QtWidgets.QListWidgetItem()
+        item: QtWidgets.QListWidgetItem = QtWidgets.QListWidgetItem()
         item.setSizeHint(QtCore.QSize(0, 28)) 
         self.history_listwidget.addItem(item)
         widget = QtWidgets.QWidget()

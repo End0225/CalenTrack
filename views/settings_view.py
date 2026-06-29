@@ -9,7 +9,7 @@ class SettingsView(QtWidgets.QWidget):
         self.factory = ButtonFactory(self.icon_manager)
         self.setup_ui()
         
-    def setup_ui(self):
+    def setup_ui(self) -> None:
         self.setObjectName("settings_page")
         self.gridLayout_18 = QtWidgets.QGridLayout(self)
         self.gridLayout_18.setContentsMargins(0, 0, 0, 0)

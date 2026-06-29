@@ -9,7 +9,7 @@ class NotesView(QtWidgets.QWidget):
         self.factory = ButtonFactory(self.icon_manager)
         self.setup_ui()
         
-    def setup_ui(self):
+    def setup_ui(self) -> None:
         self.setObjectName("notes_page")
         self.gridLayout_20 = QtWidgets.QGridLayout(self)
         self.gridLayout_20.setContentsMargins(0, 0, 0, 0)

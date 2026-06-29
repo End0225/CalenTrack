@@ -13,7 +13,7 @@ class StopwatchView(QtWidgets.QWidget):
         self.factory = ButtonFactory(self.icon_manager)
         self._setup_ui()
 
-    def _setup_ui(self):
+    def _setup_ui(self) -> None:
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -68,13 +68,13 @@ color: #D4D4D4;""")
         self._reset_btn.clicked.connect(self.reset_clicked.emit)
         self._save_btn.clicked.connect(self.save_clicked.emit)
 
-    def update_time(self, text: str):
+    def update_time(self, text: str) -> None:
         self._time_label.setText(text)
 
-    def set_start_btn_text(self, text: str):
+    def set_start_btn_text(self, text: str) -> None:
         self._start_btn.setText(text)
 
-    def change_start_btn_icon(self, icon_name: str):
+    def change_start_btn_icon(self, icon_name: str) -> None:
         self._start_btn.setIcon(self.icon_manager.get_icon(icon_name))
 
     def get_time(self) -> str:

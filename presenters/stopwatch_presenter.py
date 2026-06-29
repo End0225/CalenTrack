@@ -1,23 +1,23 @@
 from PyQt6.QtCore import QTime, QTimer
-from PyQt6.QtWidgets import QDateEdit
+from PyQt6 import QtWidgets
 
 
 class StopwatchPresenter:
-    def __init__(self, view, history_view, main_view, model):
-        self.view = view
-        self.history_view = history_view
-        self.main_view = main_view
+    def __init__(self, view: QtWidgets.QWidget, history_view: QtWidgets.QWidget, main_view: QtWidgets.QMainWindow, model):
+        self.view: QtWidgets.QWidget = view
+        self.history_view: QtWidgets.QWidget = history_view
+        self.main_view: QtWidgets.QMainWindow = main_view
         self.model = model
         self.view.start_clicked.connect(self._toggle)
         self.view.reset_clicked.connect(self._reset_stopwatch)
         self.view.save_clicked.connect(self._save_to_history)
-        self._time = QTime(0, 0, 0, 0)
-        self._timer = QTimer()
-        self._date = QDateEdit()
+        self._time: QTime = QTime(0, 0, 0, 0)
+        self._timer: QTimer = QTimer()
+        self._date: QtWidgets.QDateEdit = QtWidgets.QDateEdit()
         self._timer.timeout.connect(self._update_time)
-        self._is_running = False
+        self._is_running: bool = False
 
-    def _toggle(self):
+    def _toggle(self) -> None:
         match self._is_running:
             case False:
                 self._start_stopwatch()
@@ -49,11 +49,11 @@ class StopwatchPresenter:
         return f"{time.hour():02}:{time.minute():02}:{time.second():02}, {(time.msec() // 10):02d}"
 
     def _save_to_history(self) -> None:
-        date = self._date.date().currentDate().toString("dd-MM-yyyy")
-        real_time = self._time.currentTime().toString("hh:mm")
-        stopwatch_time = self.view.get_time()
-        data = f"{date}  {real_time} | {stopwatch_time}"
-        rowid = self.model.add_stopwatch_note(data, stopwatch_time)
+        date: str = self._date.date().currentDate().toString("dd-MM-yyyy")
+        real_time: str = self._time.currentTime().toString("hh:mm")
+        stopwatch_time: str = self.view.get_time()
+        data: str = f"{date}  {real_time} | {stopwatch_time}"
+        rowid: int = self.model.add_stopwatch_note(data, stopwatch_time)
         self.history_view.add_item(data, stopwatch_time, rowid)
 
     def set_time(self, time: str) -> None:

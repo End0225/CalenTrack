@@ -4,7 +4,7 @@ from PyQt6 import QtWidgets, QtCore
 class ButtonFactory:
     def __init__(self, icon_manager):
         self._icon_manager = icon_manager
-        self._base_btn_style = """QPushButton {
+        self._base_btn_style: str = """QPushButton {
     color: #fff;
     font-size: 12px;
     font-weight: 700;
@@ -13,7 +13,7 @@ QPushButton:focus {
     border: none;
     outline: none;
 }"""
-        self.base_tool_btn_style = """QToolButton {
+        self.base_tool_btn_style: str = """QToolButton {
     color: #9E9EA7;
     border: none;
     font-size: 12px;
@@ -23,16 +23,16 @@ QToolButton:hover {
     background-color: #252525;
 }
 """
-        self.checked_tool_btn_style = """QToolButton {
+        self.checked_tool_btn_style: str = """QToolButton {
     background-color: #323234;
     color: white;
 }"""
 
     def get_btn(self, parent: QtWidgets.QWidget | QtWidgets.QFrame, btn_color: str, btn_text: str, btn_size: list[int], hsp: QtWidgets.QSizePolicy.Policy | None, vsp: QtWidgets.QSizePolicy.Policy | None, icon_file_name: str | None, icon_size: list[int] | None) -> QtWidgets.QPushButton:
-        button = QtWidgets.QPushButton(parent=parent)
+        button: QtWidgets.QPushButton = QtWidgets.QPushButton(parent=parent)
         button.setText(btn_text)
         if hsp and vsp:
-            sizePolicy = QtWidgets.QSizePolicy(hsp, vsp)
+            sizePolicy: QtWidgets.QSizePolicy = QtWidgets.QSizePolicy(hsp, vsp)
             sizePolicy.setHorizontalStretch(0)
             sizePolicy.setVerticalStretch(0)
             sizePolicy.setHeightForWidth(button.sizePolicy().hasHeightForWidth())
@@ -101,9 +101,9 @@ QPushButton:hover {{
 }}"""
 
     def get_aside_tool_btn(self, parent: QtWidgets.QWidget | QtWidgets.QFrame, btn_text: str, icon_file_name: str | None, icon_size: list[int] | None) -> QtWidgets.QToolButton:
-        button = QtWidgets.QToolButton(parent=parent)
+        button: QtWidgets.QToolButton = QtWidgets.QToolButton(parent=parent)
         button.setText(btn_text)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
+        sizePolicy: QtWidgets.QSizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(button.sizePolicy().hasHeightForWidth())
