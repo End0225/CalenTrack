@@ -20,7 +20,7 @@ class Application:
         self.copy_paths()
         self.setup_icon_manager()
         self.setup_ui()
-        self.preload_history()
+        self.preload_data()
 
     def copy_paths(self) -> None:
         if getattr(sys, "frozen", False):
@@ -71,8 +71,8 @@ class Application:
 
         self.view.show_page(view_widgets["stopwatch_view"], self.view.buttons["stopwatch_view"])
 
-    def preload_history(self) -> None:
-        pass
+    def preload_data(self) -> None:
+        self.history_presenter.load_history()
 
     def run(self) -> None:
         self.view.show()

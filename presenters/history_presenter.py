@@ -11,6 +11,12 @@ class HistoryPresenter:
         self.view.establish_item_clicked.connect(self._on_establish_item)
         self.view.clear_all_clicked.connect(self._on_del_all_items)
 
+    def load_history(self) -> None:
+        self.view.clear_all()
+        history: list[int, str, str] = self.model.get_history()
+        for row_id, note_text, note_time in history:
+            self.view.add_item(note_text, note_time, row_id)
+
     def _on_del_item(self, item: QtWidgets.QListWidgetItem):
         note_id: int = item.data(QtCore.Qt.ItemDataRole.UserRole)
         row: int = self.view.get_listwidget_row(item)
