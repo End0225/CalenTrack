@@ -2,10 +2,9 @@ from PyQt6 import QtCore, QtWidgets
 
 
 class HistoryPresenter:
-    def __init__(self, view: QtWidgets.QWidget, stopwatch_presenter, main_view: QtWidgets.QMainWindow, model):
+    def __init__(self, view: QtWidgets.QWidget, stopwatch_presenter, model):
         self.view = view
         self.stopwatch_presenter = stopwatch_presenter
-        self.main_view = main_view
         self.model = model
         self.view.del_item_clicked.connect(self._on_del_item)
         self.view.establish_item_clicked.connect(self._on_establish_item)

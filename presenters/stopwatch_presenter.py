@@ -3,10 +3,9 @@ from PyQt6 import QtWidgets
 
 
 class StopwatchPresenter:
-    def __init__(self, view: QtWidgets.QWidget, history_view: QtWidgets.QWidget, main_view: QtWidgets.QMainWindow, model):
+    def __init__(self, view: QtWidgets.QWidget, history_view: QtWidgets.QWidget, model):
         self.view: QtWidgets.QWidget = view
         self.history_view: QtWidgets.QWidget = history_view
-        self.main_view: QtWidgets.QMainWindow = main_view
         self.model = model
         self.view.start_clicked.connect(self._toggle)
         self.view.reset_clicked.connect(self._reset_stopwatch)

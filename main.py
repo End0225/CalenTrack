@@ -66,8 +66,8 @@ class Application:
         for name, widget in view_widgets.items():
             self.view.add_page(name, widget)
 
-        self.stopwatch_presenter: StopwatchPresenter = StopwatchPresenter(view_widgets["stopwatch_view"], view_widgets["history_view"], self.view, self.model)
-        self.history_presenter: HistoryPresenter = HistoryPresenter(view_widgets["history_view"], self.stopwatch_presenter, self.view, self.model)
+        self.stopwatch_presenter: StopwatchPresenter = StopwatchPresenter(view_widgets["stopwatch_view"], view_widgets["history_view"], self.model)
+        self.history_presenter: HistoryPresenter = HistoryPresenter(view_widgets["history_view"], self.stopwatch_presenter, self.model)
 
         self.view.show_page(view_widgets["stopwatch_view"], self.view.buttons["stopwatch_view"])
 
