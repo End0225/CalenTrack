@@ -11,6 +11,7 @@ from views.calendar_view import CalendarView
 from views.settings_view import SettingsView
 from presenters.stopwatch_presenter import StopwatchPresenter
 from presenters.history_presenter import HistoryPresenter
+from presenters.notes_presenter import NotesPresenter
 from utils.icon_manager import IconManager
 
 
@@ -68,11 +69,13 @@ class Application:
 
         self.stopwatch_presenter: StopwatchPresenter = StopwatchPresenter(view_widgets["stopwatch_view"], view_widgets["history_view"], self.model)
         self.history_presenter: HistoryPresenter = HistoryPresenter(view_widgets["history_view"], self.stopwatch_presenter, self.model)
+        self.notes_presenter: NotesPresenter = NotesPresenter(view_widgets["notes_view"], self.model)
 
         self.view.show_page(view_widgets["stopwatch_view"], self.view.buttons["stopwatch_view"])
 
     def preload_data(self) -> None:
         self.history_presenter.load_history()
+        self.notes_presenter.load_notes()
 
     def run(self) -> None:
         self.view.show()
