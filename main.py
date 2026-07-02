@@ -12,6 +12,10 @@ from views.settings_view import SettingsView
 from presenters.stopwatch_presenter import StopwatchPresenter
 from presenters.history_presenter import HistoryPresenter
 from presenters.notes_presenter import NotesPresenter
+from presenters.calendar_presenter import CalendarPresenter
+from views.dialogs.calendar_dialog import CalendarDialog
+from views.dialogs.color_dialog import ColorDialog
+from views.dialogs.date_dialog import DateDialog
 from utils.icon_manager import IconManager
 
 
@@ -57,11 +61,16 @@ class Application:
 
     def setup_ui(self) -> None:
         self.view: MainWindowView = MainWindowView(self.icon_manager)
+        dialogs: dict[str, QtWidgets.QDialog] = {
+            "color_dialog": ColorDialog(self.icon_manager),
+            "date_dialog": DateDialog(self.icon_manager)
+        }
+        dialogs["calendar_dialog"] = CalendarDialog(self.icon_manager, dialogs["color_dialog"])
         view_widgets: dict[str, QtWidgets.QWidget] = {
             "stopwatch_view": StopwatchView(self.icon_manager),
             "history_view": HistoryView(self.icon_manager),
             "notes_view": NotesView(self.icon_manager),
-            "calendar_view": CalendarView(self.icon_manager),
+            "calendar_view": CalendarView(self.icon_manager, dialogs["calendar_dialog"], dialogs["date_dialog"]),
             "settings_view": SettingsView(self.icon_manager)
         }
         for name, widget in view_widgets.items():
@@ -70,12 +79,14 @@ class Application:
         self.stopwatch_presenter: StopwatchPresenter = StopwatchPresenter(view_widgets["stopwatch_view"], view_widgets["history_view"], self.model)
         self.history_presenter: HistoryPresenter = HistoryPresenter(view_widgets["history_view"], self.stopwatch_presenter, self.model)
         self.notes_presenter: NotesPresenter = NotesPresenter(view_widgets["notes_view"], self.model)
+        self.calendar_presenter: CalendarPresenter = CalendarPresenter(view_widgets["calendar_view"], dialogs["calendar_dialog"], self.model)
 
         self.view.show_page(view_widgets["stopwatch_view"], self.view.buttons["stopwatch_view"])
 
     def preload_data(self) -> None:
         self.history_presenter.load_history()
         self.notes_presenter.load_notes()
+        self.calendar_presenter.load_dates()
 
     def run(self) -> None:
         self.view.show()
