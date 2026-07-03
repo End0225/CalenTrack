@@ -10,7 +10,7 @@ class SettingsPresenter:
         self.view.save_backup_clicked.connect(self._save_backup)
         self.view.load_backup_clicked.connect(self._load_backup)
         self.view.deleteall_clicked.connect(self._deleteall_data)
-        self.view.parameter_1_clicked.connect(self._toggle_setting)
+        self.view.checkbox_clicked.connect(self._toggle_setting)
         self.permission: bool
         self.confirm_dialog.confirmation_clicked.connect(self._toggle_permission)
 
@@ -48,3 +48,7 @@ class SettingsPresenter:
 
     def _toggle_setting(self, name: str, status: bool) -> None:
         self.model.toggle_setting(name, status)
+
+    def reset_settings(self) -> None:
+        self.model.reset_settings()
+        self.view.reset_settings()

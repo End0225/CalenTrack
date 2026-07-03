@@ -6,7 +6,7 @@ class SettingsView(QtWidgets.QWidget):
     save_backup_clicked = QtCore.pyqtSignal()
     load_backup_clicked = QtCore.pyqtSignal()
     deleteall_clicked = QtCore.pyqtSignal()
-    parameter_1_clicked = QtCore.pyqtSignal(str, bool)
+    checkbox_clicked = QtCore.pyqtSignal(str, bool)
 
     def __init__(self, icon_manager):
         super().__init__()
@@ -111,7 +111,7 @@ border-top: 1px solid #3e3e42;
         self.gridLayout_23.setSpacing(0)
         self.gridLayout_23.setObjectName("gridLayout_23")
         self.parameter_1_chechbox = QtWidgets.QCheckBox(parent=self.parameters_frame)
-        self.parameter_1_chechbox.clicked.connect(lambda: self.parameter_1_clicked.emit(self.parameter_1_chechbox.objectName(), self.parameter_1_chechbox.isChecked()))
+        self.parameter_1_chechbox.clicked.connect(lambda: self.checkbox_clicked.emit(self.parameter_1_chechbox.objectName(), self.parameter_1_chechbox.isChecked()))
         self.parameter_1_chechbox.setText("Open stopwatch when you establish time from history")
         self.parameter_1_chechbox.setStyleSheet("""QCheckBox {
     border: none;
@@ -191,3 +191,7 @@ color: #DC2626;""")
         spacerItem1 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.settings_grid.addItem(spacerItem1, 3, 0, 1, 1)
         self.gridLayout_18.addLayout(self.settings_grid, 0, 0, 1, 1)
+
+    def reset_settings(self) -> None:
+        for checkbox in self.findChildren(QtWidgets.QCheckBox):
+            checkbox.setChecked(False)

@@ -234,3 +234,9 @@ CREATE TABLE IF NOT EXISTS user_settings
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("INSERT OR REPLACE INTO user_settings (objectName, objectValue) VALUES (?, ?)", (name, status))
             conn.commit()
+
+    def reset_settings(self) -> None:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("DELETE FROM user_settings")
+            conn.commit()

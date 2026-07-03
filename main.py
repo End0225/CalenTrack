@@ -97,6 +97,7 @@ class Application:
         self.history_presenter._on_del_all_items(False)
         self.notes_presenter._del_notes(False)
         self.calendar_presenter._del_dates(False)
+        self.settings_presenter.reset_settings()
         self.stopwatch_presenter._reset_stopwatch()
         self.notes_presenter._clear_note()
 
