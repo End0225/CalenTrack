@@ -24,7 +24,7 @@ class NotesView(QtWidgets.QWidget):
         self.notes_grid.setContentsMargins(12, 10, 12, 14)
         self.notes_grid.setObjectName("notes_grid")
         self.notes_title_label = QtWidgets.QLabel(parent=self)
-        self.notes_title_label.setText("New note")
+        self.notes_title_label.setText("Notes")
         self.notes_title_label.setStyleSheet("""color: white;
 font-size: 15px;
 font-weight: 700;""")
@@ -95,7 +95,7 @@ QPlainTextEdit:focus{
         self.notes_listwidget.setObjectName("notes_listwidget")
         self.notes_grid.addWidget(self.notes_listwidget, 3, 0, 1, 2)
         self.note_title_label = QtWidgets.QLabel(parent=self)
-        self.note_title_label.setText("Notes")
+        self.note_title_label.setText("New note")
         self.note_title_label.setMinimumSize(QtCore.QSize(0, 20))
         self.note_title_label.setStyleSheet("""color: white;
 font-size: 15px;
