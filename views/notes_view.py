@@ -107,6 +107,7 @@ font-weight: 700;""")
     def clear_note(self) -> None:
         self.editor_lineedit.clear()
         self.editor_plaintextedit.clear()
+        self.note_title_label.setText("New note")
 
     def get_title(self) -> str:
         return self.editor_lineedit.text()
@@ -191,6 +192,7 @@ QPushButton:hover {
         item.setData(QtCore.Qt.ItemDataRole.UserRole, id)
         edit_btn.clicked.connect(lambda: self.reduct_item_clicked.emit(item.data(QtCore.Qt.ItemDataRole.UserRole)))
         del_button.clicked.connect(lambda: self.del_item_clicked.emit(item))
+        self.note_title_label.setText("New note")
 
     def clear_all(self) -> None:
         self.notes_listwidget.clear()
@@ -204,3 +206,4 @@ QPushButton:hover {
     def set_note(self, title: str, text: str) -> None:
         self.editor_lineedit.setText(title)
         self.editor_plaintextedit.setPlainText(text)
+        self.note_title_label.setText("Edit note")
