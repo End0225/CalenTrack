@@ -13,6 +13,7 @@ from presenters.stopwatch_presenter import StopwatchPresenter
 from presenters.history_presenter import HistoryPresenter
 from presenters.notes_presenter import NotesPresenter
 from presenters.calendar_presenter import CalendarPresenter
+from presenters.settings_presenter import SettingsPresenter
 from views.dialogs.calendar_dialog import CalendarDialog
 from views.dialogs.color_dialog import ColorDialog
 from views.dialogs.date_dialog import DateDialog
@@ -80,6 +81,7 @@ class Application:
         self.history_presenter: HistoryPresenter = HistoryPresenter(view_widgets["history_view"], self.stopwatch_presenter, self.model)
         self.notes_presenter: NotesPresenter = NotesPresenter(view_widgets["notes_view"], self.model)
         self.calendar_presenter: CalendarPresenter = CalendarPresenter(view_widgets["calendar_view"], dialogs["calendar_dialog"], self.model)
+        self.settings_presenter: SettingsPresenter = SettingsPresenter(view_widgets["settings_view"], self, self.model)
 
         self.view.show_page(view_widgets["stopwatch_view"], self.view.buttons["stopwatch_view"])
 
@@ -87,6 +89,14 @@ class Application:
         self.history_presenter.load_history()
         self.notes_presenter.load_notes()
         self.calendar_presenter.load_dates()
+        self.settings_presenter.load_settings()
+
+    def del_data(self) -> None:
+        self.history_presenter._on_del_all_items()
+        self.notes_presenter._del_notes()
+        self.calendar_presenter._del_dates()
+        self.stopwatch_presenter._reset_stopwatch()
+        self.notes_presenter._clear_note()
 
     def run(self) -> None:
         self.view.show()

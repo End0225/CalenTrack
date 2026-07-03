@@ -3,6 +3,11 @@ from utils.button_factory import ButtonFactory
 
 
 class SettingsView(QtWidgets.QWidget):
+    save_backup_clicked = QtCore.pyqtSignal()
+    load_backup_clicked = QtCore.pyqtSignal()
+    deleteall_clicked = QtCore.pyqtSignal()
+    parameter_1_clicked = QtCore.pyqtSignal(str, bool)
+
     def __init__(self, icon_manager):
         super().__init__()
         self.icon_manager = icon_manager
@@ -65,8 +70,10 @@ font-weight: 700;""")
         self.gridLayout_22.setVerticalSpacing(10)
         self.gridLayout_22.setObjectName("gridLayout_22")
         self.loadbackup_btn = self.factory.get_btn(self.backup_frame, "gray", "Load backup", [0, 20], None, None, "export-icons.png", [14, 14])
+        self.loadbackup_btn.clicked.connect(self.load_backup_clicked.emit)
         self.gridLayout_22.addWidget(self.loadbackup_btn, 3, 0, 1, 1)
         self.savebackup_btn = self.factory.get_btn(self.backup_frame, "green", "Save backup", [0, 20], None, None, "import-icon.png", [15, 15])
+        self.savebackup_btn.clicked.connect(self.save_backup_clicked.emit)
         self.gridLayout_22.addWidget(self.savebackup_btn, 2, 0, 1, 1)
         self.backup_title_label = QtWidgets.QLabel(parent=self.backup_frame)
         self.backup_title_label.setText("Backup")
@@ -104,6 +111,7 @@ border-top: 1px solid #3e3e42;
         self.gridLayout_23.setSpacing(0)
         self.gridLayout_23.setObjectName("gridLayout_23")
         self.parameter_1_chechbox = QtWidgets.QCheckBox(parent=self.parameters_frame)
+        self.parameter_1_chechbox.clicked.connect(lambda: self.parameter_1_clicked.emit(self.parameter_1_chechbox.objectName(), self.parameter_1_chechbox.isChecked()))
         self.parameter_1_chechbox.setText("Open stopwatch when you establish time from history")
         self.parameter_1_chechbox.setStyleSheet("""QCheckBox {
     border: none;
@@ -173,6 +181,7 @@ color: #DC2626;""")
         self.dangerzone_title_label.setObjectName("dangerzone_title_label")
         self.gridLayout_24.addWidget(self.dangerzone_title_label, 0, 0, 1, 1)
         self.dangerzone_deleteall_btn = self.factory.get_btn(self.dangerzone_frame, "red", "Delete all data", [0, 20], QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Fixed, "delete-icon.png", [14, 14])
+        self.dangerzone_deleteall_btn.clicked.connect(self.deleteall_clicked.emit)
         self.gridLayout_24.addWidget(self.dangerzone_deleteall_btn, 1, 0, 1, 1)
         self.verticalLayout.addWidget(self.dangerzone_frame)
         self.verticalLayout.setStretch(0, 1)

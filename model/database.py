@@ -201,3 +201,36 @@ CREATE TABLE IF NOT EXISTS user_settings
         return dates
 
     # ==== Settings =====
+    def get_backup(self) -> str:
+        with sqlite3.connect(self.path) as conn:
+            backup: str = ""
+            for sql in conn.iterdump():
+                backup += sql
+            return backup
+
+    def load_data(self, file_path: tuple[str, str]) -> None:
+        with open(file_path, encoding="UTF-8") as file:
+            script: str = file.read()
+        with open(self.path, "w", encoding="UTF-8") as file:
+            file.write("")
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            try:
+                cursor.executescript(script)
+            except:
+                with open(self.path, "w", encoding="UTF-8") as file:
+                    file.write("")
+                self.create_tables()
+            conn.commit()
+
+    def get_settings(self) -> list[tuple[str, bool]]:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("SELECT objectName, objectValue FROM user_settings")
+            return cursor.fetchall()
+
+    def toggle_setting(self, name: str, status: bool) -> None:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("INSERT OR REPLACE INTO user_settings (objectName, objectValue) VALUES (?, ?)", (name, status))
+            conn.commit()
