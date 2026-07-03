@@ -16,7 +16,7 @@ class NotesPresenter:
         self.view.clear_all()
 
     def _save_note(self) -> None:
-        title: str = self.view.get_title() # TODO: add check length
+        title: str = self.view.get_title()
         check_note: bool = self.model.check_title(title)
         text: str = self.view.get_text()
         id: int = self.model.add_note(title, text)
