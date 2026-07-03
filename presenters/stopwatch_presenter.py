@@ -10,7 +10,7 @@ class StopwatchPresenter:
         self.view.start_clicked.connect(self._toggle)
         self.view.reset_clicked.connect(self._reset_stopwatch)
         self.view.save_clicked.connect(self._save_to_history)
-        self._time: QTime = QTime(0, 0, 0, 0)
+        self._time_in_ms: int = 0
         self._timer: QTimer = QTimer()
         self._date: QtWidgets.QDateEdit = QtWidgets.QDateEdit()
         self._timer.timeout.connect(self._update_time)
@@ -37,19 +37,24 @@ class StopwatchPresenter:
 
     def _reset_stopwatch(self) -> None:
         self._stop_stopwatch()
-        self._time = QTime(0, 0, 0, 0)
-        self.view.update_time(self._format_time(self._time))
+        self._time_in_ms = 0
+        self.view.update_time(self._format_time(self._time_in_ms))
 
     def _update_time(self) -> None:
-        self._time = self._time.addMSecs(10)
-        self.view.update_time(self._format_time(self._time))
+        self._time_in_ms += 10
+        self.view.update_time(self._format_time(self._time_in_ms))
 
-    def _format_time(self, time: QTime) -> str:
-        return f"{time.hour():02}:{time.minute():02}:{time.second():02}, {(time.msec() // 10):02d}"
+    def _format_time(self, ms: int) -> str:
+        hours = ms // 3600000
+        minutes = (ms % 3600000) // 60000
+        seconds = (ms % 60000) // 1000
+        milliseconds = (ms % 1000)
+        return f"{hours:02}:{minutes:02}:{seconds:02}, {(milliseconds // 10):02d}"
 
     def _save_to_history(self) -> None:
         date: str = self._date.date().currentDate().toString("dd-MM-yyyy")
-        real_time: str = self._time.currentTime().toString("hh:mm")
+        # real_time: str = self._time.currentTime().toString("hh:mm")
+        real_time: str = QTime.currentTime().toString("hh:mm") # TODO
         stopwatch_time: str = self.view.get_time()
         data: str = f"{date}  {real_time} | {stopwatch_time}"
         rowid: int = self.model.add_stopwatch_note(data, stopwatch_time)
@@ -58,6 +63,7 @@ class StopwatchPresenter:
     def set_time(self, time: str) -> None:
         hh, mm, ss = time.split(":")
         ss, ms = ss.split(", ")
-        self._time = QTime(int(hh), int(mm), int(ss), int(ms) * 10)
-        self.view.update_time(self._format_time(self._time))
+        self._time_in_ms = int(hh) * 3600000 + int(mm) * 60000 + int(ss) * 1000 + int(ms) * 10
+        print(self._time_in_ms)
+        self.view.update_time(self._format_time(self._time_in_ms))        
         self._stop_stopwatch()
