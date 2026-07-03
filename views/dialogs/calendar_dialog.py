@@ -124,12 +124,13 @@ QPushButton[text=\"Discard\"]:hover {
         self.main_gridlayout.addWidget(self.buttonbox, 12, 0, 1, 1)
         self.note_combobox = QtWidgets.QComboBox(parent=self)
         self.note_combobox.setMinimumSize(QtCore.QSize(0, 20))
-        self.note_combobox.setStyleSheet("""QComboBox {
+        combobox_style: str = """QComboBox {
     color: #fff;
     font-weight: 700;
     background-color: #3e3e42;
     font-size: 12px;
     border-radius: 4%;
+    padding: 2px;
 }
 QComboBox QAbstractItemView {
     background-color: #252525;
@@ -137,24 +138,12 @@ QComboBox QAbstractItemView {
     border-radius: 4px;
     outline: none;
     color: #fff;
-}""")
+}"""
+        self.note_combobox.setStyleSheet(combobox_style)
         self.main_gridlayout.addWidget(self.note_combobox, 6, 0, 1, 1)
         self.time_combobox = QtWidgets.QComboBox(parent=self)
         self.time_combobox.setMinimumSize(QtCore.QSize(0, 20))
-        self.time_combobox.setStyleSheet("""QComboBox {
-    color: #fff;
-    font-weight: 700;
-    background-color: #3e3e42;
-    font-size: 12px;
-    border-radius: 4%;
-}
-QComboBox QAbstractItemView {
-    background-color: #252525;
-    border: 1px solid #3e3e42;
-    border-radius: 4px;
-    outline: none;
-    color: #fff;
-}""")
+        self.time_combobox.setStyleSheet(combobox_style)
         self.main_gridlayout.addWidget(self.time_combobox, 2, 0, 1, 1)
         spacerItem3 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
         self.main_gridlayout.addItem(spacerItem3, 1, 0, 1, 1)
