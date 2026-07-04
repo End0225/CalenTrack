@@ -16,9 +16,12 @@ class SettingsPresenter:
 
     def load_settings(self) -> None:
         settings: list[tuple[str, bool]] = self.model.get_settings()
-        for name, value in settings:
-            chechbox: QtWidgets.QCheckBox = self.app.view.findChild(QtWidgets.QCheckBox, name)
-            chechbox.setChecked(False if value == 0 else True)
+        if not settings:
+            self.view.set_checkboxes()
+        else:
+            for name, value in settings:
+                checkbox: QtWidgets.QCheckBox = self.app.view.findChild(QtWidgets.QCheckBox, name)
+                checkbox.setChecked(False if value == 0 else True)
 
     def _save_backup(self) -> None:
         backup: str = self.model.get_backup()

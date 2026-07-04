@@ -13,7 +13,7 @@ class SettingsView(QtWidgets.QWidget):
         self.icon_manager = icon_manager
         self.factory = ButtonFactory(self.icon_manager)
         self.setup_ui()
-        
+
     def setup_ui(self) -> None:
         self.setObjectName("settings_page")
         self.gridLayout_18 = QtWidgets.QGridLayout(self)
@@ -109,12 +109,13 @@ border-top: 1px solid #3e3e42;
         self.gridLayout_23 = QtWidgets.QGridLayout(self.parameters_frame)
         self.gridLayout_23.setContentsMargins(0, -1, 0, 8)
         self.gridLayout_23.setSpacing(0)
+        self.gridLayout_23.setVerticalSpacing(4)
         self.gridLayout_23.setObjectName("gridLayout_23")
-        self.parameter_1_chechbox = QtWidgets.QCheckBox(parent=self.parameters_frame)
-        self.parameter_1_chechbox.setObjectName("parameter_1_chechbox")
-        self.parameter_1_chechbox.clicked.connect(lambda: self.checkbox_clicked.emit(self.parameter_1_chechbox.objectName(), self.parameter_1_chechbox.isChecked()))
-        self.parameter_1_chechbox.setText("Open stopwatch when you establish time from history")
-        self.parameter_1_chechbox.setStyleSheet("""QCheckBox {
+        self.parameter_1_checkbox = QtWidgets.QCheckBox(parent=self.parameters_frame)
+        self.parameter_1_checkbox.setObjectName("parameter_1_checkbox")
+        self.parameter_1_checkbox.clicked.connect(lambda: self.checkbox_clicked.emit(self.parameter_1_checkbox.objectName(), self.parameter_1_checkbox.isChecked()))
+        self.parameter_1_checkbox.setText("Open stopwatch when you establish time from history")
+        self.checkbox_style: str = """QCheckBox {
     border: none;
     background-color: none;
     color: #fff;
@@ -133,8 +134,15 @@ QCheckBox::indicator:checked {
 }
 QCheckBox::indicator:hover {
     border-color: #acacac;
-}""")
-        self.gridLayout_23.addWidget(self.parameter_1_chechbox, 2, 0, 1, 1)
+}"""
+        self.parameter_1_checkbox.setStyleSheet(self.checkbox_style)
+        self.gridLayout_23.addWidget(self.parameter_1_checkbox, 2, 0, 1, 1)
+        self.parameter_2_checkbox = QtWidgets.QCheckBox(parent=self.parameters_frame)
+        self.parameter_2_checkbox.setObjectName("parameter_2_checkbox")
+        self.parameter_2_checkbox.clicked.connect(lambda: self.checkbox_clicked.emit(self.parameter_2_checkbox.objectName(), self.parameter_2_checkbox.isChecked()))
+        self.parameter_2_checkbox.setText("Switch calendar to American version")
+        self.parameter_2_checkbox.setStyleSheet(self.checkbox_style)
+        self.gridLayout_23.addWidget(self.parameter_2_checkbox, 3, 0, 1, 1)
         self.parameters_title_label = QtWidgets.QLabel(parent=self.parameters_frame)
         self.parameters_title_label.setText("Parameters")
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
@@ -195,3 +203,7 @@ color: #DC2626;""")
     def reset_settings(self) -> None:
         for checkbox in self.findChildren(QtWidgets.QCheckBox):
             checkbox.setChecked(False)
+
+    def set_checkboxes(self) -> None:
+        self.checkbox_clicked.emit(self.parameter_1_checkbox.objectName(), self.parameter_1_checkbox.isChecked())
+        self.checkbox_clicked.emit(self.parameter_2_checkbox.objectName(), self.parameter_2_checkbox.isChecked())

@@ -244,5 +244,11 @@ CREATE TABLE IF NOT EXISTS user_settings
     def check_parameter_1(self) -> bool:
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
-            cursor.execute("SELECT objectValue FROM user_settings WHERE objectName = 'parameter_1_chechbox'")
+            cursor.execute("SELECT objectValue FROM user_settings WHERE objectName = 'parameter_1_checkbox'")
+            return bool(cursor.fetchone()[0])
+
+    def check_parameter_2(self) -> bool:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("SELECT objectValue FROM user_settings WHERE objectName = 'parameter_2_checkbox'")
             return bool(cursor.fetchone()[0])

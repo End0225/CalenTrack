@@ -7,6 +7,7 @@ class CalendarView(QtWidgets.QWidget):
     deleteall_clicked = QtCore.pyqtSignal()
     view_date_clicked = QtCore.pyqtSignal(int)
     del_item_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
+    check_calendar_type_signal = QtCore.pyqtSignal()
 
     def __init__(self, icon_manager, calendar_dialog: QtWidgets.QDialog, date_dialog: QtWidgets.QDialog):
         super().__init__()
@@ -145,6 +146,13 @@ QCalendarWidget QToolButton#qt_calendar_nextmonth {{
         self.verticalLayout_2.addWidget(self.calendarwidget)
         self.calendar_grid.addWidget(self.calendar_frame, 2, 1, 1, 1)
         self.gridLayout_15.addLayout(self.calendar_grid, 0, 0, 1, 1)
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.check_calendar_type_signal.emit()
+
+    def switch_to_american_type(self, status: bool) -> None:
+        self.calendarwidget.setFirstDayOfWeek(QtCore.Qt.DayOfWeek.Sunday if status else QtCore.Qt.DayOfWeek.Monday)
 
     def add_item(self, date: str, id: int, check_date: bool) -> None:
         item = QtWidgets.QListWidgetItem()

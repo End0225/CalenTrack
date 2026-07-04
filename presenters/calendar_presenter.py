@@ -11,6 +11,7 @@ class CalendarPresenter:
         self.view.deleteall_clicked.connect(self._del_dates)
         self.view.del_item_clicked.connect(self._del_date)
         self.view.view_date_clicked.connect(self._open_date_dialog)
+        self.view.check_calendar_type_signal.connect(self._check_calendar_type)
         self.calendar_dialog.color_dialog_clicked.connect(self._open_color_dialog)
         self.calendar_dialog.apply_clicked.connect(self._save_date)
         self.permission: bool
@@ -65,3 +66,7 @@ class CalendarPresenter:
         date_data: tuple[str, str, str, str] = self.model.get_date_data(id)
         date, stopwatch_note, note_title, note_text = date_data
         self.view.open_date_dialog(date, stopwatch_note, note_title, note_text)
+
+    def _check_calendar_type(self) -> None:
+        status: bool = self.model.check_parameter_2()
+        self.view.switch_to_american_type(status)
