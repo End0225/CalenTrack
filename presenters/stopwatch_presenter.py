@@ -53,8 +53,7 @@ class StopwatchPresenter:
 
     def _save_to_history(self) -> None:
         date: str = self._date.date().currentDate().toString("dd-MM-yyyy")
-        # real_time: str = self._time.currentTime().toString("hh:mm")
-        real_time: str = QTime.currentTime().toString("hh:mm") # TODO
+        real_time: str = QTime.currentTime().toString("hh:mm")
         stopwatch_time: str = self.view.get_time()
         data: str = f"{date}  {real_time} | {stopwatch_time}"
         rowid: int = self.model.add_stopwatch_note(data, stopwatch_time)
@@ -64,6 +63,5 @@ class StopwatchPresenter:
         hh, mm, ss = time.split(":")
         ss, ms = ss.split(", ")
         self._time_in_ms = int(hh) * 3600000 + int(mm) * 60000 + int(ss) * 1000 + int(ms) * 10
-        print(self._time_in_ms)
         self.view.update_time(self._format_time(self._time_in_ms))        
         self._stop_stopwatch()
