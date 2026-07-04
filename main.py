@@ -69,23 +69,26 @@ class Application:
             "confirm_dialog": ConfirmDialog(self.icon_manager)
         }
         dialogs["calendar_dialog"] = CalendarDialog(self.icon_manager, dialogs["color_dialog"])
-        view_widgets: dict[str, QtWidgets.QWidget] = {
+        self.view_widgets: dict[str, QtWidgets.QWidget] = {
             "stopwatch_view": StopwatchView(self.icon_manager),
             "history_view": HistoryView(self.icon_manager),
             "notes_view": NotesView(self.icon_manager),
             "calendar_view": CalendarView(self.icon_manager, dialogs["calendar_dialog"], dialogs["date_dialog"]),
             "settings_view": SettingsView(self.icon_manager)
         }
-        for name, widget in view_widgets.items():
+        for name, widget in self.view_widgets.items():
             self.view.add_page(name, widget)
 
-        self.stopwatch_presenter: StopwatchPresenter = StopwatchPresenter(view_widgets["stopwatch_view"], view_widgets["history_view"], self.model)
-        self.history_presenter: HistoryPresenter = HistoryPresenter(view_widgets["history_view"], self.stopwatch_presenter, dialogs["confirm_dialog"] , self.model)
-        self.notes_presenter: NotesPresenter = NotesPresenter(view_widgets["notes_view"], dialogs["confirm_dialog"] , self.model)
-        self.calendar_presenter: CalendarPresenter = CalendarPresenter(view_widgets["calendar_view"], dialogs["calendar_dialog"], dialogs["confirm_dialog"] , self.model)
-        self.settings_presenter: SettingsPresenter = SettingsPresenter(view_widgets["settings_view"], dialogs["confirm_dialog"] , self, self.model)
+        self.stopwatch_presenter: StopwatchPresenter = StopwatchPresenter(self.view_widgets["stopwatch_view"], self.view_widgets["history_view"], self.model)
+        self.history_presenter: HistoryPresenter = HistoryPresenter(self.view_widgets["history_view"], self.stopwatch_presenter, dialogs["confirm_dialog"], self.set_starter_page, self.model)
+        self.notes_presenter: NotesPresenter = NotesPresenter(self.view_widgets["notes_view"], dialogs["confirm_dialog"], self.model)
+        self.calendar_presenter: CalendarPresenter = CalendarPresenter(self.view_widgets["calendar_view"], dialogs["calendar_dialog"], dialogs["confirm_dialog"], self.model)
+        self.settings_presenter: SettingsPresenter = SettingsPresenter(self.view_widgets["settings_view"], dialogs["confirm_dialog"], self, self.model)
 
-        self.view.show_page(view_widgets["stopwatch_view"], self.view.buttons["stopwatch_view"])
+        self.set_starter_page()
+
+    def set_starter_page(self) -> None:
+        self.view.show_page(self.view_widgets["stopwatch_view"], self.view.buttons["stopwatch_view"])
 
     def preload_data(self) -> None:
         self.history_presenter.load_history()

@@ -1,11 +1,13 @@
 from PyQt6 import QtCore, QtWidgets
+from typing import Callable
 
 
 class HistoryPresenter:
-    def __init__(self, view: QtWidgets.QWidget, stopwatch_presenter, confirm_dialog: QtWidgets.QDialog, model):
+    def __init__(self, view: QtWidgets.QWidget, stopwatch_presenter, confirm_dialog: QtWidgets.QDialog, show_stopwatch_page: Callable[[], None], model):
         self.view = view
         self.stopwatch_presenter = stopwatch_presenter
         self.confirm_dialog: QtWidgets.QDialog = confirm_dialog
+        self.show_stopwatch_page: Callable[[], None] = show_stopwatch_page
         self.model = model
         self.view.del_item_clicked.connect(self._on_del_item)
         self.view.establish_item_clicked.connect(self._on_establish_item)
@@ -32,6 +34,8 @@ class HistoryPresenter:
 
     def _on_establish_item(self, time: str) -> None:
         self.stopwatch_presenter.set_time(time)
+        if self.model.check_parameter_1():
+            self.show_stopwatch_page()
 
     def _on_del_all_items(self, show_dialog: bool = True) -> None:
         if show_dialog:

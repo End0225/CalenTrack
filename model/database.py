@@ -240,3 +240,9 @@ CREATE TABLE IF NOT EXISTS user_settings
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("DELETE FROM user_settings")
             conn.commit()
+
+    def check_parameter_1(self) -> bool:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("SELECT objectValue FROM user_settings WHERE objectName = 'parameter_1_chechbox'")
+            return bool(cursor.fetchone()[0])

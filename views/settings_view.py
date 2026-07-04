@@ -111,6 +111,7 @@ border-top: 1px solid #3e3e42;
         self.gridLayout_23.setSpacing(0)
         self.gridLayout_23.setObjectName("gridLayout_23")
         self.parameter_1_chechbox = QtWidgets.QCheckBox(parent=self.parameters_frame)
+        self.parameter_1_chechbox.setObjectName("parameter_1_chechbox")
         self.parameter_1_chechbox.clicked.connect(lambda: self.checkbox_clicked.emit(self.parameter_1_chechbox.objectName(), self.parameter_1_chechbox.isChecked()))
         self.parameter_1_chechbox.setText("Open stopwatch when you establish time from history")
         self.parameter_1_chechbox.setStyleSheet("""QCheckBox {
@@ -133,7 +134,6 @@ QCheckBox::indicator:checked {
 QCheckBox::indicator:hover {
     border-color: #acacac;
 }""")
-        self.parameter_1_chechbox.setObjectName("parameter_1_chechbox")
         self.gridLayout_23.addWidget(self.parameter_1_chechbox, 2, 0, 1, 1)
         self.parameters_title_label = QtWidgets.QLabel(parent=self.parameters_frame)
         self.parameters_title_label.setText("Parameters")
