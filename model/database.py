@@ -211,17 +211,40 @@ CREATE TABLE IF NOT EXISTS user_settings
     def load_data(self, file_path: tuple[str, str]) -> None:
         with open(file_path, encoding="UTF-8") as file:
             script: str = file.read()
-        with open(self.path, "w", encoding="UTF-8") as file:
-            file.write("")
-        with sqlite3.connect(self.path) as conn:
-            cursor: sqlite3.Cursor = conn.cursor()
-            try:
-                cursor.executescript(script)
-            except:
-                with open(self.path, "w", encoding="UTF-8") as file:
-                    file.write("")
-                self.create_tables()
-            conn.commit()
+            commands = script.split(';')
+            filtered_commands = []
+            for cmd in commands:
+                cmd = cmd.strip()
+                if cmd and not cmd.upper().startswith('CREATE TABLE'):
+                    filtered_commands.append(cmd)
+            clean_script = ';'.join(filtered_commands) + ';'
+        try:
+            with sqlite3.connect(self.path) as conn:
+                cursor: sqlite3.Cursor = conn.cursor()
+                cursor.execute("BEGIN TRANSACTION;")
+                cursor.execute("DELETE FROM stopwatch_history;")
+                cursor.execute("DELETE FROM notes;")
+                cursor.execute("DELETE FROM calendar;")
+                cursor.execute("DELETE FROM user_settings;")
+                cursor.executescript(clean_script)
+                conn.commit()
+        except sqlite3.IntegrityError as e:
+            print(f"❌ Integrity error: {e}")
+            with sqlite3.connect(self.path) as conn:
+                conn.rollback()
+            raise
+        except sqlite3.OperationalError as e:
+            print(f"❌ Operational error: {e}")
+            import time
+            time.sleep(0.5)
+            with sqlite3.connect(self.path) as conn:
+                conn.execute("BEGIN TRANSACTION;")
+                conn.executescript(clean_script)
+                conn.commit()
+            print("✅ Backup loaded after retry")
+        except Exception as e:
+            print(f"❌ Error loading backup: {e}")
+            raise
 
     def get_settings(self) -> list[tuple[str, bool]]:
         with sqlite3.connect(self.path) as conn:
