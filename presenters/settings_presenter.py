@@ -48,6 +48,7 @@ class SettingsPresenter:
             if not self.permission:
                 return
         self.app.del_data()
+        self.load_settings()
 
     def _toggle_setting(self, name: str, status: bool) -> None:
         self.model.toggle_setting(name, status)
