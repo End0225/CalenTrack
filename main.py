@@ -47,9 +47,7 @@ class Application:
             if not os.path.exists(self.db_path):
                 if os.path.exists(src_db):
                     shutil.copyfile(src_db, self.db_path)
-                else:
-                    self.model: DatabaseModel = DatabaseModel(self.db_path)
-                    self.model.create_tables()
+            self.model: DatabaseModel = DatabaseModel(self.db_path)
         else:
             self.db_path: str = os.path.join(os.path.dirname(__file__), "app_db.db")
             self.icon_path: str = os.path.join(os.path.dirname(__file__), "resources", "icons")
