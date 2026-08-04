@@ -90,10 +90,12 @@ CalenTrack/
 ```
 
 ## Roadmap
+- [ ] **macOS support** — native macOS version of CalenTrack
 - [ ] **Tag system** — categorize time records with custom tags for filtering and organization
 - [ ] **Session-based tracking** — split stopwatch records into individual sessions for accurate statistics and time analysis
 - [ ] **Statistics dashboard** — visualize time usage with charts: total time by tags, daily/weekly breakdowns, streaks, and trends
-- [ ] **Mobile version** — cross-platform mobile app with account sync between devices
+- [ ] **Mobile version** — native Android app
+- [ ] **Account sync** — sync data between all devices
 
 ## License
 ● This project is licensed under the MIT License — see the [LICENSE](https://github.com/End0225/CalenTrack/blob/main/LICENSE) file for details.
