@@ -1,6 +1,8 @@
  # CalenTrack
 ● A desktop time management application built with ***Python (PyQt6)*** using ***MVP architecture*** and ***SQLite3*** for data storage. The app combines a **stopwatch**, **notes** and a **calendar** into a single workflow: track your time with the stopwatch, write notes, and then link both to a specific calendar date — creating a complete snapshot of what you did and how long it took. Each calendar date can be color-coded for visual reference. All data can be exported and imported via `txt` files for backup.
 
+<img width="3076" height="2120" alt="App window" src="https://github.com/user-attachments/assets/4ab1b6a9-cf47-457e-bbcd-3381bf52b8da" />
+
 ## Features
 - **⏱ Stopwatch** — start, stop, reset. Save time records to history and set any saved records as the current stopwatch time to continue tracking time
 - **📋 History** — browse all saved stopwatch records with options to restore a record to the timer or delete it
