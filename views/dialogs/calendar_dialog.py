@@ -1,4 +1,5 @@
 from PyQt6 import QtCore, QtWidgets
+from utils.button_factory import ButtonFactory
 
 
 class CalendarDialog(QtWidgets.QDialog):
@@ -11,6 +12,7 @@ class CalendarDialog(QtWidgets.QDialog):
         self.color_dialog: QtWidgets.QColorDialog = color_dialog
         self.color: str = "#252525"
         self.date: QtCore.QDate
+        self.factory: ButtonFactory = ButtonFactory(self.icon_manager)
         self._setup_ui()
 
     def _setup_ui(self) -> None:
@@ -86,42 +88,17 @@ QPushButton:focus {
     font-weight: 700;
 }""")
         self.main_gridlayout.addWidget(self.color_label, 8, 0, 1, 1)
-        self.buttonbox = QtWidgets.QDialogButtonBox(parent=self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.buttonbox.sizePolicy().hasHeightForWidth())
-        self.buttonbox.setSizePolicy(sizePolicy)
-        self.buttonbox.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
-        self.buttonbox.setStyleSheet("""QPushButton {
-    background-color: #48b585;
-    border-radius: 4%;
-    color: #fff;
-    font-weight: 700;
-    font-size: 12px;
-    height: 20px;
-    width: 80px;
-}
-QPushButton:focus {
-    border: none;
-    outline: none;
-}
-QPushButton[text=\"Apply\"] {
-        background-color: #48b585;
-}
-QPushButton[text=\"Discard\"] {
-    background-color: #d13c30;
-}
-QPushButton[text=\"Apply\"]:hover {
-    background-color: #38936c;
-}
-QPushButton[text=\"Discard\"]:hover {
-    background-color: #af3025;
-}""")
-        self.buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self.buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.Apply|QtWidgets.QDialogButtonBox.StandardButton.Discard)
-        self.buttonbox.setCenterButtons(False)
-        self.main_gridlayout.addWidget(self.buttonbox, 12, 0, 1, 1)
+        button_container = QtWidgets.QWidget()
+        button_container.setStyleSheet("background: transparent;")
+        button_layout = QtWidgets.QHBoxLayout(button_container)
+        button_layout.setContentsMargins(0, 8, 0, 0)
+        button_layout.setSpacing(10)
+        self.apply_button = self.factory.get_btn(button_container, "green", "Apply", [80, 20], QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Preferred, None, None)
+        self.discard_button = self.factory.get_btn(button_container, "red", "Discard", [80, 20], QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Preferred, None, None)
+        button_layout.addWidget(self.apply_button)
+        button_layout.addWidget(self.discard_button)
+        button_layout.addStretch()
+        self.main_gridlayout.addWidget(button_container, 12, 0, 1, 1)
         self.note_combobox = QtWidgets.QComboBox(parent=self)
         self.note_combobox.setMinimumSize(QtCore.QSize(0, 20))
         combobox_style: str = """QComboBox {
@@ -152,14 +129,9 @@ QComboBox QAbstractItemView {
         spacerItem5 = QtWidgets.QSpacerItem(20, 4, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Preferred)
         self.main_gridlayout.addItem(spacerItem5, 9, 0, 1, 1)
         self.gridlayout.addLayout(self.main_gridlayout, 0, 0, 1, 1)
-
-        self.buttonbox.accepted.connect(self.accept)
-        self.buttonbox.rejected.connect(self.reject)
         QtCore.QMetaObject.connectSlotsByName(self)
         self.my_color = "#252525"
         self.color_pushbutton.clicked.connect(self.color_dialog_clicked.emit)
-        self.apply_button = self.buttonbox.button(QtWidgets.QDialogButtonBox.StandardButton.Apply)
-        self.discard_button = self.buttonbox.button(QtWidgets.QDialogButtonBox.StandardButton.Discard)
         self.apply_button.clicked.connect(lambda: (self.apply_clicked.emit(self.date, self.time_combobox.currentText(), self.note_combobox.currentText(), self.color), self._close()))
         self.discard_button.clicked.connect(self._close)
         self.finished.connect(self._close)
