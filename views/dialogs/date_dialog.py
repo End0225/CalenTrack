@@ -10,7 +10,7 @@ class DateDialog(QtWidgets.QDialog):
     def _setup_ui(self) -> None:
         self.setWindowIcon(self.icon_manager.get_icon("app-logo.ico"))
         self.setObjectName("dialog")
-        self.resize(400, 300)
+        self.resize(450, 320)
         self.setMinimumSize(QtCore.QSize(280, 250))
         self.setStyleSheet("""QDialog {
     background-color: #252525;
