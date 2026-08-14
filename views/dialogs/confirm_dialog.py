@@ -1,4 +1,5 @@
 from PyQt6 import QtCore, QtWidgets, QtGui
+from utils.button_factory import ButtonFactory
 
 
 class ConfirmDialog(QtWidgets.QDialog):
@@ -7,6 +8,7 @@ class ConfirmDialog(QtWidgets.QDialog):
     def __init__(self, icon_manager):
         super().__init__()
         self.icon_manager = icon_manager
+        self.factory: ButtonFactory = ButtonFactory(self.icon_manager)
         self._setup_ui()
 
     def _setup_ui(self) -> None:
@@ -26,59 +28,26 @@ class ConfirmDialog(QtWidgets.QDialog):
         self._main_gridlayout = QtWidgets.QGridLayout()
         self._main_gridlayout.setContentsMargins(-1, 4, -1, 4)
         self._main_gridlayout.setObjectName("_main_gridlayout")
-        self._buttonbox = QtWidgets.QDialogButtonBox(parent=self)
-        self._buttonbox.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
-        self._buttonbox.setStyleSheet("""QPushButton {
-    background-color: #48b585;
-    border-radius: 4%;
-    color: #fff;
-    font-weight: 700;
-    font-size: 12px;
-    height: 20px;
-    width: 80px;
-}
-QPushButton:focus {
-    border: none;
-    outline: none;
-}
-QPushButton[text=\"&Yes\"] {
-    background-color: #48b585;
-}
-QPushButton[text=\"&No\"] {
-        background-color: #d13c30;
-}
-QPushButton[text=\"&Yes\"]:hover {
-        background-color: #38936c;
-}
-QPushButton[text=\"&No\"]:hover {
-        background-color: #af3025;
-}""")
-        self._buttonbox.setOrientation(QtCore.Qt.Orientation.Horizontal)
-        self._buttonbox.setStandardButtons(QtWidgets.QDialogButtonBox.StandardButton.No|QtWidgets.QDialogButtonBox.StandardButton.Yes)
-        self._buttonbox.setCenterButtons(True)
-        self._buttonbox.setObjectName("_buttonbox")
-        self._main_gridlayout.addWidget(self._buttonbox, 3, 0, 1, 1)
+        button_container = QtWidgets.QWidget()
+        button_container.setStyleSheet("background: transparent;")
+        button_layout = QtWidgets.QHBoxLayout(button_container)
+        button_layout.setContentsMargins(0, 8, 0, 0)
+        button_layout.setSpacing(10)
+        self.ok_button = self.factory.get_btn(button_container, "green", "Yes", [80, 20], QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Preferred, None, None)
+        self.no_button = self.factory.get_btn(button_container, "red", "No", [80, 20], QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Preferred, None, None)
+        button_layout.addStretch()
+        button_layout.addWidget(self.ok_button)
+        button_layout.addWidget(self.no_button)
+        button_layout.addStretch()
+        self._main_gridlayout.addWidget(button_container, 3, 0, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self._main_gridlayout.addItem(spacerItem, 2, 0, 1, 1)
-        self._pushbutton = QtWidgets.QPushButton(parent=self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self._pushbutton.sizePolicy().hasHeightForWidth())
-        self._pushbutton.setSizePolicy(sizePolicy)
-        self._pushbutton.setText("")
-        self._pushbutton.setIcon(self.icon_manager.get_icon("are_you_sure.webp"))
-        self._pushbutton.setIconSize(QtCore.QSize(400, 225))
-        self._pushbutton.setShortcut("")
-        self._pushbutton.setAutoDefault(True)
-        self._pushbutton.setDefault(False)
-        self._pushbutton.setFlat(True)
-        self._pushbutton.setObjectName("_pushbutton")
+        self._pushbutton = self.factory.get_btn(self, "gray", "", [400, 225], QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Preferred, "are_you_sure.png", [400, 225])
         self._main_gridlayout.addWidget(self._pushbutton, 1, 0, 1, 1)
         self._gridlayout.addLayout(self._main_gridlayout, 0, 0, 1, 1)
         QtCore.QMetaObject.connectSlotsByName(self)
-        self._buttonbox.accepted.connect(lambda: (self.confirmation_clicked.emit(True), self.close()))
-        self._buttonbox.rejected.connect(lambda: (self.confirmation_clicked.emit(False), self.close()))
+        self.ok_button.clicked.connect(lambda: (self.confirmation_clicked.emit(True), self.close()))
+        self.no_button.clicked.connect(lambda: (self.confirmation_clicked.emit(False), self.close()))
 
     def closeEvent(self, event: QtGui.QCloseEvent):
         if event.spontaneous():
