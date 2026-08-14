@@ -97,12 +97,9 @@ QPushButton:hover {
 
     def load_data(self, date: str, stopwatch_note: str, note_title: str, note_text: str) -> None:
         self.setWindowTitle(f"CalenTrack | {date}")
-        if stopwatch_note != "None":
-            self.dialog_time_lineedit.setText(stopwatch_note)
-        if note_title != "None":
-            self.dialog_title_lineedit.setText(note_title)
-        if note_text != "None":
-                self.dialog_plaintextedit.setPlainText(note_text)
+        self.dialog_time_lineedit.setText(stopwatch_note)
+        self.dialog_title_lineedit.setText(note_title)
+        self.dialog_plaintextedit.setPlainText(note_text)
 
     def run(self) -> None:
         self.show()
