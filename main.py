@@ -24,6 +24,7 @@ from utils.icon_manager import IconManager
 class Application:
     def __init__(self):
         self.app: QtWidgets.QApplication = QtWidgets.QApplication(sys.argv)
+        self._platform: str = sys.platform
         self.copy_paths()
         self.setup_icon_manager()
         self.setup_ui()
@@ -31,19 +32,26 @@ class Application:
 
     def copy_paths(self) -> None:
         if getattr(sys, "frozen", False):
-            app_dir: str = os.path.join(os.getenv("APPDATA"), "CalenTrack")
+            if self._platform == "darwin":
+                app_dir = os.path.join(os.path.expanduser("~/Library/Application Support"), "CalenTrack")
+            if self._platform == "win32":
+                app_dir: str = os.path.join(os.getenv("APPDATA"), "CalenTrack")
             os.makedirs(app_dir, exist_ok=True)
             self.db_path: str = os.path.join(app_dir, "app_db.db")
             self.icon_path: str = os.path.join(app_dir, "resources", "icons")
             os.makedirs(self.icon_path, exist_ok=True)
-            src_icons_dir: str = os.path.join(sys._MEIPASS, "resources", "icons")
+            if self._platform == "darwin":
+                base_path = os.path.join(os.path.dirname(sys.executable), "..", "Resources")
+            if self._platform == "win32":
+                base_path = sys._MEIPASS
+            src_icons_dir: str = os.path.join(base_path, "resources", "icons")
             if os.path.exists(src_icons_dir):
                 for file in os.listdir(src_icons_dir):
                     src: str = os.path.join(src_icons_dir, file)
                     dst: str = os.path.join(self.icon_path, file)
                     if not os.path.exists(dst):
                         shutil.copyfile(src, dst)
-            src_db: str = os.path.join(sys._MEIPASS, "app_db.db")
+            src_db: str = os.path.join(base_path, "app_db.db")
             if not os.path.exists(self.db_path):
                 if os.path.exists(src_db):
                     shutil.copyfile(src_db, self.db_path)
