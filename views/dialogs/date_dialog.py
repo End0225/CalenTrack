@@ -8,7 +8,7 @@ class DateDialog(QtWidgets.QDialog):
         self._setup_ui()
 
     def _setup_ui(self) -> None:
-        self.setWindowIcon(self.icon_manager.get_icon("app-logo.ico"))
+        self.setWindowIcon(self.icon_manager.get_app_icon())
         self.setObjectName("dialog")
         self.resize(450, 320)
         self.setMinimumSize(QtCore.QSize(280, 250))

@@ -9,7 +9,7 @@ class ColorDialog(QtWidgets.QColorDialog):
 
     def _setup_ui(self) -> None:
         self.setOption(QtWidgets.QColorDialog.ColorDialogOption.DontUseNativeDialog)
-        self.setWindowIcon(self.icon_manager.get_icon("app-logo.ico"))
+        self.setWindowIcon(self.icon_manager.get_app_icon())
         self.setWindowTitle("CalenTrack | Choose color")
 
     def get_color(self) -> str | None:

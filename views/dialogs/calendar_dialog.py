@@ -16,7 +16,7 @@ class CalendarDialog(QtWidgets.QDialog):
         self._setup_ui()
 
     def _setup_ui(self) -> None:
-        self.setWindowIcon(self.icon_manager.get_icon("app-logo.ico"))
+        self.setWindowIcon(self.icon_manager.get_app_icon())
         self.setWindowTitle("CalenTrack | Choose data")
         self.resize(400, 300)
         self.setStyleSheet("""QDialog {

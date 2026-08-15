@@ -13,7 +13,7 @@ class ConfirmDialog(QtWidgets.QDialog):
 
     def _setup_ui(self) -> None:
         self.setWindowTitle("CalenTrack | Delete data")
-        self.setWindowIcon(self.icon_manager.get_icon("app-logo.ico"))
+        self.setWindowIcon(self.icon_manager.get_app_icon())
         self.setObjectName("")
         self.resize(412, 300)
         self.setLayoutDirection(QtCore.Qt.LayoutDirection.RightToLeft)
