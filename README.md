@@ -16,10 +16,20 @@
 - **MVP architecture** (Model-View-Presenter)
 - **SQLite3** for local data storage
 - **PyInstaller** for building standalone `.exe`
+- **py2app** for building standalone `.app`
 
 ## Installation
 ### For users
-● Download the latest `CalenTrack.exe` from [Releases](https://github.com/End0225/CalenTrack/releases) and run it.
+● Download the latest `CalenTrack.exe` (Windows) or `CalenTrack.zip` (macOS) from [Releases](https://github.com/End0225/CalenTrack/releases) and run it.
+
+### Data Storage Location
+● Application data is stored in the following locations:
+- **Windows**: `C:\Users\<User>\AppData\Roaming\CalenTrack\`
+- **macOS**: `~/Library/Application Support/CalenTrack/`
+
+● The folder contains:
+- `app_db.db` — SQLite database with all your data
+- `resources/icons/` — application icons
 
 ### For developers
 ● Requires **Python 3.10+**.
@@ -30,6 +40,20 @@ cd CalenTrack
 pip install -r requirements.txt
 python main.py
 ```
+
+## Build from Source
+● To build the application yourself:
+```bash
+# Windows (creates CalenTrack.exe)
+python build.py
+
+# macOS (creates CalenTrack.app)
+python3 build.py py2app
+```
+
+● The build script automatically detects your OS and uses the appropriate builder:
+- Windows: PyInstaller
+- macOS: py2app
 
 ## Usage
 ### Run the application
@@ -92,7 +116,6 @@ CalenTrack/
 ```
 
 ## Roadmap
-- [ ] **macOS support** — native macOS version of CalenTrack
 - [ ] **Tag system** — categorize time records with custom tags for filtering and organization
 - [ ] **Session-based tracking** — split stopwatch records into individual sessions for accurate statistics and time analysis
 - [ ] **Statistics dashboard** — visualize time usage with charts: total time by tags, daily/weekly breakdowns, streaks, and trends
