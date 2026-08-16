@@ -119,8 +119,9 @@ CalenTrack/
 │   ├── ui/                         # UI design files
 │   │   └── CalenTrack.ui           # Main window UI layout
 │   └── icons/                      # Application icons
+│       ├── app-logo.icns
 │       ├── app-logo.ico
-│       ├── are_you_sure.webp
+│       ├── are_you_sure.png
 │       ├── calendar-icon.png
 │       ├── delete-icon.png
 │       ├── export-icons.png
@@ -136,6 +137,7 @@ CalenTrack/
 │       ├── stop-icon.png
 │       └── stopwatch-icon.png
 ├── main.py                         # QApplication assembly and entry point
+├── build.py                        # Universal build script
 ├── requirements.txt                # Python dependencies
 ├── README.md                       # Project documentation
 ├── LICENSE                         # License file
