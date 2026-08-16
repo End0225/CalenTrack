@@ -1,4 +1,11 @@
  # CalenTrack
+
+[![GitHub release](https://img.shields.io/github/v/release/End0225/CalenTrack)](https://github.com/End0225/CalenTrack/releases/tag/v2.2.0)
+[![License](https://img.shields.io/github/license/End0225/CalenTrack)](https://github.com/End0225/CalenTrack/blob/main/LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue)](https://www.python.org/)
+[![PyQt6](https://img.shields.io/badge/PyQt6-6.9.1%2B-green)](https://pypi.org/project/PyQt6/)
+[![SQLite3](https://img.shields.io/badge/SQLite3-3.46.1%2B-green)](https://sqlite.org/)
+ 
 ● A desktop time management application built with ***Python (PyQt6)*** using ***MVP architecture*** and ***SQLite3*** for data storage. The app combines a **stopwatch**, **notes** and a **calendar** into a single workflow: track your time with the stopwatch, write notes, and then link both to a specific calendar date — creating a complete snapshot of what you did and how long it took. Each calendar date can be color-coded for visual reference. All data can be exported and imported via `txt` files for backup.
 
 <img width="3076" height="2120" alt="App window" src="https://github.com/user-attachments/assets/4ab1b6a9-cf47-457e-bbcd-3381bf52b8da" />
@@ -23,13 +30,33 @@
 ● Download the latest `CalenTrack.exe` (Windows) or `CalenTrack.zip` (macOS) from [Releases](https://github.com/End0225/CalenTrack/releases) and run it.
 
 ### Data Storage Location
-● Application data is stored in the following locations:
-- **Windows**: `C:\Users\<User>\AppData\Roaming\CalenTrack\`
-- **macOS**: `~/Library/Application Support/CalenTrack/`
+
+| Platform | Path |
+|----------|------|
+| **Windows** | `C:\Users\<User>\AppData\Roaming\CalenTrack\` |
+| **macOS** | `~/Library/Application Support/CalenTrack/` |
 
 ● The folder contains:
 - `app_db.db` — SQLite database with all your data
 - `resources/icons/` — application icons
+
+### macOS Troubleshooting
+● If you see this error when opening CalenTrack on macOS:
+- "Application CalenTrack is damaged and can't be opened. Move it to the Trash."
+Don't worry! This is a standard macOS security warning, not a problem with the app. Here's how to fix it:
+1. Open Terminal (Finder → Applications → Utilities → Terminal)
+2. Run this command:
+- ```bash
+  sudo xattr -cr
+  ```
+3. Drag the app into the Terminal window:
+- Find `CalenTrack.app` in Finder
+- Drag it into the Terminal window (the path will auto-fill)
+4. Press Enter
+- Terminal will ask for your Mac password
+- Note: Characters won't appear while typing — this is normal
+- Type your password and press Enter
+5. Done! The app will now open normally.
 
 ### For developers
 ● Requires **Python 3.10+**.
@@ -42,6 +69,7 @@ python main.py
 ```
 
 ## Build from Source
+
 ● To build the application yourself:
 ```bash
 # Windows (creates CalenTrack.exe)
