@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS user_settings
     objectValue BOOL NOT NULL
 );""")
 
-    def check_database_integrity(self) -> bool:
+    def check_database_integrity(self) -> bool:  # TODO: add db tables validation
         if not os.path.exists(self.path):
             return False
         try:
