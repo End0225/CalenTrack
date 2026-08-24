@@ -45,7 +45,7 @@
 - "Application CalenTrack is damaged and can't be opened. Move it to the Trash."
 Don't worry! This is a standard macOS security warning, not a problem with the app. Here's how to fix it:
 1. Open Terminal (Finder → Applications → Utilities → Terminal)
-2. Run this command:
+2. Write this part of command:
 - ```bash
   sudo xattr -cr
   ```
