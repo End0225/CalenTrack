@@ -1,4 +1,5 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtGui import QPixmap, QPainter, QColor
 from utils.button_factory import ButtonFactory
 
 
@@ -45,16 +46,23 @@ class StopwatchView(QtWidgets.QWidget):
     border-radius: 8px;
     color: #d4d4d4;
     font-size: 12px;
-    padding-left: 16px;
+    padding-left: 5px;
     font-weight: 700;
 }
 QComboBox QAbstractItemView {
-    padding: 10px;
+    padding: 5px;
     background-color: #252525;
-        border: 1px solid #3e3e42;
-        border-radius: 4px;
-        outline: none;
-        color: #d4d4d4;
+    border: 1px solid #3e3e42;
+    border-radius: 4px;
+    outline: none;
+}
+QComboBox QAbstractItemView::item {
+    padding: 4px;
+    color: #d4d4d4;
+}
+QComboBox QAbstractItemView::item:selected {
+    background-color: #2d2d2d;
+    color: #ffffff;
 }
 QComboBox::drop-down {
     width: 0px;
@@ -63,10 +71,8 @@ QComboBox::drop-down {
         self._comboBox.setEditable(False)
         self._comboBox.setDuplicatesEnabled(False)
         self._comboBox.setFrame(True)
-        self._comboBox.addItem("English")  # *Test
-        self._comboBox.addItem("Programming")
-        self._comboBox.addItem("Physics")
-        self._comboBox.addItem("Math")
+        self._comboBox.setIconSize(QtCore.QSize(13, 13))
+        self.add_tag("#4B4B4B", "Empty")
         self._gridLayout_3.addWidget(self._comboBox, 0, 2, 1, 1)
         self._gridLayout_17.addLayout(self._gridLayout_3, 0, 0, 1, 4)
         self._gridLayout_5 = QtWidgets.QGridLayout()
@@ -86,11 +92,11 @@ QComboBox::drop-down {
         self._frame.setSizePolicy(sizePolicy)
         self._frame.setMinimumSize(QtCore.QSize(242, 270))
         self._frame.setMaximumSize(QtCore.QSize(400, 380))
-        self._frame.setStyleSheet("QFrame {\n"
-"    background-color: #252525;\n"
-"    border: 1px solid #3e3e42;\n"
-"    border-radius: 15%;\n"
-"}")
+        self._frame.setStyleSheet("""QFrame {
+    background-color: #252525;
+    border: 1px solid #3e3e42;
+    border-radius: 15%;
+}""")
         self._frame.setFrameShape(QtWidgets.QFrame.Shape.StyledPanel)
         self._frame.setFrameShadow(QtWidgets.QFrame.Shadow.Raised)
         self._gridLayout_2 = QtWidgets.QGridLayout(self._frame)
@@ -143,3 +149,17 @@ color: #D4D4D4;""")
 
     def get_time(self) -> str:
         return self._time_label.text()
+
+    def add_tag(self, color_hex: str, text: str) -> None:
+        self._comboBox.addItem(self._create_circle_icon(color_hex), text)
+
+    def _create_circle_icon(self, color_hex: str) -> QtGui.QIcon:
+        pixmap: QPixmap = QPixmap(15, 15)
+        pixmap.fill(QtCore.Qt.GlobalColor.transparent)
+        painter: QPainter = QPainter(pixmap)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        painter.setBrush(QColor(color_hex))
+        painter.setPen(QtCore.Qt.PenStyle.NoPen)
+        painter.drawEllipse(0, 0, 14, 14)
+        painter.end()
+        return QtGui.QIcon(pixmap)
