@@ -27,53 +27,20 @@ class StopwatchView(QtWidgets.QWidget):
         self._gridLayout_3.setContentsMargins(-1, 8, 12, -1)
         _spacerItem1 = QtWidgets.QSpacerItem(356, 27, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self._gridLayout_3.addItem(_spacerItem1, 0, 1, 2, 1)
-        self._comboBox = QtWidgets.QComboBox(parent=self)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.MinimumExpanding, QtWidgets.QSizePolicy.Policy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self._comboBox.sizePolicy().hasHeightForWidth())
-        self._comboBox.setSizePolicy(sizePolicy)
-        self._comboBox.setMinimumSize(QtCore.QSize(130, 25))
-        self._comboBox.setMaximumSize(QtCore.QSize(200, 25))
-        self._comboBox.setMouseTracking(False)
-        self._comboBox.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.DefaultContextMenu)
-        self._comboBox.setAcceptDrops(False)
-        self._comboBox.setLayoutDirection(QtCore.Qt.LayoutDirection.LeftToRight)
-        self._comboBox.setAutoFillBackground(False)
-        self._comboBox.setStyleSheet("""QComboBox {
-    background-color: #252525;
-    border: 1px solid #3e3e42;
-    border-radius: 8px;
-    color: #d4d4d4;
-    font-size: 12px;
-    padding-left: 5px;
-    font-weight: 700;
-}
-QComboBox QAbstractItemView {
-    padding: 5px;
-    background-color: #252525;
-    border: 1px solid #3e3e42;
-    border-radius: 4px;
-    outline: none;
-}
-QComboBox QAbstractItemView::item {
-    padding: 4px;
-    color: #d4d4d4;
-}
-QComboBox QAbstractItemView::item:selected {
-    background-color: #2d2d2d;
-    color: #ffffff;
-}
-QComboBox::drop-down {
-    width: 0px;
-    border: none;
-}""")
-        self._comboBox.setEditable(False)
-        self._comboBox.setDuplicatesEnabled(False)
-        self._comboBox.setFrame(True)
-        self._comboBox.setIconSize(QtCore.QSize(13, 13))
-        self.add_tag("#4B4B4B", "Empty")
-        self._gridLayout_3.addWidget(self._comboBox, 0, 2, 1, 1)
+        self._comboBox_label = QtWidgets.QLabel(parent=self)
+        self._comboBox_label.setMinimumSize(QtCore.QSize(75, 25))
+        self._comboBox_label.setMaximumSize(QtCore.QSize(16777215, 25))
+        self._comboBox_label.setStyleSheet("""QLabel {
+            background-color: #252525;
+            border: 1px solid #3e3e42;
+            border-radius: 8px;
+            color: #d4d4d4;
+            font-size: 12px;
+            padding-left: 16px;
+            font-weight: 700;
+        }""")
+        self._comboBox_label.setText("Empty")
+        self._gridLayout_3.addWidget(self._comboBox_label, 0, 2, 1, 1)
         self._gridLayout_17.addLayout(self._gridLayout_3, 0, 0, 1, 4)
         self._gridLayout_5 = QtWidgets.QGridLayout()
         _spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
@@ -151,7 +118,8 @@ color: #D4D4D4;""")
         return self._time_label.text()
 
     def add_tag(self, color_hex: str, text: str) -> None:
-        self._comboBox.addItem(self._create_circle_icon(color_hex), text)
+        # self._comboBox.addItem(self._create_circle_icon(color_hex), text)
+        ...
 
     def _create_circle_icon(self, color_hex: str) -> QtGui.QIcon:
         pixmap: QPixmap = QPixmap(15, 15)
