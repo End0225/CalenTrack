@@ -10,6 +10,7 @@ class StopwatchPresenter:
         self.view.start_clicked.connect(self._toggle)
         self.view.reset_clicked.connect(self._reset_stopwatch)
         self.view.save_clicked.connect(self._save_to_history)
+        self.view.open_combobox_clicked.connect(self._open_combobox)
         self._time_in_ms: int = 0
         self._timer: QTimer = QTimer()
         self._date: QtWidgets.QDateEdit = QtWidgets.QDateEdit()
@@ -65,3 +66,16 @@ class StopwatchPresenter:
         self._time_in_ms = int(hh) * 3600000 + int(mm) * 60000 + int(ss) * 1000 + int(ms) * 10
         self.view.update_time(self._format_time(self._time_in_ms))        
         self._stop_stopwatch()
+
+    def _open_combobox(self) -> None:
+        x, y = self._get_combobox_coordinates()
+        width: int = int(self.view.get_page_width() * 0.45)
+        spacer_height: int = self.view.get_spacerItem5_height()
+        x += (self.view.get_comboBox_label_width() + 12) - width - 12
+        y += 5
+        self.view.display_listwidget(x, y, width, spacer_height - 6)
+
+    def _get_combobox_coordinates(self) -> tuple[int, int]:
+        x: int = int(self.view.get_spacerItem1_width())
+        y: int = int(8 + 25 - 1)
+        return x, y
