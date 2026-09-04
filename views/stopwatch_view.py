@@ -281,3 +281,9 @@ QToolButton:focus {
 
     def keep_btn_at_bottom(self) -> None:
         ...
+
+    def resizeEvent(self, event: QtGui.QResizeEvent):
+        if event:
+            self._is_combobox_active = True
+            self.open_combobox_clicked.emit()
+        return super().resizeEvent(event)
