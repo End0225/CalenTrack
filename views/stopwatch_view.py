@@ -1,5 +1,4 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtGui import QPixmap, QPainter, QColor
 from utils.button_factory import ButtonFactory
 
 
@@ -13,7 +12,7 @@ class StopwatchView(QtWidgets.QWidget):
         super().__init__()
         self.icon_manager = icon_manager
         self.factory = ButtonFactory(self.icon_manager)
-        self._is_combobox_active = False
+        self._is_combobox_open = False
         self._setup_ui()
 
     def _setup_ui(self) -> None:
@@ -52,7 +51,7 @@ class StopwatchView(QtWidgets.QWidget):
     border-radius: 15%;
 }""")
         self._comboBox_listwidget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.add_btn_create_tag()
+        self.btn_create_tag = None
         self._comboBox_listwidget.hide()
         self.add_tag("Empy", "#A2A2A2", 1)  # TODO: when model will work with tags then make 'Empy' tag from model and then show it
         self._gridLayout_17.addLayout(self._gridLayout_3, 0, 0, 1, 4)
@@ -144,14 +143,14 @@ color: #D4D4D4;""")
         return self._comboBox_label.geometry().width()
 
     def display_listwidget(self, x: int, y: int, width: int, height: int) -> None:
-        if self._is_combobox_active:
+        if self._is_combobox_open:
             self._comboBox_listwidget.hide()
-            self._is_combobox_active = False
+            self._is_combobox_open = False
         else:
             self._comboBox_listwidget.setFixedSize(width, height)
             self._comboBox_listwidget.move(x, y)
             self._comboBox_listwidget.show()
-            self._is_combobox_active = True
+            self._is_combobox_open = True
 
     def _create_circle_icon(self, color_hex: str) -> QtGui.QPixmap:
         ratio = self.devicePixelRatioF()
@@ -168,6 +167,11 @@ color: #D4D4D4;""")
         return pixmap
 
     def add_tag(self, tag: str, color_hex: str, tag_id: int) -> None:
+        if self.btn_create_tag is not None:
+            row = self._comboBox_listwidget.row(self.btn_create_tag)
+            if row >= 0:
+                self._comboBox_listwidget.takeItem(row)
+            self.btn_create_tag = None
         item: QtWidgets.QListWidgetItem = QtWidgets.QListWidgetItem()
         item.setSizeHint(QtCore.QSize(0, 28))
         self._comboBox_listwidget.addItem(item)
@@ -231,9 +235,9 @@ QPushButton:focus {
         widget.setLayout(layout)
         self._comboBox_listwidget.setItemWidget(item, widget)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, tag_id)
-        self.keep_btn_at_bottom()  # TODO
+        self.btn_create_tag = self.add_btn_create_tag()
 
-    def add_btn_create_tag(self) -> None:
+    def add_btn_create_tag(self) -> QtWidgets.QListWidgetItem:
         item: QtWidgets.QListWidgetItem = QtWidgets.QListWidgetItem()
         item.setSizeHint(QtCore.QSize(0, 28))
         self._comboBox_listwidget.addItem(item)
@@ -269,21 +273,22 @@ QToolButton:focus {
         widget.setLayout(layout)
         self._comboBox_listwidget.setItemWidget(item, widget)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, -1)  # TODO: mb change value
-        self.keep_btn_at_bottom()  # TODO
+        return item
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
         global_click_pos = event.globalPosition().toPoint()
         local_pos = self._comboBox_listwidget.mapFromGlobal(global_click_pos)
         if not self._comboBox_listwidget.rect().contains(local_pos):
-            self._is_combobox_active = True
+            self._is_combobox_open = True
             self.open_combobox_clicked.emit()
         super().mousePressEvent(event)
 
-    def keep_btn_at_bottom(self) -> None:
-        ...
+    def showEvent(self, event):
+        self._is_combobox_open = False
+        return super().showEvent(event)
 
     def resizeEvent(self, event: QtGui.QResizeEvent):
         if event:
-            self._is_combobox_active = True
+            self._is_combobox_open = True
             self.open_combobox_clicked.emit()
         return super().resizeEvent(event)
