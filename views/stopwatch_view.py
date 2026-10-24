@@ -28,21 +28,32 @@ class StopwatchView(QtWidgets.QWidget):
         self._gridLayout_3.setContentsMargins(-1, 8, 12, -1)
         self._spacerItem1 = QtWidgets.QSpacerItem(356, 27, QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Minimum)
         self._gridLayout_3.addItem(self._spacerItem1, 0, 1, 2, 1)
-        self._comboBox_label = QtWidgets.QLabel(parent=self)
-        self._comboBox_label.mousePressEvent = lambda event: self.open_combobox_clicked.emit()
-        self._comboBox_label.setMinimumSize(QtCore.QSize(75, 25))
-        self._comboBox_label.setMaximumSize(QtCore.QSize(16777215, 25))
-        self._comboBox_label.setStyleSheet("""QLabel {
+        self._combobox_container = QtWidgets.QWidget()
+        self._combobox_container.setMinimumSize(QtCore.QSize(75, 25))
+        self._combobox_container.setMaximumSize(QtCore.QSize(16777215, 25))
+        self._combobox_container.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Fixed, QtWidgets.QSizePolicy.Policy.Fixed))
+        self._combobox_container.setStyleSheet("""QWidget {
     background-color: #252525;
     border: 1px solid #3e3e42;
     border-radius: 6px;
     color: #d4d4d4;
     font-size: 12px;
-    padding-left: 16px;
     font-weight: 700;
 }""")
-        self._comboBox_label.setText("Empty")
-        self._gridLayout_3.addWidget(self._comboBox_label, 0, 2, 1, 1)
+        self._combobox_container.mousePressEvent = lambda event: self.open_combobox_clicked.emit()
+        self._combobox_layout = QtWidgets.QHBoxLayout(self._combobox_container)
+        self._combobox_layout.setContentsMargins(5, 0, 0, 0)
+        self._combobox_layout.setSpacing(4)
+        self._combobox_icon_label = QtWidgets.QLabel()
+        self._combobox_icon_label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border: none; background-color: none;")
+        self._combobox_icon_label.setFixedSize(15, 15)
+        self._combobox_icon_label.setPixmap(self._create_circle_icon("#D4D4D4"))
+        self._combobox_text_label = QtWidgets.QLabel("EmptFFFFFFFDAFFAAyFDD@ÐFVĊ")
+        self._combobox_text_label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border: none; background-color: none;")
+        self._combobox_layout.addWidget(self._combobox_icon_label)
+        self._combobox_layout.addWidget(self._combobox_text_label)
+        self._combobox_layout.addStretch()
+        self._gridLayout_3.addWidget(self._combobox_container, 0, 2, 1, 1)
         self._comboBox_listwidget = QtWidgets.QListWidget(parent=self)
         self._comboBox_listwidget.setStyleSheet("""QListWidget {
     background-color: #252525;
@@ -54,6 +65,7 @@ class StopwatchView(QtWidgets.QWidget):
         self.btn_create_tag = None
         self._comboBox_listwidget.hide()
         self.add_tag("Empy", "#A2A2A2", 1)  # TODO: when model will work with tags then make 'Empy' tag from model and then show it
+        self.add_tag("Math", "#2063C8", 2)
         self._gridLayout_17.addLayout(self._gridLayout_3, 0, 0, 1, 4)
         self._gridLayout_5 = QtWidgets.QGridLayout()
         self._spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
@@ -140,7 +152,7 @@ color: #D4D4D4;""")
         return self.geometry().width()
 
     def get_comboBox_label_width(self) -> int:
-        return self._comboBox_label.geometry().width()
+        return self._combobox_container.geometry().width()
 
     def display_listwidget(self, x: int, y: int, width: int, height: int) -> None:
         if self._is_combobox_open:
