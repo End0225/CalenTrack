@@ -130,7 +130,6 @@ QComboBox QAbstractItemView {
         self.main_gridlayout.addItem(spacerItem5, 9, 0, 1, 1)
         self.gridlayout.addLayout(self.main_gridlayout, 0, 0, 1, 1)
         QtCore.QMetaObject.connectSlotsByName(self)
-        self.my_color = "#252525"
         self.color_pushbutton.clicked.connect(self.color_dialog_clicked.emit)
         self.apply_button.clicked.connect(lambda: (self.apply_clicked.emit(self.date, self.time_combobox.currentText(), self.note_combobox.currentText(), self.color), self._close()))
         self.discard_button.clicked.connect(self._close)
