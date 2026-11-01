@@ -17,6 +17,7 @@ from presenters.settings_presenter import SettingsPresenter
 from views.dialogs.calendar_dialog import CalendarDialog
 from views.dialogs.color_dialog import ColorDialog
 from views.dialogs.date_dialog import DateDialog
+from views.dialogs.tag_dialog import TagDialog
 from views.dialogs.confirm_dialog import ConfirmDialog
 from utils.icon_manager import IconManager
 
@@ -75,8 +76,9 @@ class Application:
             "confirm_dialog": ConfirmDialog(self.icon_manager)
         }
         dialogs["calendar_dialog"] = CalendarDialog(self.icon_manager, dialogs["color_dialog"])
+        dialogs["tag_dialog"] = TagDialog(self.icon_manager, dialogs["color_dialog"])
         self.view_widgets: dict[str, QtWidgets.QWidget] = {
-            "stopwatch_view": StopwatchView(self.icon_manager),
+            "stopwatch_view": StopwatchView(self.icon_manager, dialogs["tag_dialog"]),
             "history_view": HistoryView(self.icon_manager),
             "notes_view": NotesView(self.icon_manager),
             "calendar_view": CalendarView(self.icon_manager, dialogs["calendar_dialog"], dialogs["date_dialog"]),
@@ -85,7 +87,7 @@ class Application:
         for name, widget in self.view_widgets.items():
             self.view.add_page(name, widget)
 
-        self.stopwatch_presenter: StopwatchPresenter = StopwatchPresenter(self.view_widgets["stopwatch_view"], self.view_widgets["history_view"], self.model)
+        self.stopwatch_presenter: StopwatchPresenter = StopwatchPresenter(self.view_widgets["stopwatch_view"], self.view_widgets["history_view"], dialogs["tag_dialog"], self.model)
         self.history_presenter: HistoryPresenter = HistoryPresenter(self.view_widgets["history_view"], self.stopwatch_presenter, dialogs["confirm_dialog"], self.set_starter_page, self.model)
         self.notes_presenter: NotesPresenter = NotesPresenter(self.view_widgets["notes_view"], dialogs["confirm_dialog"], self.model)
         self.calendar_presenter: CalendarPresenter = CalendarPresenter(self.view_widgets["calendar_view"], dialogs["calendar_dialog"], dialogs["confirm_dialog"], self.model)

@@ -3,14 +3,18 @@ from PyQt6 import QtWidgets
 
 
 class StopwatchPresenter:
-    def __init__(self, view: QtWidgets.QWidget, history_view: QtWidgets.QWidget, model):
+    def __init__(self, view: QtWidgets.QWidget, history_view: QtWidgets.QWidget, add_tag_dialog: QtWidgets.QDialog, model):
         self.view: QtWidgets.QWidget = view
         self.history_view: QtWidgets.QWidget = history_view
+        self.add_tag_dialog: QtWidgets.QDialog = add_tag_dialog
         self.model = model
         self.view.start_clicked.connect(self._toggle)
         self.view.reset_clicked.connect(self._reset_stopwatch)
         self.view.save_clicked.connect(self._save_to_history)
         self.view.open_combobox_clicked.connect(self._open_combobox)
+        self.view.tag_dialog_clicked.connect(self._open_tag_dialog)
+        self.add_tag_dialog.color_dialog_clicked.connect(self._open_color_dialog)
+        self.add_tag_dialog.apply_clicked.connect(self._save_tag)
         self._time_in_ms: int = 0
         self._timer: QTimer = QTimer()
         self._date: QtWidgets.QDateEdit = QtWidgets.QDateEdit()
@@ -79,3 +83,12 @@ class StopwatchPresenter:
         x: int = int(self.view.get_spacerItem1_width())
         y: int = int(8 + 25 - 1)
         return x, y
+
+    def _open_tag_dialog(self) -> None:
+        self.view.show_add_tag_dialog()
+
+    def _open_color_dialog(self) -> None:
+        self.add_tag_dialog.open_color_dialog()
+
+    def _save_tag(self, tag_name: str, color: str) -> None:
+        print(tag_name + ": " + color)

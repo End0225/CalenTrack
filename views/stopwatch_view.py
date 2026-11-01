@@ -7,10 +7,12 @@ class StopwatchView(QtWidgets.QWidget):
     reset_clicked = QtCore.pyqtSignal()
     save_clicked = QtCore.pyqtSignal()
     open_combobox_clicked = QtCore.pyqtSignal()
+    tag_dialog_clicked = QtCore.pyqtSignal()
 
-    def __init__(self, icon_manager):
+    def __init__(self, icon_manager, tag_dialog: QtWidgets.QDialog):
         super().__init__()
         self.icon_manager = icon_manager
+        self.tag_dialog = tag_dialog
         self.factory = ButtonFactory(self.icon_manager)
         self._is_combobox_open = False
         self._setup_ui()
@@ -55,6 +57,7 @@ class StopwatchView(QtWidgets.QWidget):
         self._combobox_layout.addStretch()
         self._gridLayout_3.addWidget(self._combobox_container, 0, 2, 1, 1)
         self._comboBox_listwidget = QtWidgets.QListWidget(parent=self)
+        self._comboBox_listwidget.itemClicked.connect(lambda clicked_item: self.on_item_clicked(clicked_item))
         self._comboBox_listwidget.setStyleSheet("""QListWidget {
     background-color: #252525;
     border: 1px solid #3e3e42;
@@ -267,6 +270,7 @@ QWidget:hover {
         create_button = QtWidgets.QToolButton()
         create_button.setText("\u00A0New tag")
         create_button.setFixedSize(QtCore.QSize(16777215, 27))
+        create_button.setAttribute(QtCore.Qt.WidgetAttribute.WA_TransparentForMouseEvents)
         create_button.setStyleSheet("""QToolButton {
     background-color: transparent;
     color: #48b585;
@@ -284,7 +288,7 @@ QToolButton:focus {
         layout.addStretch(1)
         widget.setLayout(layout)
         self._comboBox_listwidget.setItemWidget(item, widget)
-        item.setData(QtCore.Qt.ItemDataRole.UserRole, -1)  # TODO: mb change value
+        item.setData(QtCore.Qt.ItemDataRole.UserRole, -1)
         return item
 
     def mousePressEvent(self, event: QtGui.QMouseEvent):
@@ -304,3 +308,14 @@ QToolButton:focus {
             self._is_combobox_open = True
             self.open_combobox_clicked.emit()
         return super().resizeEvent(event)
+
+    def on_item_clicked(self, item):
+           id = item.data(QtCore.Qt.ItemDataRole.UserRole)
+           print(f"You clicked: {id}")
+           if id == -1:
+               self.tag_dialog_clicked.emit()
+           else:
+               ...
+
+    def show_add_tag_dialog(self) -> None:
+        self.tag_dialog.run()
