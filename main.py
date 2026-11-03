@@ -99,6 +99,7 @@ class Application:
         self.view.show_page(self.view_widgets["stopwatch_view"], self.view.buttons["stopwatch_view"])
 
     def preload_data(self) -> None:
+        self.stopwatch_presenter.load_tags()
         self.history_presenter.load_history()
         self.notes_presenter.load_notes()
         self.calendar_presenter.load_dates()

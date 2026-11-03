@@ -91,4 +91,11 @@ class StopwatchPresenter:
         self.add_tag_dialog.open_color_dialog()
 
     def _save_tag(self, tag_name: str, color: str) -> None:
-        print(tag_name + ": " + color)
+        id: int = self.model.add_tag(tag_name, color)
+        self.view.add_tag(tag_name, color, id)
+
+    def load_tags(self) -> None:
+        self.view.clear_tags()
+        tags: list[int, str, str] = self.model.get_tags()
+        for id, name, color in tags:
+            self.view.add_tag(name, color, id)
