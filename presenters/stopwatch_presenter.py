@@ -1,3 +1,4 @@
+from PyQt6 import QtCore
 from PyQt6.QtCore import QTime, QTimer
 from PyQt6 import QtWidgets
 
@@ -16,6 +17,7 @@ class StopwatchPresenter:
         self.add_tag_dialog.color_dialog_clicked.connect(self._open_color_dialog)
         self.add_tag_dialog.apply_clicked.connect(self._save_tag)
         self.view.tag_clicked.connect(self._tag_clicked)
+        self.view.del_tag_clicked.connect(self._del_tag)
         self._time_in_ms: int = 0
         self._timer: QTimer = QTimer()
         self._date: QtWidgets.QDateEdit = QtWidgets.QDateEdit()
@@ -93,7 +95,10 @@ class StopwatchPresenter:
 
     def _save_tag(self, tag_name: str, color: str) -> None:
         id: int = self.model.add_tag(tag_name, color)
-        self.view.add_tag(tag_name, color, id)
+        if id == -1:
+            self.view.msg_err_name_already_taken(tag_name)
+        else:
+            self.view.add_tag(tag_name, color, id)
 
     def load_tags(self) -> None:
         self.view.clear_tags()
@@ -104,3 +109,13 @@ class StopwatchPresenter:
     def _tag_clicked(self, id: int) -> None:
         name, color = self.model.get_tag_by_id(id)
         self.view.set_combobox_title(name, color)
+
+    def _del_tag(self, item: QtWidgets.QListWidgetItem) -> None:
+        note_id: int = item.data(QtCore.Qt.ItemDataRole.UserRole)
+        row: int = self.view.get_listwidget_row(item)
+        self.view.listwidget_takeitem(row)
+        self.model.del_tag(note_id)
+        if not self.model.check_tag_exists():
+            self.model.add_empty_tag()
+            self.view.add_btn_create_tag()
+            self.load_tags()

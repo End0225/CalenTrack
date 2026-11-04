@@ -120,7 +120,10 @@ CREATE TABLE IF NOT EXISTS tags
     def add_tag(self, name: str, color_hex: str) -> int:
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
-            cursor.execute("INSERT INTO tags (name, color) VALUES (?, ?)", (name, color_hex))
+            try:
+                cursor.execute("INSERT INTO tags (name, color) VALUES (?, ?)", (name, color_hex))
+            except sqlite3.IntegrityError:
+                return -1
             return cursor.lastrowid
 
     def get_tag_by_id(self, id: int) -> list[str, str]:
@@ -128,6 +131,12 @@ CREATE TABLE IF NOT EXISTS tags
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("SELECT name, color FROM tags WHERE id = ?", (id ,))
             return cursor.fetchone()
+
+    def del_tag(self, id: int) -> None:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("DELETE FROM tags WHERE id = ?", (id,))
+            conn.commit()
 
     # ==== Notes =====
     def add_note(self, title: str, text: str) -> int:

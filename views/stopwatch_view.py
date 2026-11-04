@@ -1,4 +1,5 @@
 from PyQt6 import QtCore, QtGui, QtWidgets
+from PyQt6.QtWidgets import QMessageBox
 from utils.button_factory import ButtonFactory
 
 
@@ -9,6 +10,8 @@ class StopwatchView(QtWidgets.QWidget):
     open_combobox_clicked = QtCore.pyqtSignal()
     tag_dialog_clicked = QtCore.pyqtSignal()
     tag_clicked = QtCore.pyqtSignal(int)
+    del_tag_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
+    remake_tag_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
 
     def __init__(self, icon_manager, tag_dialog: QtWidgets.QDialog):
         super().__init__()
@@ -181,9 +184,12 @@ color: #D4D4D4;""")
 
     def add_tag(self, tag: str, color_hex: str, tag_id: int) -> None:
         if self.btn_create_tag is not None:
-            row = self._comboBox_listwidget.row(self.btn_create_tag)
-            if row >= 0:
-                self._comboBox_listwidget.takeItem(row)
+            try:
+                row = self._comboBox_listwidget.row(self.btn_create_tag)
+                if row >= 0:
+                    self._comboBox_listwidget.takeItem(row)
+            except RuntimeError:
+                pass
             self.btn_create_tag = None
         item: QtWidgets.QListWidgetItem = QtWidgets.QListWidgetItem()
         item.setSizeHint(QtCore.QSize(0, 28))
@@ -246,6 +252,7 @@ QPushButton:focus {
         del_button.setFixedSize(18, 18)
         layout.addWidget(del_button)
         widget.setLayout(layout)
+        del_button.clicked.connect(lambda event: self.del_tag_clicked.emit(item))
         self._comboBox_listwidget.setItemWidget(item, widget)
         self._combobox_text_label.setText(tag)
         self._combobox_icon_label.setPixmap(self._create_circle_icon(color_hex))
@@ -328,3 +335,23 @@ QToolButton:focus {
         self._combobox_icon_label.setPixmap(self._create_circle_icon(color))
         self._is_combobox_open = True
         self.open_combobox_clicked.emit()
+
+    def get_listwidget_row(self, item: QtWidgets.QWidget) -> int:
+        return self._comboBox_listwidget.row(item)
+
+    def listwidget_takeitem(self, row: int) -> None:
+        self._comboBox_listwidget.takeItem(row)
+        self._is_combobox_open = True
+        self.open_combobox_clicked.emit()
+
+    def msg_err_name_already_taken(self, name: str) -> None:
+        window = QMessageBox()
+        window.setGeometry(400, 400, 400, 400)
+        window.setWindowTitle("CalenTrack | Error!")
+        window.setText("Error")
+        window.setIcon(QMessageBox.Icon.Warning)
+        window.setStandardButtons(QMessageBox.StandardButton.Ok | QMessageBox.StandardButton.Cancel)
+        window.setDefaultButton(QMessageBox.StandardButton.Ok)
+        window.setInformativeText("Name already taken")
+        window.setDetailedText(f"Name \"{name}\" already taken, please write different name")
+        window.exec()
