@@ -15,6 +15,7 @@ class StopwatchPresenter:
         self.view.tag_dialog_clicked.connect(self._open_tag_dialog)
         self.add_tag_dialog.color_dialog_clicked.connect(self._open_color_dialog)
         self.add_tag_dialog.apply_clicked.connect(self._save_tag)
+        self.view.tag_clicked.connect(self._tag_clicked)
         self._time_in_ms: int = 0
         self._timer: QTimer = QTimer()
         self._date: QtWidgets.QDateEdit = QtWidgets.QDateEdit()
@@ -99,3 +100,7 @@ class StopwatchPresenter:
         tags: list[int, str, str] = self.model.get_tags()
         for id, name, color in tags:
             self.view.add_tag(name, color, id)
+
+    def _tag_clicked(self, id: int) -> None:
+        name, color = self.model.get_tag_by_id(id)
+        self.view.set_combobox_title(name, color)

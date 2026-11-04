@@ -8,6 +8,7 @@ class StopwatchView(QtWidgets.QWidget):
     save_clicked = QtCore.pyqtSignal()
     open_combobox_clicked = QtCore.pyqtSignal()
     tag_dialog_clicked = QtCore.pyqtSignal()
+    tag_clicked = QtCore.pyqtSignal(int)
 
     def __init__(self, icon_manager, tag_dialog: QtWidgets.QDialog):
         super().__init__()
@@ -49,7 +50,6 @@ class StopwatchView(QtWidgets.QWidget):
         self._combobox_icon_label = QtWidgets.QLabel()
         self._combobox_icon_label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border: none; background-color: none;")
         self._combobox_icon_label.setFixedSize(15, 15)
-        # self._combobox_icon_label.setPixmap(self._create_circle_icon("#D4D4D4"))
         self._combobox_text_label = QtWidgets.QLabel("")
         self._combobox_text_label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border: none; background-color: none;")
         self._combobox_layout.addWidget(self._combobox_icon_label)
@@ -67,8 +67,6 @@ class StopwatchView(QtWidgets.QWidget):
         self._comboBox_listwidget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.btn_create_tag = None
         self._comboBox_listwidget.hide()
-        # self.add_tag("Empy", "#A2A2A2", 1)  # TODO: when model will work with tags then make 'Empy' tag from model and then show it
-        # self.add_tag("Math", "#2063C8", 2)
         self._gridLayout_17.addLayout(self._gridLayout_3, 0, 0, 1, 4)
         self._gridLayout_5 = QtWidgets.QGridLayout()
         self._spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
@@ -317,10 +315,16 @@ QToolButton:focus {
            if id == -1:
                self.tag_dialog_clicked.emit()
            else:
-               ...
+               self.tag_clicked.emit(id)
 
     def show_add_tag_dialog(self) -> None:
         self.tag_dialog.run()
 
     def clear_tags(self) -> None:
         self._comboBox_listwidget.clear()
+
+    def set_combobox_title(self, name: str, color: str) -> None:
+        self._combobox_text_label.setText(name)
+        self._combobox_icon_label.setPixmap(self._create_circle_icon(color))
+        self._is_combobox_open = True
+        self.open_combobox_clicked.emit()

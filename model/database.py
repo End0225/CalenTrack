@@ -122,6 +122,12 @@ CREATE TABLE IF NOT EXISTS tags
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("INSERT INTO tags (name, color) VALUES (?, ?)", (name, color_hex))
             return cursor.lastrowid
+
+    def get_tag_by_id(self, id: int) -> list[str, str]:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("SELECT name, color FROM tags WHERE id = ?", (id ,))
+            return cursor.fetchone()
     # ==== Notes =====
     def add_note(self, title: str, text: str) -> int:
         with sqlite3.connect(self.path) as conn:
