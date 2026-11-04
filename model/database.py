@@ -45,8 +45,8 @@ CREATE TABLE IF NOT EXISTS tags
             cursor.execute("ALTER TABLE stopwatch_history ADD COLUMN tag_id TEXT REFERENCES tags(id);")
         except:
             pass
-        print("111")
-        self.check_tag_exists()
+        if not self.check_tag_exists():
+            self.add_empty_tag()
 
     def check_database_integrity(self) -> bool:  # TODO: add db tables validation
         if not os.path.exists(self.path):
@@ -97,21 +97,21 @@ CREATE TABLE IF NOT EXISTS tags
         return [i[1] for i in history]
 
     # === Tags ===
-    def check_tag_exists(self) -> None:
+    def check_tag_exists(self) -> bool:
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("SELECT * FROM tags;")
             if cursor.fetchall() == []:
-                self.add_empty_tag()
+                return False
+            else:
+                return True
 
     def add_empty_tag(self) -> None:
-        print(222)
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("INSERT INTO tags (name, color) VALUES (?, ?)", ("Empty", "#A2A2A2"))
 
     def get_tags(self) -> list[int, str, str]:
-        print(333)
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("SELECT id, name, color FROM tags ORDER BY id")
@@ -128,6 +128,7 @@ CREATE TABLE IF NOT EXISTS tags
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("SELECT name, color FROM tags WHERE id = ?", (id ,))
             return cursor.fetchone()
+
     # ==== Notes =====
     def add_note(self, title: str, text: str) -> int:
         with sqlite3.connect(self.path) as conn:
