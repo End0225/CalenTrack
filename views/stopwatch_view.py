@@ -12,6 +12,7 @@ class StopwatchView(QtWidgets.QWidget):
     tag_clicked = QtCore.pyqtSignal(int)
     del_tag_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
     remake_tag_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
+    resize_tag_signal = QtCore.pyqtSignal(str)
 
     def __init__(self, icon_manager, tag_dialog: QtWidgets.QDialog):
         super().__init__()
@@ -312,6 +313,7 @@ QToolButton:focus {
 
     def resizeEvent(self, event: QtGui.QResizeEvent):
         if event:
+            self.resize_tag_signal.emit(self._combobox_text_label.text())
             self._is_combobox_open = True
             self.open_combobox_clicked.emit()
         return super().resizeEvent(event)
@@ -330,11 +332,20 @@ QToolButton:focus {
     def clear_tags(self) -> None:
         self._comboBox_listwidget.clear()
 
-    def set_combobox_title(self, name: str, color: str) -> None:
+    def set_combobox_title(self, name: str, color: str, width: int) -> None:
         self._combobox_text_label.setText(name)
+        self.set_combobox_title_width(width)
         self._combobox_icon_label.setPixmap(self._create_circle_icon(color))
         self._is_combobox_open = True
         self.open_combobox_clicked.emit()
+
+    def set_combobox_title_width(self, width: int) -> None:
+        if width + 25 > 75:
+            self._combobox_container.setMinimumWidth(width + 20)
+            self._combobox_container.setMaximumWidth(width + 20)
+        else:
+            self._combobox_container.setMinimumWidth(75)
+            self._combobox_container.setMaximumWidth(75)
 
     def get_listwidget_row(self, item: QtWidgets.QWidget) -> int:
         return self._comboBox_listwidget.row(item)

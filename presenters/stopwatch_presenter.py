@@ -18,6 +18,7 @@ class StopwatchPresenter:
         self.add_tag_dialog.apply_clicked.connect(self._save_tag)
         self.view.tag_clicked.connect(self._tag_clicked)
         self.view.del_tag_clicked.connect(self._del_tag)
+        self.view.resize_tag_signal.connect(self._resize_tag)
         self._time_in_ms: int = 0
         self._timer: QTimer = QTimer()
         self._date: QtWidgets.QDateEdit = QtWidgets.QDateEdit()
@@ -108,7 +109,21 @@ class StopwatchPresenter:
 
     def _tag_clicked(self, id: int) -> None:
         name, color = self.model.get_tag_by_id(id)
-        self.view.set_combobox_title(name, color)
+        name_width: int = self._get_name_width(name)
+        self.view.set_combobox_title(name, color, name_width)
+
+    def _get_name_width(self, name: str) -> int:
+        name_len: int = len(name)
+        pg_width: int = self.view.get_page_width()
+        max_name_width = int(pg_width * 0.4)
+        name_width: int = int(name_len * 7.5)
+        if name_width > max_name_width:
+            name_width: int = max_name_width
+        return name_width
+
+    def _resize_tag(self, name: int) -> None:
+        width = self._get_name_width(name)
+        self.view.set_combobox_title_width(width)
 
     def _del_tag(self, item: QtWidgets.QListWidgetItem) -> None:
         note_id: int = item.data(QtCore.Qt.ItemDataRole.UserRole)
