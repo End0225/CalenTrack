@@ -11,7 +11,7 @@ class StopwatchView(QtWidgets.QWidget):
     tag_dialog_clicked = QtCore.pyqtSignal()
     tag_clicked = QtCore.pyqtSignal(int)
     del_tag_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
-    remake_tag_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
+    remake_tag_clicked = QtCore.pyqtSignal(int)
     resize_tag_signal = QtCore.pyqtSignal(str)
 
     def __init__(self, icon_manager, tag_dialog: QtWidgets.QDialog):
@@ -20,6 +20,7 @@ class StopwatchView(QtWidgets.QWidget):
         self.tag_dialog = tag_dialog
         self.factory = ButtonFactory(self.icon_manager)
         self._is_combobox_open = False
+        self.active_tag_id: int
         self._setup_ui()
 
     def _setup_ui(self) -> None:
@@ -233,6 +234,7 @@ QPushButton:focus {
 }""")
         edit_button.setFixedSize(18, 18)
         layout.addWidget(edit_button)
+        edit_button.clicked.connect(lambda event: self.remake_tag_clicked.emit(item.data(QtCore.Qt.ItemDataRole.UserRole)))
         del_button = QtWidgets.QPushButton()
         del_button.setIcon(self.icon_manager.get_icon("delete-tag-icon.png"))
         del_button.enterEvent = lambda event: del_button.setIcon(self.icon_manager.get_icon("delete-tag-hover-icon.png"))
@@ -258,6 +260,7 @@ QPushButton:focus {
         self._combobox_text_label.setText(tag)
         self._combobox_icon_label.setPixmap(self._create_circle_icon(color_hex))
         item.setData(QtCore.Qt.ItemDataRole.UserRole, tag_id)
+        self.active_tag_id = tag_id
         self.btn_create_tag = self.add_btn_create_tag()
 
     def add_btn_create_tag(self) -> QtWidgets.QListWidgetItem:
@@ -332,7 +335,8 @@ QToolButton:focus {
     def clear_tags(self) -> None:
         self._comboBox_listwidget.clear()
 
-    def set_combobox_title(self, name: str, color: str, width: int) -> None:
+    def set_combobox_title(self, name: str, color: str, width: int, id: int) -> None:
+        self.active_tag_id = id
         self._combobox_text_label.setText(name)
         self.set_combobox_title_width(width)
         self._combobox_icon_label.setPixmap(self._create_circle_icon(color))
@@ -366,3 +370,22 @@ QToolButton:focus {
         window.setInformativeText("Name already taken")
         window.setDetailedText(f"Name \"{name}\" already taken, please write different name")
         window.exec()
+
+    def show_remake_tag_dialog(self, name: str, color: str, id: int) -> None:
+        self.tag_dialog.run_remake_tag_dialog(name, color, id)
+
+    def update_tag_in_listwidget(self, id: int, name: str, color: str) -> None:
+        for i in range(1, self._comboBox_listwidget.count()):  # TODO: add -1
+            item = self._comboBox_listwidget.item(i)
+            if item.data(QtCore.Qt.ItemDataRole.UserRole) == id:
+                widget = self._comboBox_listwidget.itemWidget(item)
+                labels = widget.findChildren(QtWidgets.QLabel)
+                if len(labels) >= 2:
+                    labels[1].setText(name)
+                for child in labels:
+                    if child.pixmap() is not None:
+                        child.setPixmap(self._create_circle_icon(color))
+                        break
+                if id == self.active_tag_id:
+                    self._combobox_icon_label.setPixmap(self._create_circle_icon(color))
+                    self._combobox_text_label.setText(name)

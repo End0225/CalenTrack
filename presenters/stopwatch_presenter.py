@@ -18,6 +18,8 @@ class StopwatchPresenter:
         self.add_tag_dialog.apply_clicked.connect(self._save_tag)
         self.view.tag_clicked.connect(self._tag_clicked)
         self.view.del_tag_clicked.connect(self._del_tag)
+        self.view.remake_tag_clicked.connect(self._open_remake_tag_dialog)
+        self.add_tag_dialog.apply_remake_clicked.connect(self._save_remaked_tag)
         self.view.resize_tag_signal.connect(self._resize_tag)
         self._time_in_ms: int = 0
         self._timer: QTimer = QTimer()
@@ -110,7 +112,7 @@ class StopwatchPresenter:
     def _tag_clicked(self, id: int) -> None:
         name, color = self.model.get_tag_by_id(id)
         name_width: int = self._get_name_width(name)
-        self.view.set_combobox_title(name, color, name_width)
+        self.view.set_combobox_title(name, color, name_width, id)
 
     def _get_name_width(self, name: str) -> int:
         name_len: int = len(name)
@@ -134,3 +136,11 @@ class StopwatchPresenter:
             self.model.add_empty_tag()
             self.view.add_btn_create_tag()
             self.load_tags()
+
+    def _open_remake_tag_dialog(self, id: int) -> None:
+        name, color = self.model.get_tag_by_id(id)
+        self.view.show_remake_tag_dialog(name, color, id)
+
+    def _save_remaked_tag(self, name: str, color: str, id: int) -> None:
+        self.model.remake_tag(name, color, id)
+        self.view.update_tag_in_listwidget(id, name, color)

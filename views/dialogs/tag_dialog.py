@@ -5,6 +5,7 @@ from utils.button_factory import ButtonFactory
 class TagDialog(QtWidgets.QDialog):
     color_dialog_clicked = QtCore.pyqtSignal()
     apply_clicked = QtCore.pyqtSignal(str, str)
+    apply_remake_clicked = QtCore.pyqtSignal(str, str, int)
 
     def __init__(self, icon_manager, color_dialog: QtWidgets.QColorDialog):
         super().__init__()
@@ -12,6 +13,8 @@ class TagDialog(QtWidgets.QDialog):
         self.color_dialog: QtWidgets.QColorDialog = color_dialog
         self.color: str = "#252525"
         self.factory: ButtonFactory = ButtonFactory(self.icon_manager)
+        self.tag_dialog_mode: str = "add"
+        self.tag_id: int
         self._setup_ui()
 
     def _setup_ui(self) -> None:
@@ -108,9 +111,20 @@ QLineEdit:focus{
         self.gridlayout.addLayout(self.main_gridlayout, 0, 0, 1, 1)
         QtCore.QMetaObject.connectSlotsByName(self)
         self.color_pushbutton.clicked.connect(self.color_dialog_clicked.emit)
-        self.apply_button.clicked.connect(lambda: (self.apply_clicked.emit(self.tag_lineedit.text(), self.color), self._close())) # TODO: add lineedit
+        self.apply_button.clicked.connect(self._preclose)
         self.discard_button.clicked.connect(self._close)
-        self.finished.connect(self._close)
+
+    def _preclose(self) -> None:
+        match self.tag_dialog_mode:
+            case "add":
+                self.apply_clicked.emit(*self.get_tag_data())
+            case "remake":
+                self.apply_remake_clicked.emit(*self.get_tag_data(), self.tag_id)
+                self.tag_dialog_mode = "add"
+        self._close()
+
+    def get_tag_data(self) -> list[str, str]:
+        return [self.tag_lineedit.text(), self.color]
 
     def _close(self) -> None:
         self.color = "#252525"
@@ -134,3 +148,10 @@ QPushButton:focus {{
 
     def run(self) -> None:
         self.exec()
+
+    def run_remake_tag_dialog(self, name: str, color: str, id: int) -> None:
+        self.tag_lineedit.setText(name)
+        self.set_btn_color(color)
+        self.tag_id = id
+        self.tag_dialog_mode = "remake"
+        self.run()
