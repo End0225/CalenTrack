@@ -66,10 +66,10 @@ CREATE TABLE IF NOT EXISTS tags
             return False
 
     # ==== Stopwatch =====
-    def add_stopwatch_note(self, note_text: str, note_time: str) -> int | None:
+    def add_stopwatch_note(self, note_text: str, note_time: str, tag_id: int) -> int | None:
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
-            cursor.execute("INSERT INTO stopwatch_history (note, time_note) VALUES (?, ?)", (note_text, note_time))
+            cursor.execute("INSERT INTO stopwatch_history (note, time_note, tag_id) VALUES (?, ?, ?)", (note_text, note_time, tag_id))
             conn.commit()
             return cursor.lastrowid
 
@@ -86,10 +86,10 @@ CREATE TABLE IF NOT EXISTS tags
             cursor.execute("DELETE FROM stopwatch_history")
             conn.commit()
 
-    def get_history(self) -> list[int, str, str]:
+    def get_history(self) -> list[int, str, str, int]:
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
-            cursor.execute("SELECT id, note, time_note FROM stopwatch_history ORDER BY id")
+            cursor.execute("SELECT id, note, time_note, tag_id FROM stopwatch_history ORDER BY id")
             return cursor.fetchall()
 
     def get_times(self) -> list[str]:

@@ -49,9 +49,9 @@ font-weight: 700;""")
         self.history_grid.addWidget(self.history_listwidget, 1, 0, 1, 2)
         self.gridLayout_19.addLayout(self.history_grid, 0, 0, 1, 1)
 
-    def add_item(self, note_text: str, note_time: str, note_id: int) -> None:
+    def add_item(self, note_text: str, note_time: str, note_id: int, tag_name: str, tag_color: str) -> None:
         item: QtWidgets.QListWidgetItem = QtWidgets.QListWidgetItem()
-        item.setSizeHint(QtCore.QSize(0, 28)) 
+        item.setSizeHint(QtCore.QSize(0, 32)) 
         self.history_listwidget.addItem(item)
         widget = QtWidgets.QWidget()
         layout = QtWidgets.QHBoxLayout()
@@ -75,7 +75,7 @@ QWidget:hover {
 QWidget:hover {
     background-color: #2d2d2d;
 }""")
-        label = QtWidgets.QLabel(note_text)
+        label = QtWidgets.QLabel(note_text, widget)
         label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
         layout.addWidget(label)
         establish_btn = QtWidgets.QPushButton("Establish")
@@ -114,8 +114,25 @@ QWidget:hover {
     background-color: #af3025 !important;
     }""")
         del_button.setFixedSize(55, 18)
+        tag_widget = QtWidgets.QWidget()
+        tag_widget.setMaximumHeight(24)
+        tag_widget.setStyleSheet("border: 1px solid #3e3e42; border-radius: 6%; background-color: #1E1E1E;")
+        tag_layout = QtWidgets.QHBoxLayout(tag_widget)
+        tag_layout.setContentsMargins(4, 0, 4, 0)  # TODO
+        tag_icon = QtWidgets.QLabel()
+        tag_icon.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border: none; background-color: none;")
+        tag_icon.setFixedSize(15, 15)
+        tag_icon.setPixmap(self.icon_manager.create_circle_icon(tag_color))
+        tag_label = QtWidgets.QLabel()
+        tag_label.setText(tag_name)
+        tag_label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border: none; background-color: none;")
+        tag_layout.addWidget(tag_icon)
+        tag_layout.addWidget(tag_label)
+        layout.addStretch(1)
+        layout.addWidget(tag_widget)
         layout.addWidget(establish_btn)
         layout.addWidget(del_button)
+        label.raise_()
         widget.setLayout(layout)
         self.history_listwidget.setItemWidget(item, widget)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)

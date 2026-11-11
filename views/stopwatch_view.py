@@ -6,7 +6,7 @@ from utils.button_factory import ButtonFactory
 class StopwatchView(QtWidgets.QWidget):
     start_clicked = QtCore.pyqtSignal()
     reset_clicked = QtCore.pyqtSignal()
-    save_clicked = QtCore.pyqtSignal()
+    save_clicked = QtCore.pyqtSignal(int)
     open_combobox_clicked = QtCore.pyqtSignal()
     tag_dialog_clicked = QtCore.pyqtSignal()
     tag_clicked = QtCore.pyqtSignal(int)
@@ -124,7 +124,7 @@ color: #D4D4D4;""")
         self._start_btn.clicked.connect(self.start_clicked.emit)
         self._gridLayout_2.addWidget(self._start_btn, 2, 1, 1, 1)
         self._save_btn = self.factory.get_btn(self._frame, "green", "Save", [0, 32], QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed, "save-icon.png", [19, 19])
-        self._save_btn.clicked.connect(self.save_clicked.emit)
+        self._save_btn.clicked.connect(lambda event: self.save_clicked.emit(self.active_tag_id))
         self._gridLayout_2.addWidget(self._save_btn, 3, 1, 1, 2)
         self._reset_btn = self.factory.get_btn(self._frame, "gray", "Reset", [0, 32], QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Fixed, "reset-icon.png", [12, 12])
         self._reset_btn.clicked.connect(self.reset_clicked.emit)
@@ -170,20 +170,6 @@ color: #D4D4D4;""")
             self._comboBox_listwidget.show()
             self._is_combobox_open = True
 
-    def _create_circle_icon(self, color_hex: str) -> QtGui.QPixmap:
-        ratio = self.devicePixelRatioF()
-        scaled_size = int(15 * ratio)
-        pixmap = QtGui.QPixmap(scaled_size, scaled_size)
-        pixmap.fill(QtCore.Qt.GlobalColor.transparent)
-        pixmap.setDevicePixelRatio(ratio)
-        painter = QtGui.QPainter(pixmap)
-        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
-        painter.setBrush(QtGui.QColor(color_hex))
-        painter.setPen(QtCore.Qt.PenStyle.NoPen)
-        painter.drawEllipse(0, 0, 14, 14)
-        painter.end()
-        return pixmap
-
     def add_tag(self, tag: str, color_hex: str, tag_id: int) -> None:
         if self.btn_create_tag is not None:
             try:
@@ -210,7 +196,7 @@ QWidget:hover {
         icon_label = QtWidgets.QLabel()
         icon_label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
         icon_label.setFixedSize(15, 15)
-        icon_label.setPixmap(self._create_circle_icon(color_hex))
+        icon_label.setPixmap(self.icon_manager.create_circle_icon(color_hex))
         layout.addWidget(icon_label)
         label = QtWidgets.QLabel(tag)
         label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
@@ -258,7 +244,7 @@ QPushButton:focus {
         del_button.clicked.connect(lambda event: self.del_tag_clicked.emit(item))
         self._comboBox_listwidget.setItemWidget(item, widget)
         self._combobox_text_label.setText(tag)
-        self._combobox_icon_label.setPixmap(self._create_circle_icon(color_hex))
+        self._combobox_icon_label.setPixmap(self.icon_manager.create_circle_icon(color_hex))
         item.setData(QtCore.Qt.ItemDataRole.UserRole, tag_id)
         self.active_tag_id = tag_id
         self.btn_create_tag = self.add_btn_create_tag()
@@ -339,7 +325,7 @@ QToolButton:focus {
         self.active_tag_id = id
         self._combobox_text_label.setText(name)
         self.set_combobox_title_width(width)
-        self._combobox_icon_label.setPixmap(self._create_circle_icon(color))
+        self._combobox_icon_label.setPixmap(self.icon_manager.create_circle_icon(color))
         self._is_combobox_open = True
         self.open_combobox_clicked.emit()
 
@@ -384,10 +370,10 @@ QToolButton:focus {
                     labels[1].setText(name)
                 for child in labels:
                     if child.pixmap() is not None:
-                        child.setPixmap(self._create_circle_icon(color))
+                        child.setPixmap(self.icon_manager.create_circle_icon(color))
                         break
                 if id == self.active_tag_id:
-                    self._combobox_icon_label.setPixmap(self._create_circle_icon(color))
+                    self._combobox_icon_label.setPixmap(self.icon_manager.create_circle_icon(color))
                     self._combobox_text_label.setText(name)
 
     def clear_combobox(self) -> None:

@@ -62,13 +62,14 @@ class StopwatchPresenter:
         milliseconds = (ms % 1000)
         return f"{hours:02}:{minutes:02}:{seconds:02}, {(milliseconds // 10):02d}"
 
-    def _save_to_history(self) -> None:
+    def _save_to_history(self, tag_id: int) -> None:
         date: str = self._date.date().currentDate().toString("dd-MM-yyyy")
         real_time: str = QTime.currentTime().toString("hh:mm")
         stopwatch_time: str = self.view.get_time()
         data: str = f"{date}  {real_time} | {stopwatch_time}"
-        rowid: int = self.model.add_stopwatch_note(data, stopwatch_time)
-        self.history_view.add_item(data, stopwatch_time, rowid)
+        name, color = self.model.get_tag_by_id(tag_id)
+        rowid: int = self.model.add_stopwatch_note(data, stopwatch_time, tag_id)
+        self.history_view.add_item(data, stopwatch_time, rowid, name, color)
 
     def set_time(self, time: str) -> None:
         hh, mm, ss = time.split(":")

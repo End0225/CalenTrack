@@ -1,4 +1,4 @@
-from PyQt6 import QtGui
+from PyQt6 import QtGui, QtCore, QtWidgets
 import os
 import sys
 
@@ -28,3 +28,17 @@ class IconManager:
     def copy_all_resources(self) -> None:
         for file in os.listdir(self.icon_path):
             self.icon_folder[file] = os.path.join(self.icon_path, file)
+
+    def create_circle_icon(self, color_hex: str) -> QtGui.QPixmap:
+        ratio = QtWidgets.QApplication.primaryScreen().devicePixelRatio()
+        scaled_size = int(15 * ratio)
+        pixmap = QtGui.QPixmap(scaled_size, scaled_size)
+        pixmap.fill(QtCore.Qt.GlobalColor.transparent)
+        pixmap.setDevicePixelRatio(ratio)
+        painter = QtGui.QPainter(pixmap)
+        painter.setRenderHint(QtGui.QPainter.RenderHint.Antialiasing)
+        painter.setBrush(QtGui.QColor(color_hex))
+        painter.setPen(QtCore.Qt.PenStyle.NoPen)
+        painter.drawEllipse(0, 0, 14, 14)
+        painter.end()
+        return pixmap
