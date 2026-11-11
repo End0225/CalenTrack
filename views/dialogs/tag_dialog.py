@@ -37,7 +37,7 @@ class TagDialog(QtWidgets.QDialog):
         self.main_gridlayout.addItem(spacerItem1, 7, 0, 1, 1)
         spacerItem2 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Policy.Minimum, QtWidgets.QSizePolicy.Policy.Expanding)
         self.main_gridlayout.addItem(spacerItem2, 11, 0, 1, 1)
-        self.tag_label = QtWidgets.QLabel("Select time:", parent=self)
+        self.tag_label = QtWidgets.QLabel("Tag name:", parent=self)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Preferred, QtWidgets.QSizePolicy.Policy.Maximum)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -129,6 +129,7 @@ QLineEdit:focus{
     def _close(self) -> None:
         self.color = "#252525"
         self.set_btn_color(self.color)
+        self.tag_lineedit.clear()
         self.close()
 
     def open_color_dialog(self) -> None:
