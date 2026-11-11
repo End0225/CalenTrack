@@ -106,6 +106,7 @@ class Application:
         self.settings_presenter.load_settings()
 
     def del_data(self) -> None:
+        self.stopwatch_presenter._del_tags()
         self.history_presenter._on_del_all_items(False)
         self.notes_presenter._del_notes(False)
         self.calendar_presenter._del_dates(False)

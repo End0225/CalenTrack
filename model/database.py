@@ -144,6 +144,12 @@ CREATE TABLE IF NOT EXISTS tags
             cursor.execute("UPDATE tags SET name = ?, color = ? WHERE id = ?", (name, color, id))
             conn.commit()
 
+    def del_tags(self) -> None:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("DELETE FROM tags")
+            conn.commit()
+
     # ==== Notes =====
     def add_note(self, title: str, text: str) -> int:
         with sqlite3.connect(self.path) as conn:

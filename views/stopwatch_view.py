@@ -389,3 +389,8 @@ QToolButton:focus {
                 if id == self.active_tag_id:
                     self._combobox_icon_label.setPixmap(self._create_circle_icon(color))
                     self._combobox_text_label.setText(name)
+
+    def clear_combobox(self) -> None:
+        self._comboBox_listwidget.clear()
+        self._is_combobox_open = True
+        self.open_combobox_clicked.emit()

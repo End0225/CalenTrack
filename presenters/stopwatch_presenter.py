@@ -144,3 +144,9 @@ class StopwatchPresenter:
     def _save_remaked_tag(self, name: str, color: str, id: int) -> None:
         self.model.remake_tag(name, color, id)
         self.view.update_tag_in_listwidget(id, name, color)
+
+    def _del_tags(self) -> None:
+        self.model.del_tags()
+        self.view.clear_combobox()
+        id = self.model.add_tag("Empty", "#A2A2A2")
+        self.view.add_tag("Empty", "#A2A2A2", id)
