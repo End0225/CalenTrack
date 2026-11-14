@@ -19,7 +19,10 @@ class HistoryPresenter:
         self.view.clear_all()
         history: list[int, str, str, int] = self.model.get_history()
         for row_id, note_text, note_time, tag_id in history:
-            name, color = self.model.get_tag_by_id(tag_id)
+            try:
+                name, color = self.model.get_tag_by_id(tag_id)
+            except TypeError:
+                name, color = [None, None]
             self.view.add_item(note_text, note_time, row_id, name, color)
 
     def _toggle_permission(self, status: bool) -> None:
