@@ -5,7 +5,7 @@ from utils.button_factory import ButtonFactory
 class TagDialog(QtWidgets.QDialog):
     color_dialog_clicked = QtCore.pyqtSignal()
     apply_clicked = QtCore.pyqtSignal(str, str)
-    apply_remake_clicked = QtCore.pyqtSignal(str, str, int)
+    apply_remake_clicked = QtCore.pyqtSignal(str, str, int, int)
 
     def __init__(self, icon_manager, color_dialog: QtWidgets.QColorDialog):
         super().__init__()
@@ -119,7 +119,8 @@ QLineEdit:focus{
             case "add":
                 self.apply_clicked.emit(*self.get_tag_data())
             case "remake":
-                self.apply_remake_clicked.emit(*self.get_tag_data(), self.tag_id)
+                print(*self.get_tag_data(), self.tag_id)
+                self.apply_remake_clicked.emit(*self.get_tag_data(), self.tag_id, self.active_tag_id)
                 self.tag_dialog_mode = "add"
         self._close()
 
@@ -150,9 +151,10 @@ QPushButton:focus {{
     def run(self) -> None:
         self.exec()
 
-    def run_remake_tag_dialog(self, name: str, color: str, id: int) -> None:
+    def run_remake_tag_dialog(self, name: str, color: str, id: int, active_tag_id: int) -> None:
         self.tag_lineedit.setText(name)
         self.set_btn_color(color)
         self.tag_id = id
         self.tag_dialog_mode = "remake"
+        self.active_tag_id: int = active_tag_id
         self.run()

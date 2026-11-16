@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS tags
                 return -1
             return cursor.lastrowid
 
-    def get_tag_by_id(self, id: int) -> list[str, str]:
+    def get_tag_by_id(self, id: int) -> set[str, str]:
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("SELECT name, color FROM tags WHERE id = ?", (id ,))
@@ -149,6 +149,12 @@ CREATE TABLE IF NOT EXISTS tags
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("DELETE FROM tags")
             conn.commit()
+
+    def get_tags_id(self) -> list[set[int]]:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("SELECT id FROM tags ORDER BY id")
+            return cursor.fetchall()
 
     # ==== Notes =====
     def add_note(self, title: str, text: str) -> int:

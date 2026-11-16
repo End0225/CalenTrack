@@ -170,7 +170,8 @@ color: #D4D4D4;""")
             self._comboBox_listwidget.show()
             self._is_combobox_open = True
 
-    def add_tag(self, tag: str, color_hex: str, tag_id: int) -> None:
+    def add_tag(self, tag: str, color_hex: str, tag_id: int, width: int) -> None:
+        self.set_combobox_title(tag, color_hex, width, tag_id)
         if self.btn_create_tag is not None:
             try:
                 row = self._comboBox_listwidget.row(self.btn_create_tag)
@@ -243,10 +244,7 @@ QPushButton:focus {
         widget.setLayout(layout)
         del_button.clicked.connect(lambda event: self.del_tag_clicked.emit(item))
         self._comboBox_listwidget.setItemWidget(item, widget)
-        self._combobox_text_label.setText(tag)
-        self._combobox_icon_label.setPixmap(self.icon_manager.create_circle_icon(color_hex))
         item.setData(QtCore.Qt.ItemDataRole.UserRole, tag_id)
-        self.active_tag_id = tag_id
         self.btn_create_tag = self.add_btn_create_tag()
 
     def add_btn_create_tag(self) -> QtWidgets.QListWidgetItem:
@@ -358,23 +356,7 @@ QToolButton:focus {
         window.exec()
 
     def show_remake_tag_dialog(self, name: str, color: str, id: int) -> None:
-        self.tag_dialog.run_remake_tag_dialog(name, color, id)
-
-    def update_tag_in_listwidget(self, id: int, name: str, color: str) -> None:
-        for i in range(1, self._comboBox_listwidget.count()):  # TODO: add -1
-            item = self._comboBox_listwidget.item(i)
-            if item.data(QtCore.Qt.ItemDataRole.UserRole) == id:
-                widget = self._comboBox_listwidget.itemWidget(item)
-                labels = widget.findChildren(QtWidgets.QLabel)
-                if len(labels) >= 2:
-                    labels[1].setText(name)
-                for child in labels:
-                    if child.pixmap() is not None:
-                        child.setPixmap(self.icon_manager.create_circle_icon(color))
-                        break
-                if id == self.active_tag_id:
-                    self._combobox_icon_label.setPixmap(self.icon_manager.create_circle_icon(color))
-                    self._combobox_text_label.setText(name)
+        self.tag_dialog.run_remake_tag_dialog(name, color, id, self.active_tag_id)
 
     def clear_combobox(self) -> None:
         self._comboBox_listwidget.clear()

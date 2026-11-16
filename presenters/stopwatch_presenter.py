@@ -3,8 +3,11 @@ from PyQt6.QtCore import QTime, QTimer
 from PyQt6 import QtWidgets
 
 
-class StopwatchPresenter:
+class StopwatchPresenter(QtCore.QObject):
+    tag_deleted_or_remaked_signal = QtCore.pyqtSignal()
+
     def __init__(self, view: QtWidgets.QWidget, history_view: QtWidgets.QWidget, add_tag_dialog: QtWidgets.QDialog, model):
+        super().__init__()
         self.view: QtWidgets.QWidget = view
         self.history_view: QtWidgets.QWidget = history_view
         self.add_tag_dialog: QtWidgets.QDialog = add_tag_dialog
@@ -102,13 +105,13 @@ class StopwatchPresenter:
         if id == -1:
             self.view.msg_err_name_already_taken(tag_name)
         else:
-            self.view.add_tag(tag_name, color, id)
+            self.view.add_tag(tag_name, color, id, self._get_name_width(tag_name))
 
     def load_tags(self) -> None:
         self.view.clear_tags()
         tags: list[int, str, str] = self.model.get_tags()
         for id, name, color in tags:
-            self.view.add_tag(name, color, id)
+            self.view.add_tag(name, color, id, self._get_name_width(name))
 
     def _tag_clicked(self, id: int) -> None:
         name, color = self.model.get_tag_by_id(id)
@@ -137,17 +140,20 @@ class StopwatchPresenter:
             self.model.add_empty_tag()
             self.view.add_btn_create_tag()
             self.load_tags()
+        self.tag_deleted_or_remaked_signal.emit()
 
     def _open_remake_tag_dialog(self, id: int) -> None:
         name, color = self.model.get_tag_by_id(id)
         self.view.show_remake_tag_dialog(name, color, id)
 
-    def _save_remaked_tag(self, name: str, color: str, id: int) -> None:
+    def _save_remaked_tag(self, name: str, color: str, id: int, active_tag_id: int) -> None:
         self.model.remake_tag(name, color, id)
-        self.view.update_tag_in_listwidget(id, name, color)
+        self.load_tags()
+        self._tag_clicked(active_tag_id)
+        self.tag_deleted_or_remaked_signal.emit()
 
     def _del_tags(self) -> None:
         self.model.del_tags()
         self.view.clear_combobox()
         id = self.model.add_tag("Empty", "#A2A2A2")
-        self.view.add_tag("Empty", "#A2A2A2", id)
+        self.view.add_tag("Empty", "#A2A2A2", id, self._get_name_width("Empty"))

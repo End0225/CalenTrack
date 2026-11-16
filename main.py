@@ -93,6 +93,8 @@ class Application:
         self.calendar_presenter: CalendarPresenter = CalendarPresenter(self.view_widgets["calendar_view"], dialogs["calendar_dialog"], dialogs["confirm_dialog"], self.model)
         self.settings_presenter: SettingsPresenter = SettingsPresenter(self.view_widgets["settings_view"], dialogs["confirm_dialog"], self, self.model)
 
+        self.stopwatch_presenter.tag_deleted_or_remaked_signal.connect(self.handle_tag_deleted_or_remaked)
+
         self.set_starter_page()
 
     def set_starter_page(self) -> None:
@@ -113,6 +115,9 @@ class Application:
         self.settings_presenter.reset_settings()
         self.stopwatch_presenter._reset_stopwatch()
         self.notes_presenter._clear_note()
+
+    def handle_tag_deleted_or_remaked(self) -> None:
+        self.history_presenter.load_history()
 
     def run(self) -> None:
         self.view.show()
