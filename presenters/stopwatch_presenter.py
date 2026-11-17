@@ -1,6 +1,7 @@
 from PyQt6 import QtCore
 from PyQt6.QtCore import QTime, QTimer
 from PyQt6 import QtWidgets
+from random import choice
 
 
 class StopwatchPresenter(QtCore.QObject):
@@ -140,6 +141,11 @@ class StopwatchPresenter(QtCore.QObject):
             self.model.add_empty_tag()
             self.view.add_btn_create_tag()
             self.load_tags()
+        else:
+            tags: list[set[int]] = self.model.get_tags_id()
+            random_tag_id: int = choice([i for sublist in tags for i in sublist])
+            name, color = self.model.get_tag_by_id(random_tag_id)
+            self.view.set_combobox_title(name, color, self._get_name_width(name), random_tag_id)
         self.tag_deleted_or_remaked_signal.emit()
 
     def _open_remake_tag_dialog(self, id: int) -> None:
