@@ -109,9 +109,9 @@ CREATE TABLE IF NOT EXISTS tags
     def add_empty_tag(self) -> None:
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
-            cursor.execute("INSERT INTO tags (name, color) VALUES (?, ?)", ("Empty", "#A2A2A2"))
+            cursor.execute("INSERT INTO tags (name, color, id) VALUES (?, ?, ?)", ("Empty", "#A2A2A2", 0))
 
-    def get_tags(self) -> list[int, str, str]:
+    def get_tags(self) -> list[set[int, str, str]]:
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
             cursor.execute("SELECT id, name, color FROM tags ORDER BY id")

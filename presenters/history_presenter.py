@@ -23,6 +23,8 @@ class HistoryPresenter:
                 name, color = self.model.get_tag_by_id(tag_id)
             except TypeError:
                 name, color = [None, None]
+            if tag_id == 0:
+                name, color = [None, None]
             self.view.add_item(note_text, note_time, row_id, name, color)
 
     def _toggle_permission(self, status: bool) -> None:

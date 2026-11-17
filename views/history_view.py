@@ -49,7 +49,7 @@ font-weight: 700;""")
         self.history_grid.addWidget(self.history_listwidget, 1, 0, 1, 2)
         self.gridLayout_19.addLayout(self.history_grid, 0, 0, 1, 1)
 
-    def add_item(self, note_text: str, note_time: str, note_id: int, tag_name: str, tag_color: str) -> None:
+    def add_item(self, note_text: str, note_time: str, note_id: int, tag_name: str | None, tag_color: str | None) -> None:
         item: QtWidgets.QListWidgetItem = QtWidgets.QListWidgetItem()
         item.setSizeHint(QtCore.QSize(0, 32)) 
         self.history_listwidget.addItem(item)

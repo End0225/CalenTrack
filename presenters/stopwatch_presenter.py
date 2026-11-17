@@ -71,7 +71,10 @@ class StopwatchPresenter(QtCore.QObject):
         real_time: str = QTime.currentTime().toString("hh:mm")
         stopwatch_time: str = self.view.get_time()
         data: str = f"{date}  {real_time} | {stopwatch_time}"
-        name, color = self.model.get_tag_by_id(tag_id)
+        if tag_id != 0:
+            name, color = self.model.get_tag_by_id(tag_id)
+        else:
+            name, color = [None, None]
         rowid: int = self.model.add_stopwatch_note(data, stopwatch_time, tag_id)
         self.history_view.add_item(data, stopwatch_time, rowid, name, color)
 
@@ -110,9 +113,13 @@ class StopwatchPresenter(QtCore.QObject):
 
     def load_tags(self) -> None:
         self.view.clear_tags()
-        tags: list[int, str, str] = self.model.get_tags()
-        for id, name, color in tags:
-            self.view.add_tag(name, color, id, self._get_name_width(name))
+        tags: list[set[int, str, str]] = self.model.get_tags()
+        if len(tags) == 1:
+            self.view.add_tag("Empty", "#A2A2A2", 0, self._get_name_width("Empty"))
+        else:
+            for id, name, color in tags:
+                if id != 0:
+                    self.view.add_tag(name, color, id, self._get_name_width(name))
 
     def _tag_clicked(self, id: int) -> None:
         name, color = self.model.get_tag_by_id(id)
@@ -134,32 +141,35 @@ class StopwatchPresenter(QtCore.QObject):
 
     def _del_tag(self, item: QtWidgets.QListWidgetItem) -> None:
         note_id: int = item.data(QtCore.Qt.ItemDataRole.UserRole)
-        row: int = self.view.get_listwidget_row(item)
-        self.view.listwidget_takeitem(row)
-        self.model.del_tag(note_id)
-        if not self.model.check_tag_exists():
-            self.model.add_empty_tag()
-            self.view.add_btn_create_tag()
-            self.load_tags()
+        if note_id != 0:
+            self.model.del_tag(note_id)
+            if len(self.model.get_tags()) == 1:
+                self.load_tags()
+            else:
+                tags: list[set[int]] = self.model.get_tags_id()
+                random_tag_id: int = choice([i for sublist in tags for i in sublist])
+                name, color = self.model.get_tag_by_id(random_tag_id)
+                self.view.set_combobox_title(name, color, self._get_name_width(name), random_tag_id)
+            self.tag_deleted_or_remaked_signal.emit()
+        if len(self.model.get_tags()) != 1:
+            row: int = self.view.get_listwidget_row(item)
+            self.view.listwidget_takeitem(row)
         else:
-            tags: list[set[int]] = self.model.get_tags_id()
-            random_tag_id: int = choice([i for sublist in tags for i in sublist])
-            name, color = self.model.get_tag_by_id(random_tag_id)
-            self.view.set_combobox_title(name, color, self._get_name_width(name), random_tag_id)
-        self.tag_deleted_or_remaked_signal.emit()
+            self.view.close_combobox()
 
     def _open_remake_tag_dialog(self, id: int) -> None:
         name, color = self.model.get_tag_by_id(id)
         self.view.show_remake_tag_dialog(name, color, id)
 
     def _save_remaked_tag(self, name: str, color: str, id: int, active_tag_id: int) -> None:
-        self.model.remake_tag(name, color, id)
-        self.load_tags()
-        self._tag_clicked(active_tag_id)
-        self.tag_deleted_or_remaked_signal.emit()
+        if id != 0:
+            self.model.remake_tag(name, color, id)
+            self.load_tags()
+            self._tag_clicked(active_tag_id)
+            self.tag_deleted_or_remaked_signal.emit()
 
     def _del_tags(self) -> None:
         self.model.del_tags()
         self.view.clear_combobox()
-        id = self.model.add_tag("Empty", "#A2A2A2")
-        self.view.add_tag("Empty", "#A2A2A2", id, self._get_name_width("Empty"))
+        self.model.add_empty_tag()
+        self.view.add_tag("Empty", "#A2A2A2", 0, self._get_name_width("Empty"))

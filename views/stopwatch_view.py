@@ -202,26 +202,27 @@ QWidget:hover {
         label = QtWidgets.QLabel(tag)
         label.setStyleSheet("padding: 0; color: #D4D4D4; font-weight: 700; font-size: 12px; border-top: none; background-color: none;")
         layout.addWidget(label)
-        edit_button = QtWidgets.QPushButton()
-        edit_button.setIcon(self.icon_manager.get_icon("edit-tag-icon.png"))
-        edit_button.enterEvent = lambda event: edit_button.setIcon(self.icon_manager.get_icon("edit-tag-hover-icon.png"))
-        edit_button.leaveEvent = lambda event: edit_button.setIcon(self.icon_manager.get_icon("edit-tag-icon.png"))
-        edit_button.setStyleSheet("""QPushButton {
-    padding: 0;
-    border-top: none;
-    background-color: transparent;
-    border-radius: 4%;
-    color: white;
-    font-weight: 700;
-    font-size: 12px;
-}
-QPushButton:focus {
-    border: none;
-    outline: none;
-}""")
-        edit_button.setFixedSize(18, 18)
-        layout.addWidget(edit_button)
-        edit_button.clicked.connect(lambda event: self.remake_tag_clicked.emit(item.data(QtCore.Qt.ItemDataRole.UserRole)))
+        if tag_id != 0:
+            edit_button = QtWidgets.QPushButton()
+            edit_button.setIcon(self.icon_manager.get_icon("edit-tag-icon.png"))
+            edit_button.enterEvent = lambda event: edit_button.setIcon(self.icon_manager.get_icon("edit-tag-hover-icon.png"))
+            edit_button.leaveEvent = lambda event: edit_button.setIcon(self.icon_manager.get_icon("edit-tag-icon.png"))
+            edit_button.setStyleSheet("""QPushButton {
+        padding: 0;
+        border-top: none;
+        background-color: transparent;
+        border-radius: 4%;
+        color: white;
+        font-weight: 700;
+        font-size: 12px;
+    }
+    QPushButton:focus {
+        border: none;
+        outline: none;
+    }""")
+            edit_button.setFixedSize(18, 18)
+            layout.addWidget(edit_button)
+            edit_button.clicked.connect(lambda event: self.remake_tag_clicked.emit(item.data(QtCore.Qt.ItemDataRole.UserRole)))
         del_button = QtWidgets.QPushButton()
         del_button.setIcon(self.icon_manager.get_icon("delete-tag-icon.png"))
         del_button.enterEvent = lambda event: del_button.setIcon(self.icon_manager.get_icon("delete-tag-hover-icon.png"))
@@ -290,8 +291,7 @@ QToolButton:focus {
         global_click_pos = event.globalPosition().toPoint()
         local_pos = self._comboBox_listwidget.mapFromGlobal(global_click_pos)
         if not self._comboBox_listwidget.rect().contains(local_pos):
-            self._is_combobox_open = True
-            self.open_combobox_clicked.emit()
+            self.close_combobox()
         super().mousePressEvent(event)
 
     def showEvent(self, event):
@@ -301,8 +301,7 @@ QToolButton:focus {
     def resizeEvent(self, event: QtGui.QResizeEvent):
         if event:
             self.resize_tag_signal.emit(self._combobox_text_label.text())
-            self._is_combobox_open = True
-            self.open_combobox_clicked.emit()
+            self.close_combobox()
         return super().resizeEvent(event)
 
     def on_item_clicked(self, item):
@@ -324,8 +323,7 @@ QToolButton:focus {
         self._combobox_text_label.setText(name)
         self.set_combobox_title_width(width)
         self._combobox_icon_label.setPixmap(self.icon_manager.create_circle_icon(color))
-        self._is_combobox_open = True
-        self.open_combobox_clicked.emit()
+        self.close_combobox()
 
     def set_combobox_title_width(self, width: int) -> None:
         if width + 25 > 75:
@@ -340,8 +338,7 @@ QToolButton:focus {
 
     def listwidget_takeitem(self, row: int) -> None:
         self._comboBox_listwidget.takeItem(row)
-        self._is_combobox_open = True
-        self.open_combobox_clicked.emit()
+        self.close_combobox()
 
     def msg_err_name_already_taken(self, name: str) -> None:
         window = QMessageBox()
@@ -360,5 +357,8 @@ QToolButton:focus {
 
     def clear_combobox(self) -> None:
         self._comboBox_listwidget.clear()
+        self.close_combobox()
+
+    def close_combobox(self) -> None:
         self._is_combobox_open = True
         self.open_combobox_clicked.emit()
