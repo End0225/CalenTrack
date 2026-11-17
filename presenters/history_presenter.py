@@ -18,12 +18,13 @@ class HistoryPresenter:
     def load_history(self) -> None:
         self.view.clear_all()
         history: list[int, str, str, int] = self.model.get_history()
+        tags: list[int] = [i for sublist in self.model.get_tags_id() for i in sublist]
         for row_id, note_text, note_time, tag_id in history:
             try:
                 name, color = self.model.get_tag_by_id(tag_id)
             except TypeError:
                 name, color = [None, None]
-            if tag_id == 0:
+            if tag_id == 0 or tag_id not in tags:
                 name, color = [None, None]
             self.view.add_item(note_text, note_time, row_id, name, color)
 
