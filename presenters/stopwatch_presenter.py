@@ -110,6 +110,7 @@ class StopwatchPresenter(QtCore.QObject):
             self.view.msg_err_name_already_taken(tag_name)
         else:
             self.view.add_tag(tag_name, color, id, self._get_name_width(tag_name))
+        self.load_tags()
 
     def load_tags(self) -> None:
         self.view.clear_tags()
@@ -139,23 +140,26 @@ class StopwatchPresenter(QtCore.QObject):
         width = self._get_name_width(name)
         self.view.set_combobox_title_width(width)
 
-    def _del_tag(self, item: QtWidgets.QListWidgetItem) -> None:
+    def _del_tag(self, item: QtWidgets.QListWidgetItem, active_tag_id: int) -> None:
         note_id: int = item.data(QtCore.Qt.ItemDataRole.UserRole)
-        if note_id != 0:
+        active_tag_check_flag: bool = False
+        if note_id == active_tag_id:
+            active_tag_check_flag = True
+        if note_id == 0:
+            self.view.close_combobox()
+        else:
             self.model.del_tag(note_id)
+            self.tag_deleted_or_remaked_signal.emit()
+            row: int = self.view.get_listwidget_row(item)
+            self.view.listwidget_takeitem(row)
             if len(self.model.get_tags()) == 1:
                 self.load_tags()
             else:
-                tags: list[set[int]] = self.model.get_tags_id()
-                random_tag_id: int = choice([i for sublist in tags for i in sublist])
-                name, color = self.model.get_tag_by_id(random_tag_id)
-                self.view.set_combobox_title(name, color, self._get_name_width(name), random_tag_id)
-            self.tag_deleted_or_remaked_signal.emit()
-        if len(self.model.get_tags()) != 1:
-            row: int = self.view.get_listwidget_row(item)
-            self.view.listwidget_takeitem(row)
-        else:
-            self.view.close_combobox()
+                if active_tag_check_flag:
+                    tags: list[set[int]] = self.model.get_tags_id()
+                    random_tag_id: int = choice([i for sublist in tags for i in sublist])
+                    name, color = self.model.get_tag_by_id(random_tag_id)
+                    self.view.set_combobox_title(name, color, self._get_name_width(name), random_tag_id)
 
     def _open_remake_tag_dialog(self, id: int) -> None:
         name, color = self.model.get_tag_by_id(id)

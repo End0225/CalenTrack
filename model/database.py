@@ -153,7 +153,7 @@ CREATE TABLE IF NOT EXISTS tags
     def get_tags_id(self) -> list[set[int]]:
         with sqlite3.connect(self.path) as conn:
             cursor: sqlite3.Cursor = conn.cursor()
-            cursor.execute("SELECT id FROM tags ORDER BY id")
+            cursor.execute("SELECT id FROM tags WHERE id != 0 ORDER BY id")
             return cursor.fetchall()
 
     # ==== Notes =====

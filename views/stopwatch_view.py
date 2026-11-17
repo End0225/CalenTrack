@@ -10,7 +10,7 @@ class StopwatchView(QtWidgets.QWidget):
     open_combobox_clicked = QtCore.pyqtSignal()
     tag_dialog_clicked = QtCore.pyqtSignal()
     tag_clicked = QtCore.pyqtSignal(int)
-    del_tag_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
+    del_tag_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem, int)
     remake_tag_clicked = QtCore.pyqtSignal(int)
     resize_tag_signal = QtCore.pyqtSignal(str)
 
@@ -243,7 +243,7 @@ QPushButton:focus {
         del_button.setFixedSize(18, 18)
         layout.addWidget(del_button)
         widget.setLayout(layout)
-        del_button.clicked.connect(lambda event: self.del_tag_clicked.emit(item))
+        del_button.clicked.connect(lambda event: self.del_tag_clicked.emit(item, self.active_tag_id))
         self._comboBox_listwidget.setItemWidget(item, widget)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, tag_id)
         self.btn_create_tag = self.add_btn_create_tag()
