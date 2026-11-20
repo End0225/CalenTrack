@@ -156,6 +156,12 @@ CREATE TABLE IF NOT EXISTS tags
             cursor.execute("SELECT id FROM tags WHERE id != 0 ORDER BY id")
             return cursor.fetchall()
 
+    def get_tag_id_by_note_id(self, note_id: int) -> int:
+        with sqlite3.connect(self.path) as conn:
+            cursor: sqlite3.Cursor = conn.cursor()
+            cursor.execute("SELECT tag_id FROM stopwatch_history WHERE id = ?", (note_id,))
+        return cursor.fetchone()[0]
+
     # ==== Notes =====
     def add_note(self, title: str, text: str) -> int:
         with sqlite3.connect(self.path) as conn:

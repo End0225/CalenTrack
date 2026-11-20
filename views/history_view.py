@@ -4,7 +4,7 @@ from utils.button_factory import ButtonFactory
 
 class HistoryView(QtWidgets.QWidget):
     del_item_clicked = QtCore.pyqtSignal(QtWidgets.QListWidgetItem)
-    establish_item_clicked = QtCore.pyqtSignal(str)
+    establish_item_clicked = QtCore.pyqtSignal(str, int)
     clear_all_clicked = QtCore.pyqtSignal()
 
     def __init__(self, icon_manager):
@@ -138,7 +138,7 @@ QWidget:hover {
         self.history_listwidget.setItemWidget(item, widget)
         item.setData(QtCore.Qt.ItemDataRole.UserRole, note_id)
         del_button.clicked.connect(lambda: self.del_item_clicked.emit(item))
-        establish_btn.clicked.connect(lambda: self.establish_item_clicked.emit(note_time))
+        establish_btn.clicked.connect(lambda: self.establish_item_clicked.emit(note_time, note_id))
 
     def get_listwidget_row(self, item: QtWidgets.QListWidgetItem) -> int:
         return self.history_listwidget.row(item)

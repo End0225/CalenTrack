@@ -39,8 +39,8 @@ class HistoryPresenter:
             self.view.listwidget_takeitem(row)
             self.model.delete_stopwatch_record(note_id)
 
-    def _on_establish_item(self, time: str) -> None:
-        self.stopwatch_presenter.set_time(time)
+    def _on_establish_item(self, time: str, note_id: int) -> None:
+        self.stopwatch_presenter.set_time(time, note_id)
         if self.model.check_parameter_1():
             self.show_stopwatch_page()
 

@@ -78,12 +78,21 @@ class StopwatchPresenter(QtCore.QObject):
         rowid: int = self.model.add_stopwatch_note(data, stopwatch_time, tag_id)
         self.history_view.add_item(data, stopwatch_time, rowid, name, color)
 
-    def set_time(self, time: str) -> None:
+    def set_time(self, time: str, note_id: str) -> None:
         hh, mm, ss = time.split(":")
         ss, ms = ss.split(", ")
         self._time_in_ms = int(hh) * 3600000 + int(mm) * 60000 + int(ss) * 1000 + int(ms) * 10
-        self.view.update_time(self._format_time(self._time_in_ms))        
+        self.view.update_time(self._format_time(self._time_in_ms))
         self._stop_stopwatch()
+        tag_id: int = self.model.get_tag_id_by_note_id(note_id)
+        tags: list[set[int]] = self.model.get_tags_id()
+        if tag_id not in [i for sublist in tags for i in sublist]:
+            tag_name = "Empty"
+            tag_color = "#A2A2A2"
+            tag_id = 0
+        else:
+            tag_name, tag_color = self.model.get_tag_by_id(tag_id)
+        self.view.set_combobox_title(tag_name, tag_color, self._get_name_width(tag_name), tag_id)
 
     def _open_combobox(self) -> None:
         x, y = self._get_combobox_coordinates()
