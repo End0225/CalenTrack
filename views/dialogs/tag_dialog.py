@@ -154,6 +154,7 @@ QPushButton:focus {{
     def run_remake_tag_dialog(self, name: str, color: str, id: int, active_tag_id: int) -> None:
         self.tag_lineedit.setText(name)
         self.set_btn_color(color)
+        self.color = color
         self.tag_id = id
         self.tag_dialog_mode = "remake"
         self.active_tag_id: int = active_tag_id
