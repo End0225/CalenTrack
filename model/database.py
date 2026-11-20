@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS tags
     color TEXT
 );""")
         try:
-            cursor.execute("ALTER TABLE stopwatch_history ADD COLUMN tag_id TEXT REFERENCES tags(id);")
+            cursor.execute("ALTER TABLE stopwatch_history ADD COLUMN tag_id INT REFERENCES tags(id);")
         except:
             pass
         if not self.check_tag_exists():
